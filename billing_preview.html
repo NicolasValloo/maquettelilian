@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M2BPO — Facturation (prévisualisation)</title>
+  <style>
+    /* ══════════════════════════════════════════════════════════════════
+       PRÉVISUALISATION STATIQUE — compilé depuis les fichiers .sass
+       Ce fichier sert uniquement à voir le rendu visuel.
+       Le vrai template est billing.html (Django + htmx + django-components).
+       ══════════════════════════════════════════════════════════════════ */
+
+    /* ── Reset minimal + variables design system ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* _colors.sass */
+      --blue: #0849c0;
+      --blue-dark: #07378f;
+      --blue-very-light: #f6f9ff;
+      --black: #283d4c;
+      --grey-blue-darker: #4b4f65;
+      --grey-blue-dark: #9a9db7;
+      --grey-blue: #ccd2f3;
+      --grey-blue-lighter: #f5f4fd;
+      --grey: #e8e8e8;
+      --white: #ffffff;
+      --green: #00be2a;
+      --green-light: #dff0d8;
+      --red: #f34f4f;
+      --red-light: #feeded;
+      --orange: #ff8000;
+      --orange-light: #FFF3E6;
+
+      /* _variables.sass */
+      --font-size-very-small: 10px;
+      --font-size-small: 12px;
+      --font-size-normal: 13px;
+      --font-size-medium: 18px;
+      --font-weight-normal: 400;
+      --font-weight-medium: 500;
+      --font-weight-bold: 700;
+      --line-height-normal: 1.5;
+      --spacing-very-small: 2px;
+      --spacing-small: 4px;
+      --spacing-medium: 8px;
+      --spacing-big: 16px;
+      --spacing-very-big: 32px;
+      --border-radius-small: 4px;
+      --border-radius-medium: 8px;
+      --border-radius-big: 16px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: var(--font-size-normal);
+      line-height: var(--line-height-normal);
+      color: var(--black);
+      background: var(--grey-blue-lighter);
+      padding: 24px;
+    }
+
+
+    /* ── _utilities.sass : screen-reader-only ── */
+    .screen-reader-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : page-header (billing.sass)
+       ══════════════════════════════════════════════════════════════════ */
+    .page-header__title {
+      font-size: var(--font-size-medium);
+      font-weight: var(--font-weight-bold);
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-medium);
+    }
+
+    .page-header__subtitle {
+      font-size: var(--font-size-normal);
+      color: var(--grey-blue-dark);
+      margin-top: var(--spacing-small);
+    }
+
+    .page-header__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--green-light);
+      color: var(--green);
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      padding: var(--spacing-very-small) var(--spacing-medium);
+      border-radius: var(--border-radius-big);
+    }
+
+    .page-header__badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : tab_underline
+       ══════════════════════════════════════════════════════════════════ */
+    .tab-underline {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--grey-blue);
+      margin-bottom: var(--spacing-big);
+    }
+
+    .tab-underline__item {
+      padding: var(--spacing-medium) var(--spacing-big);
+      font-size: var(--font-size-normal);
+      font-weight: var(--font-weight-medium);
+      color: var(--grey-blue-dark);
+      cursor: pointer;
+      border: none;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      user-select: none;
+      background: none;
+      white-space: nowrap;
+    }
+
+    .tab-underline__item:hover {
+      color: var(--grey-blue-darker);
+    }
+
+    .tab-underline__item--active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .tab-underline__count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--grey);
+      color: var(--grey-blue-dark);
+      font-size: var(--font-size-very-small);
+      font-weight: var(--font-weight-bold);
+      min-width: 18px;
+      height: 16px;
+      border-radius: var(--border-radius-medium);
+      padding: 0 var(--spacing-small);
+      margin-left: var(--spacing-small);
+    }
+
+    .tab-underline__item--active .tab-underline__count {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .panel { display: none; }
+    .panel--active { display: block; }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : card
+       ══════════════════════════════════════════════════════════════════ */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--grey-blue);
+      border-radius: var(--border-radius-medium);
+      overflow: hidden;
+    }
+
+    .card + .card {
+      margin-top: var(--spacing-big);
+    }
+
+    .card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-big);
+      border-bottom: 1px solid var(--grey-blue);
+    }
+
+    .card__title {
+      font-size: var(--font-size-normal);
+      font-weight: var(--font-weight-bold);
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-medium);
+    }
+
+    .card__body {
+      padding: var(--spacing-big);
+    }
+
+    .card__body--flush {
+      padding: 0;
+    }
+
+    .card--full {
+      grid-column: 1 / -1;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : information_row
+       ══════════════════════════════════════════════════════════════════ */
+    .information-row {
+      display: flex;
+      align-items: flex-start;
+      padding: var(--spacing-medium) 0;
+    }
+
+    .information-row + .information-row {
+      border-top: 1px solid var(--grey-blue);
+    }
+
+    .information-row__label {
+      flex: 0 0 180px;
+      font-size: var(--font-size-small);
+      color: var(--grey-blue-dark);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .information-row__value {
+      font-size: var(--font-size-normal);
+      color: var(--black);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-normal);
+    }
+
+    .information-row__value--subtitle {
+      display: block;
+      font-size: var(--font-size-very-small);
+      color: var(--grey-blue-dark);
+      margin-top: var(--spacing-very-small);
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : toggle_row
+       ══════════════════════════════════════════════════════════════════ */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-medium) 0;
+    }
+
+    .toggle-row + .toggle-row {
+      border-top: 1px solid var(--grey-blue);
+    }
+
+    .toggle-row__label {
+      font-size: var(--font-size-normal);
+      font-weight: var(--font-weight-medium);
+      color: var(--black);
+    }
+
+    .toggle-row__description {
+      font-size: var(--font-size-small);
+      color: var(--grey-blue-dark);
+      margin-top: var(--spacing-very-small);
+    }
+
+    /* Switch simplifié pour la preview */
+    .switch-toggle {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      background: var(--blue);
+      border-radius: 10px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .switch-toggle::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 18px;
+      width: 16px;
+      height: 16px;
+      background: var(--white);
+      border-radius: 50%;
+      transition: left 0.2s;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : indicator_card
+       ══════════════════════════════════════════════════════════════════ */
+    .indicator-card {
+      background: var(--white);
+      border-radius: var(--border-radius-medium);
+      border: 1px solid var(--grey-blue);
+      padding: var(--spacing-big);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .indicator-card__label {
+      font-size: var(--font-size-very-small);
+      color: var(--grey-blue-dark);
+      font-weight: var(--font-weight-medium);
+      margin-bottom: var(--spacing-small);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .indicator-card__value {
+      font-size: var(--font-size-medium);
+      font-weight: var(--font-weight-bold);
+      color: var(--black);
+      letter-spacing: -0.02em;
+    }
+
+    .indicator-card__subtitle {
+      font-size: var(--font-size-very-small);
+      color: var(--grey-blue-dark);
+      margin-top: var(--spacing-small);
+    }
+
+    .indicator-card-bar {
+      display: flex;
+      gap: var(--spacing-big);
+      margin-bottom: var(--spacing-big);
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : filter_bar
+       ══════════════════════════════════════════════════════════════════ */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-medium);
+      margin-bottom: var(--spacing-big);
+    }
+
+    .filter-bar__spacer { flex: 1; }
+
+    .filter-bar__select {
+      font-size: var(--font-size-normal);
+      padding: var(--spacing-small) 28px var(--spacing-small) var(--spacing-medium);
+      border: 1px solid var(--grey-blue-dark);
+      border-radius: var(--border-radius-small);
+      background: var(--blue-very-light);
+      color: var(--grey-blue-darker);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239A9DB7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--spacing-medium) center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .filter-bar__select:hover {
+      background-color: var(--grey-blue);
+      border-color: var(--grey-blue);
+    }
+
+    .filter-bar__select:focus {
+      border-color: var(--blue);
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : status_tag
+       ══════════════════════════════════════════════════════════════════ */
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-small);
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      padding: var(--spacing-small) var(--spacing-medium);
+      border-radius: var(--border-radius-big);
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .status-tag::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .status-tag--paid {
+      background: var(--green-light);
+      color: var(--green);
+      border-color: var(--green-light);
+    }
+
+    .status-tag--pending {
+      background: var(--orange-light);
+      color: var(--orange);
+      border-color: var(--orange-light);
+    }
+
+    .status-tag--overdue {
+      background: var(--red-light);
+      color: var(--red);
+      border-color: var(--red-light);
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : chip
+       ══════════════════════════════════════════════════════════════════ */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-small);
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-medium);
+      padding: var(--spacing-very-small) var(--spacing-medium);
+      border-radius: var(--border-radius-small);
+      background: var(--blue-very-light);
+      color: var(--grey-blue-darker);
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : empty_state
+       ══════════════════════════════════════════════════════════════════ */
+    .empty-state {
+      text-align: center;
+      padding: var(--spacing-very-big) var(--spacing-big);
+      color: var(--grey-blue-dark);
+    }
+
+    .empty-state__icon {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto var(--spacing-medium);
+      opacity: 0.3;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .empty-state__text { font-size: var(--font-size-normal); }
+
+    .error-state { display: none; }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       STYLE : billing_table
+       ══════════════════════════════════════════════════════════════════ */
+    .billing-table-wrapper { overflow-x: auto; }
+
+    .billing-table {
+      font-size: var(--font-size-normal);
+      width: 100%;
+      border-collapse: collapse;
+      line-height: var(--line-height-normal);
+      color: var(--black);
+    }
+
+    .billing-table thead th {
+      padding: var(--spacing-medium) var(--spacing-big);
+      text-align: left;
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-very-small);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--grey-blue-darker);
+      background: #f0f4f8;
+      border-bottom: 2px solid #c4c4c4;
+      white-space: nowrap;
+    }
+
+    .billing-table .th--right { text-align: right; }
+
+    .billing-table tbody tr {
+      transition: background-color 0.15s ease;
+    }
+
+    .billing-table tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .billing-table tbody tr:hover {
+      background-color: #eef3fb;
+    }
+
+    .billing-table tbody td {
+      padding: var(--spacing-medium) var(--spacing-big);
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: middle;
+      color: var(--grey-blue-darker);
+      word-break: break-word;
+    }
+
+    .billing-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .billing-table .td--right { text-align: right; }
+
+    .billing-table__link {
+      color: var(--blue);
+      font-weight: var(--font-weight-bold);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .billing-table__link:hover {
+      text-decoration: underline;
+    }
+
+    .billing-table__amount {
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-normal);
+      color: var(--black);
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       PAGE : billing.sass — styles spécifiques
+       ══════════════════════════════════════════════════════════════════ */
+    .preferences-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-big);
+    }
+
+    .date-pair {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-very-small);
+    }
+
+    .date-pair__item {
+      font-size: var(--font-size-small);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-small);
+    }
+
+    .date-pair__item--secondary {
+      color: var(--grey-blue-dark);
+    }
+
+
+    /* ── Boutons simplifiés pour la preview ── */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-small);
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-medium);
+      padding: var(--spacing-small) var(--spacing-medium);
+      border-radius: var(--border-radius-small);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background-color 0.15s;
+      text-decoration: none;
+    }
+
+    .button--fifth {
+      background: none;
+      color: var(--blue);
+      border-color: var(--grey-blue);
+    }
+
+    .button--fifth:hover {
+      background: var(--blue-very-light);
+    }
+
+    .button--quaternary {
+      background: var(--blue-very-light);
+      color: var(--blue);
+    }
+
+    .button--quaternary:hover {
+      background: var(--grey-blue);
+    }
+
+    /* ── Icônes SVG simplifiées pour la preview ── */
+    .icon-inline {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PAGE HEADER
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="page-header__content-container">
+      <h1 class="page-header__title">
+        Facturation
+        <span class="page-header__badge">Actif</span>
+      </h1>
+      <p class="page-header__subtitle">
+        Gestion de l'abonnement, factures et paiements — SAS Dupont & Fils
+      </p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       ONGLETS
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="tab-underline" role="tablist" aria-label="Sections de facturation">
+    <button class="tab-underline__item tab-underline__item--active" role="tab" aria-selected="true" aria-controls="panel-prefs" id="tab-prefs" data-tab="prefs">Préférences</button>
+    <button class="tab-underline__item" role="tab" aria-selected="false" aria-controls="panel-factures" id="tab-factures" data-tab="factures">Factures <span class="tab-underline__count">12</span></button>
+    <button class="tab-underline__item" role="tab" aria-selected="false" aria-controls="panel-encaissements" id="tab-encaissements" data-tab="encaissements">Encaissements <span class="tab-underline__count">8</span></button>
+    <button class="tab-underline__item" role="tab" aria-selected="false" aria-controls="panel-remboursements" id="tab-remboursements" data-tab="remboursements">Remboursements <span class="tab-underline__count">2</span></button>
+    <button class="tab-underline__item" role="tab" aria-selected="false" aria-controls="panel-avoirs" id="tab-avoirs" data-tab="avoirs">Avoirs</button>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PANEL : PRÉFÉRENCES
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="panel panel--active" id="panel-prefs" role="tabpanel" aria-labelledby="tab-prefs">
+
+    <div class="preferences-grid">
+
+      <!-- Card : Informations de facturation -->
+      <div class="card">
+        <div class="card__header">
+          <h2 class="card__title">
+            <svg class="icon-inline" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Informations de facturation
+          </h2>
+          <button class="button button--fifth">Modifier</button>
+        </div>
+        <div class="card__body">
+          <div class="information-row">
+            <dt class="information-row__label">Raison sociale</dt>
+            <dd class="information-row__value">SAS Dupont & Fils</dd>
+          </div>
+          <div class="information-row">
+            <dt class="information-row__label">Adresse</dt>
+            <dd class="information-row__value">12 rue de la Paix<br>75002 Paris</dd>
+          </div>
+          <div class="information-row">
+            <dt class="information-row__label">TVA intracommunautaire</dt>
+            <dd class="information-row__value">FR 82 123456789</dd>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card : Destinataires des factures -->
+      <div class="card">
+        <div class="card__header">
+          <h2 class="card__title">
+            <svg class="icon-inline" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Destinataires des factures
+          </h2>
+          <button class="button button--fifth">Modifier</button>
+        </div>
+        <div class="card__body">
+          <div class="information-row">
+            <dt class="information-row__label">Utilisateur principal</dt>
+            <dd class="information-row__value">
+              Jean Dupont
+              <span class="information-row__value--subtitle">jean.dupont@dupont-fils.fr</span>
+            </dd>
+          </div>
+          <div class="information-row">
+            <dt class="information-row__label">Email supplémentaire</dt>
+            <dd class="information-row__value">compta@dupont-fils.fr</dd>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card : Abonnement (pleine largeur) -->
+      <div class="card card--full">
+        <div class="card__header">
+          <h2 class="card__title">
+            <svg class="icon-inline" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Abonnement
+          </h2>
+        </div>
+        <div class="card__body">
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-row__label">Renouvellement automatique</div>
+              <div class="toggle-row__description">Votre abonnement sera reconduit automatiquement à échéance.</div>
+            </div>
+            <div class="switch-toggle"></div>
+          </div>
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-row__label">Notification avant échéance</div>
+              <div class="toggle-row__description">Recevoir un rappel 30 jours avant la date de renouvellement.</div>
+            </div>
+            <div class="switch-toggle"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PANEL : FACTURES
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-factures" role="tabpanel" aria-labelledby="tab-factures">
+
+    <!-- Indicateurs chiffrés -->
+    <div class="indicator-card-bar">
+      <div class="indicator-card">
+        <div class="indicator-card__label">Total facturé</div>
+        <div class="indicator-card__value">47 280,00 €</div>
+        <div class="indicator-card__subtitle">12 factures en 2025</div>
+      </div>
+      <div class="indicator-card">
+        <div class="indicator-card__label">En attente</div>
+        <div class="indicator-card__value">3 940,00 €</div>
+        <div class="indicator-card__subtitle">2 factures non réglées</div>
+      </div>
+      <div class="indicator-card">
+        <div class="indicator-card__label">Dernière facture</div>
+        <div class="indicator-card__value">15/01/2026</div>
+        <div class="indicator-card__subtitle">FAC-2026-0001</div>
+      </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filter-bar">
+      <label for="filter-year" class="screen-reader-only">Filtrer par année</label>
+      <select class="filter-bar__select" id="filter-year">
+        <option>Toutes les périodes</option>
+        <option selected>2025</option>
+        <option>2024</option>
+        <option>2023</option>
+      </select>
+      <label for="filter-status" class="screen-reader-only">Filtrer par statut</label>
+      <select class="filter-bar__select" id="filter-status">
+        <option>Tous les statuts</option>
+        <option>Payée</option>
+        <option>En attente</option>
+        <option>En retard</option>
+      </select>
+      <div class="filter-bar__spacer"></div>
+      <button class="button button--quaternary">
+        <svg class="icon-inline" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Tout exporter
+      </button>
+    </div>
+
+    <!-- Table factures -->
+    <div class="card">
+      <div class="card__body card__body--flush">
+        <div class="billing-table-wrapper">
+          <table class="billing-table" aria-label="Liste des factures">
+            <thead>
+              <tr>
+                <th scope="col">N° Facture</th>
+                <th scope="col">Émise le</th>
+                <th scope="col">Période</th>
+                <th scope="col">TVA</th>
+                <th scope="col" class="th--right">Montant HT</th>
+                <th scope="col" class="th--right">Montant TTC</th>
+                <th scope="col">Échéances</th>
+                <th scope="col">Statut</th>
+                <th scope="col"><span class="screen-reader-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a class="billing-table__link" href="#">FAC-2026-0001</a></td>
+                <td>15/01/2026</td>
+                <td>01/01/2026 → 31/01/2026</td>
+                <td>20 %</td>
+                <td class="td--right billing-table__amount">3 940,00 €</td>
+                <td class="td--right billing-table__amount">4 728,00 €</td>
+                <td>
+                  <div class="date-pair">
+                    <div class="date-pair__item">15/02/2026</div>
+                  </div>
+                </td>
+                <td><span class="status-tag status-tag--pending" role="status">En attente</span></td>
+                <td><button class="button button--quaternary" aria-label="Télécharger FAC-2026-0001"><svg class="icon-inline" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></td>
+              </tr>
+              <tr>
+                <td><a class="billing-table__link" href="#">FAC-2025-0012</a></td>
+                <td>15/12/2025</td>
+                <td>01/12/2025 → 31/12/2025</td>
+                <td>20 %</td>
+                <td class="td--right billing-table__amount">3 940,00 €</td>
+                <td class="td--right billing-table__amount">4 728,00 €</td>
+                <td>
+                  <div class="date-pair">
+                    <div class="date-pair__item">15/01/2026</div>
+                  </div>
+                </td>
+                <td><span class="status-tag status-tag--overdue" role="status">En retard</span></td>
+                <td><button class="button button--quaternary" aria-label="Télécharger FAC-2025-0012"><svg class="icon-inline" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></td>
+              </tr>
+              <tr>
+                <td><a class="billing-table__link" href="#">FAC-2025-0011</a></td>
+                <td>15/11/2025</td>
+                <td>01/11/2025 → 30/11/2025</td>
+                <td>20 %</td>
+                <td class="td--right billing-table__amount">3 940,00 €</td>
+                <td class="td--right billing-table__amount">4 728,00 €</td>
+                <td>
+                  <div class="date-pair">
+                    <div class="date-pair__item">15/12/2025</div>
+                    <div class="date-pair__item date-pair__item--secondary">15/01/2026</div>
+                  </div>
+                </td>
+                <td><span class="status-tag status-tag--paid" role="status">Payée</span></td>
+                <td><button class="button button--quaternary" aria-label="Télécharger FAC-2025-0011"><svg class="icon-inline" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></td>
+              </tr>
+              <tr>
+                <td><a class="billing-table__link" href="#">FAC-2025-0010</a></td>
+                <td>15/10/2025</td>
+                <td>01/10/2025 → 31/10/2025</td>
+                <td>20 %</td>
+                <td class="td--right billing-table__amount">3 940,00 €</td>
+                <td class="td--right billing-table__amount">4 728,00 €</td>
+                <td>
+                  <div class="date-pair">
+                    <div class="date-pair__item">15/11/2025</div>
+                  </div>
+                </td>
+                <td><span class="status-tag status-tag--paid" role="status">Payée</span></td>
+                <td><button class="button button--quaternary" aria-label="Télécharger FAC-2025-0010"><svg class="icon-inline" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></td>
+              </tr>
+              <tr>
+                <td><a class="billing-table__link" href="#">FAC-2025-0009</a></td>
+                <td>15/09/2025</td>
+                <td>01/09/2025 → 30/09/2025</td>
+                <td>20 %</td>
+                <td class="td--right billing-table__amount">3 940,00 €</td>
+                <td class="td--right billing-table__amount">4 728,00 €</td>
+                <td>
+                  <div class="date-pair">
+                    <div class="date-pair__item">15/10/2025</div>
+                  </div>
+                </td>
+                <td><span class="status-tag status-tag--paid" role="status">Payée</span></td>
+                <td><button class="button button--quaternary" aria-label="Télécharger FAC-2025-0009"><svg class="icon-inline" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PANEL : ENCAISSEMENTS
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-encaissements" role="tabpanel" aria-labelledby="tab-encaissements">
+
+    <div class="filter-bar">
+      <label for="filter-enc-year" class="screen-reader-only">Filtrer par année</label>
+      <select class="filter-bar__select" id="filter-enc-year">
+        <option>Toutes les années</option>
+        <option selected>2025</option>
+        <option>2024</option>
+      </select>
+      <div class="filter-bar__spacer"></div>
+      <button class="button button--quaternary">Exporter</button>
+    </div>
+
+    <div class="card">
+      <div class="card__body card__body--flush">
+        <div class="billing-table-wrapper">
+          <table class="billing-table" aria-label="Liste des encaissements">
+            <thead>
+              <tr>
+                <th scope="col">Date de réception</th>
+                <th scope="col">Date de dépôt</th>
+                <th scope="col">TVA</th>
+                <th scope="col" class="th--right">Montant TTC</th>
+                <th scope="col">Moyen de paiement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>12 décembre 2025</td>
+                <td>14 décembre 2025</td>
+                <td>20 %</td>
+                <td class="td--right billing-table__amount">4 728,00 €</td>
+                <td><span class="chip">Virement bancaire</span></td>
+              </tr>
+              <tr>
+                <td>10 novembre 2025</td>
+                <td>12 novembre 2025</td>
+                <td>20 %</td>
+                <td class="td--right billing-table__amount">4 728,00 €</td>
+                <td><span class="chip">Virement bancaire</span></td>
+              </tr>
+              <tr>
+                <td>14 octobre 2025</td>
+                <td>16 octobre 2025</td>
+                <td>20 %</td>
+                <td class="td--right billing-table__amount">4 728,00 €</td>
+                <td><span class="chip">Prélèvement SEPA</span></td>
+              </tr>
+              <tr>
+                <td>11 septembre 2025</td>
+                <td>13 septembre 2025</td>
+                <td>20 %</td>
+                <td class="td--right billing-table__amount">4 728,00 €</td>
+                <td><span class="chip">Prélèvement SEPA</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PANEL : REMBOURSEMENTS
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-remboursements" role="tabpanel" aria-labelledby="tab-remboursements">
+    <div class="card">
+      <div class="card__body card__body--flush">
+        <div class="billing-table-wrapper">
+          <table class="billing-table" aria-label="Liste des remboursements">
+            <thead>
+              <tr>
+                <th scope="col">Date de réception</th>
+                <th scope="col" class="th--right">Montant</th>
+                <th scope="col">Moyen de paiement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>20 juin 2025</td>
+                <td class="td--right billing-table__amount">1 182,00 €</td>
+                <td><span class="chip">Virement bancaire</span></td>
+              </tr>
+              <tr>
+                <td>15 mars 2025</td>
+                <td class="td--right billing-table__amount">472,80 €</td>
+                <td><span class="chip">Virement bancaire</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PANEL : AVOIRS
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-avoirs" role="tabpanel" aria-labelledby="tab-avoirs">
+    <div class="card">
+      <div class="card__body">
+        <div class="empty-state" role="status">
+          <svg class="empty-state__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <p class="empty-state__text">Aucun avoir pour le moment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       JavaScript : navigation onglets
+       ══════════════════════════════════════════════════════════════════ -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var tabWrapper = document.querySelector(".tab-underline");
+      if (!tabWrapper) return;
+
+      var tabs = tabWrapper.querySelectorAll(".tab-underline__item");
+      var panels = document.querySelectorAll(".panel");
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          var targetId = tab.getAttribute("data-tab");
+
+          tabs.forEach(function (t) {
+            t.classList.remove("tab-underline__item--active");
+            t.setAttribute("aria-selected", "false");
+          });
+          tab.classList.add("tab-underline__item--active");
+          tab.setAttribute("aria-selected", "true");
+
+          panels.forEach(function (p) {
+            p.classList.remove("panel--active");
+          });
+          var targetPanel = document.getElementById("panel-" + targetId);
+          if (targetPanel) {
+            targetPanel.classList.add("panel--active");
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
