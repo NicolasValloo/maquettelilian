@@ -1,0 +1,13 @@
+{# ══════════════════════════════════════════════════════════════════
+   Composant : information_row
+   Paire label/valeur horizontale pour afficher des données
+   ══════════════════════════════════════════════════════════════════ #}
+<div class="information-row">
+  <dt class="information-row__label">{{ label }}</dt>
+  <dd class="information-row__value">
+    {% slot "value" / %}
+    {% if subtitle %}
+      <span class="information-row__value--subtitle">{{ subtitle }}</span>
+    {% endif %}
+  </dd>
+</div>

@@ -1,0 +1,42 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : card — conteneur générique
+// Basé sur list_card du design actuel ($list-card-bg-color)
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+
+
+.card
+  background: colors.$list-card-bg-color
+  border: 1px solid colors.$main-border
+  border-radius: variables.$border-radius-medium
+  overflow: hidden
+
+  & + &
+    margin-top: variables.$spacing-big
+
+  &__header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: variables.$spacing-big
+    border-bottom: 1px solid colors.$main-border
+
+  &__title
+    @include fonts.font-size-normal
+    @include fonts.font-weight-bold
+    color: colors.$main-color
+    display: flex
+    align-items: center
+    gap: variables.$spacing-medium
+
+  &__body
+    padding: variables.$spacing-big
+
+    &--flush
+      padding: 0
+
+  &--full
+    grid-column: 1 / -1

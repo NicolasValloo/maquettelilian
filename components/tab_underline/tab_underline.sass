@@ -1,0 +1,78 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : tab_underline
+// Style underline — tokens du design system existant
+// Inclut le panel associé (affichage/masquage des onglets)
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+@use 'common_m2bpo/css/utils/media_queries'
+
+// Dimensions du compteur — pas de variable design system correspondante
+$tab-underline-count-min-width: 18px
+$tab-underline-count-height: 16px
+
+
+.tab-underline
+  display: flex
+  gap: 0
+  border-bottom: 1px solid colors.$main-border
+  margin-bottom: variables.$spacing-big
+
+  @include media_queries.lte-tablet
+    overflow-x: auto
+    flex-wrap: nowrap
+    -ms-overflow-style: none
+    scrollbar-width: none
+    &::-webkit-scrollbar
+      display: none
+
+  &__item
+    padding: variables.$spacing-medium variables.$spacing-big
+    @include fonts.font-size-normal
+    @include fonts.font-weight-medium
+    color: colors.$main-color-lighter
+    cursor: pointer
+    border-bottom: 2px solid transparent
+    transition: color 0.2s, border-color 0.2s
+    user-select: none
+    background: none
+    border-top: none
+    border-left: none
+    border-right: none
+    white-space: nowrap
+
+    &:hover
+      color: colors.$main-color-light
+
+    &--active
+      color: colors.$blue
+      border-bottom-color: colors.$blue
+      @include fonts.font-weight-bold
+
+  &__count
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    background: colors.$grey
+    color: colors.$main-color-lighter
+    @include fonts.font-size-very-small
+    @include fonts.font-weight-bold
+    min-width: $tab-underline-count-min-width
+    height: $tab-underline-count-height
+    border-radius: variables.$border-radius-medium
+    padding: 0 variables.$spacing-small
+    margin-left: variables.$spacing-small
+
+    .tab-underline__item--active &
+      background: colors.$blue
+      color: colors.$white
+
+
+// ── Panel — conteneur de contenu lié aux onglets ──
+.panel
+  display: none
+
+  &--active
+    display: block

@@ -1,0 +1,13 @@
+{# ══════════════════════════════════════════════════════════════════
+   Composant : empty_state
+   Message d'état vide ou d'erreur avec icône et action optionnelle
+   ══════════════════════════════════════════════════════════════════ #}
+{% load svg_icon from common_espadon %}
+
+<div class="empty-state{% if variant %} empty-state--{{ variant }}{% endif %}" role="status">
+  {% if icon %}
+    {% svg_icon icon svg_css_class="empty-state__icon" %}
+  {% endif %}
+  <p class="empty-state__text">{{ message }}</p>
+  {% slot "action" / %}
+</div>

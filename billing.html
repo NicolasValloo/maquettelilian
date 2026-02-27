@@ -1,0 +1,413 @@
+{% extends "base.html" %}
+{% load component_tags %}
+
+{# ══════════════════════════════════════════════════════════════════════════════
+   M2BPO — Maquette v2 : Page Facturation
+   Template Django — zone contenu uniquement (layout géré par base.html)
+   Composants réutilisables : tab_underline, indicator_card, status_tag, filter_bar, empty_state, card, information_row, toggle_row, chip
+   Design system strict : variables, couleurs et typographie du design actuel
+   ══════════════════════════════════════════════════════════════════════════════ #}
+
+{% block page_content %}
+
+  {# ── Page header ── #}
+  <div class="page-header">
+    <div class="page-header__content-container">
+      <h1 class="page-header__title">
+        Facturation
+        <span class="page-header__badge">Actif</span>
+      </h1>
+      <p class="page-header__subtitle">
+        Gestion de l'abonnement, factures et paiements — {{ client.raison_sociale }}
+      </p>
+    </div>
+  </div>
+
+  {# ── Onglets (nouveau composant tab_underline) ── #}
+  {% component "tab_underline" tab_wrapper_id="billing-tabs" active_tab="prefs" %}
+    {% fill "tabs" %}
+      {% component "tab_underline_button" tab_id="prefs" label="Préférences" %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="factures" label="Factures" counter=factures_count %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="encaissements" label="Encaissements" counter=encaissements_count %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="remboursements" label="Remboursements" counter=remboursements_count %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="avoirs" label="Avoirs" %}{% endcomponent %}
+    {% endfill %}
+  {% endcomponent %}
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : PRÉFÉRENCES
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel panel--active" id="panel-prefs" role="tabpanel" aria-labelledby="tab-prefs">
+
+    <div class="preferences-grid">
+
+      {# -- Card : Informations de facturation -- #}
+      {% component "card" %}
+        {% fill "icon" %}{% component "icon_inline" name="user" %}{% endcomponent %}{% endfill %}
+        {% fill "title" %}Informations de facturation{% endfill %}
+        {% fill "header_actions" %}
+          {% component "button" modifier="fifth" variant="small" label="Modifier" %}
+            {% fill "button_htmx_attrs" %}
+              hx-get="{% url 'billing:edit-info' %}"
+              hx-target="#modal-container"
+              hx-swap="innerHTML"
+            {% endfill %}
+          {% endcomponent %}
+        {% endfill %}
+        {% fill "body" %}
+          {% component "information_row" label="Raison sociale" %}
+            {% fill "value" %}{{ client.raison_sociale }}{% endfill %}
+          {% endcomponent %}
+          {% component "information_row" label="Adresse" %}
+            {% fill "value" %}{{ client.adresse }}<br>{{ client.code_postal }} {{ client.ville }}{% endfill %}
+          {% endcomponent %}
+          {% component "information_row" label="TVA intracommunautaire" %}
+            {% fill "value" %}{{ client.tva_intra }}{% endfill %}
+          {% endcomponent %}
+        {% endfill %}
+      {% endcomponent %}
+
+      {# -- Card : Destinataires des factures -- #}
+      {% component "card" %}
+        {% fill "icon" %}{% component "icon_inline" name="mail" %}{% endcomponent %}{% endfill %}
+        {% fill "title" %}Destinataires des factures{% endfill %}
+        {% fill "header_actions" %}
+          {% component "button" modifier="fifth" variant="small" label="Modifier" %}
+            {% fill "button_htmx_attrs" %}
+              hx-get="{% url 'billing:edit-recipients' %}"
+              hx-target="#modal-container"
+              hx-swap="innerHTML"
+            {% endfill %}
+          {% endcomponent %}
+        {% endfill %}
+        {% fill "body" %}
+          {% component "information_row" label="Utilisateur principal" subtitle=user.email %}
+            {% fill "value" %}{{ user.get_full_name }}{% endfill %}
+          {% endcomponent %}
+          {% if billing_extra_email %}
+          {% component "information_row" label="Email supplémentaire" %}
+            {% fill "value" %}{{ billing_extra_email }}{% endfill %}
+          {% endcomponent %}
+          {% endif %}
+        {% endfill %}
+      {% endcomponent %}
+
+      {# -- Card : Abonnement (pleine largeur) -- #}
+      {% component "card" full_width=True %}
+        {% fill "icon" %}{% component "icon_inline" name="check-circle" %}{% endcomponent %}{% endfill %}
+        {% fill "title" %}Abonnement{% endfill %}
+        {% fill "body" %}
+          {% component "toggle_row" label="Renouvellement automatique" label_id="label-auto-renew" description="Votre abonnement sera reconduit automatiquement à échéance." %}
+            {% fill "toggle" %}
+              {% component "switch" input_id="auto-renew" %}
+                {% fill "switch_extra_attrs" %}
+                  checked
+                  aria-labelledby="label-auto-renew"
+                  hx-post="{% url 'billing:toggle-auto-renew' %}"
+                  hx-swap="none"
+                {% endfill %}
+              {% endcomponent %}
+            {% endfill %}
+          {% endcomponent %}
+          {% component "toggle_row" label="Notification avant échéance" label_id="label-notif-echeance" description="Recevoir un rappel 30 jours avant la date de renouvellement." %}
+            {% fill "toggle" %}
+              {% component "switch" input_id="notif-echeance" %}
+                {% fill "switch_extra_attrs" %}
+                  checked
+                  aria-labelledby="label-notif-echeance"
+                  hx-post="{% url 'billing:toggle-notif-echeance' %}"
+                  hx-swap="none"
+                {% endfill %}
+              {% endcomponent %}
+            {% endfill %}
+          {% endcomponent %}
+        {% endfill %}
+      {% endcomponent %}
+
+    </div>
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : FACTURES
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-factures" role="tabpanel" aria-labelledby="tab-factures">
+
+    {# -- Indicateurs chiffrés -- #}
+    <div class="indicator-card-bar">
+      {% component "indicator_card" label="Total facturé" value=total_facture_display subtitle=factures_summary %}{% endcomponent %}
+      {% component "indicator_card" label="En attente" value=en_attente_display subtitle=en_attente_summary %}{% endcomponent %}
+      {% component "indicator_card" label="Dernière facture" value=derniere_facture_date subtitle=derniere_facture_ref %}{% endcomponent %}
+    </div>
+
+    {# -- Filtres (htmx : rechargement partiel de la table) -- #}
+    {% component "filter_bar" %}
+      {% fill "filters" %}
+        <label for="filter-year" class="screen-reader-only">Filtrer par année</label>
+        <select class="filter-bar__select" id="filter-year" name="year"
+                hx-get="{% url 'billing:factures-table' %}"
+                hx-target="#factures-table-body"
+                hx-include="#filter-status"
+                hx-swap="innerHTML"
+                hx-indicator="#factures-loader">
+          <option value="">Toutes les périodes</option>
+          {% for year in available_years %}
+            <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+          {% endfor %}
+        </select>
+        <label for="filter-status" class="screen-reader-only">Filtrer par statut</label>
+        <select class="filter-bar__select" id="filter-status" name="status"
+                hx-get="{% url 'billing:factures-table' %}"
+                hx-target="#factures-table-body"
+                hx-include="#filter-year"
+                hx-swap="innerHTML"
+                hx-indicator="#factures-loader">
+          <option value="">Tous les statuts</option>
+          <option value="paid">Payée</option>
+          <option value="pending">En attente</option>
+          <option value="overdue">En retard</option>
+        </select>
+      {% endfill %}
+      {% fill "actions" %}
+        {% component "button" modifier="quaternary" variant="small" icon="download" label="Tout exporter" %}
+          {% fill "button_htmx_attrs" %}
+            hx-get="{% url 'billing:export-factures' %}"
+            hx-swap="none"
+          {% endfill %}
+        {% endcomponent %}
+      {% endfill %}
+    {% endcomponent %}
+
+    {# -- Table factures -- #}
+    {% component "card" has_header=False flush=True %}
+      {% fill "body" %}
+
+        {# État : chargement #}
+        <div class="loader htmx-indicator" id="factures-loader">
+          {% component "loader" %}{% endcomponent %}
+        </div>
+
+        <div class="billing-table-wrapper">
+          <table class="billing-table" aria-label="Liste des factures">
+            <thead>
+              <tr>
+                <th scope="col">N° Facture</th>
+                <th scope="col">Émise le</th>
+                <th scope="col">Période</th>
+                <th scope="col">TVA</th>
+                <th scope="col" class="th--right">Montant HT</th>
+                <th scope="col" class="th--right">Montant TTC</th>
+                <th scope="col">Échéances</th>
+                <th scope="col">Statut</th>
+                <th scope="col"><span class="screen-reader-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="factures-table-body"
+                   hx-get="{% url 'billing:factures-table' %}"
+                   hx-trigger="load"
+                   hx-swap="innerHTML"
+                   hx-indicator="#factures-loader">
+
+              {# ── État rempli (rendu serveur, un <tr> par facture) ── #}
+              {% for facture in factures %}
+              <tr>
+                <td data-label="N° Facture">
+                  <a class="billing-table__link"
+                     href="{% url 'billing:facture-detail' pk=facture.pk %}"
+                     hx-get="{% url 'billing:facture-detail' pk=facture.pk %}"
+                     hx-target="#modal-container"
+                     hx-swap="innerHTML">
+                    {{ facture.numero }}
+                  </a>
+                </td>
+                <td data-label="Émise le">{{ facture.date_emission|date:"d/m/Y" }}</td>
+                <td data-label="Période">{{ facture.periode_debut|date:"d/m/Y" }} → {{ facture.periode_fin|date:"d/m/Y" }}</td>
+                <td data-label="TVA">{{ facture.tva_rate }} %</td>
+                <td data-label="Montant HT" class="td--right billing-table__amount">{{ facture.montant_ht|floatformat:2 }} €</td>
+                <td data-label="Montant TTC" class="td--right billing-table__amount">{{ facture.montant_ttc|floatformat:2 }} €</td>
+                <td data-label="Échéances">
+                  <div class="date-pair">
+                    {% for echeance in facture.echeances %}
+                      <div class="date-pair__item{% if not forloop.first %} date-pair__item--secondary{% endif %}">
+                        {{ echeance|date:"d/m/Y" }}
+                      </div>
+                    {% endfor %}
+                  </div>
+                </td>
+                <td data-label="Statut">
+                  {% component "status_tag" status=facture.status %}{% endcomponent %}
+                </td>
+                <td>
+                  {% component "button" modifier="quaternary" variant="very-small" icon="download" label="PDF" %}
+                    {% fill "button_extra_attrs" %}
+                      aria-label="Télécharger la facture {{ facture.numero }}"
+                    {% endfill %}
+                    {% fill "button_htmx_attrs" %}
+                      hx-get="{% url 'billing:download-facture' pk=facture.pk %}"
+                      hx-swap="none"
+                    {% endfill %}
+                  {% endcomponent %}
+                </td>
+              </tr>
+              {# ── État vide ── #}
+              {% empty %}
+              <tr>
+                <td colspan="9">
+                  {% component "empty_state" icon="file-text" message="Aucune facture pour ces critères." %}{% endcomponent %}
+                </td>
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+
+        {# ── État erreur (affiché par htmx sur erreur serveur) ── #}
+        <div class="error-state" id="factures-error"
+             hx-on:htmx:response-error="this.style.display='block'"
+             hx-on:htmx:before-request="this.style.display='none'">
+          {% component "empty_state" icon="alert-triangle" message="Erreur lors du chargement des factures." variant="error" %}
+            {% fill "action" %}
+              {% component "button" modifier="fifth" variant="small" label="Réessayer" %}
+                {% fill "button_extra_attrs" %}
+                  onclick="htmx.trigger('#factures-table-body', 'load')"
+                {% endfill %}
+              {% endcomponent %}
+            {% endfill %}
+          {% endcomponent %}
+        </div>
+
+      {% endfill %}
+    {% endcomponent %}
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : ENCAISSEMENTS
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-encaissements" role="tabpanel" aria-labelledby="tab-encaissements">
+
+    {% component "filter_bar" %}
+      {% fill "filters" %}
+        <label for="filter-enc-year" class="screen-reader-only">Filtrer par année</label>
+        <select class="filter-bar__select" id="filter-enc-year" name="year"
+                hx-get="{% url 'billing:encaissements-table' %}"
+                hx-target="#encaissements-table-body"
+                hx-swap="innerHTML"
+                hx-indicator="#encaissements-loader">
+          <option value="">Toutes les années</option>
+          {% for year in available_years %}
+            <option value="{{ year }}">{{ year }}</option>
+          {% endfor %}
+        </select>
+      {% endfill %}
+      {% fill "actions" %}
+        {% component "button" modifier="quaternary" variant="small" label="Exporter" %}
+          {% fill "button_htmx_attrs" %}
+            hx-get="{% url 'billing:export-encaissements' %}"
+            hx-swap="none"
+          {% endfill %}
+        {% endcomponent %}
+      {% endfill %}
+    {% endcomponent %}
+
+    {% component "card" has_header=False flush=True %}
+      {% fill "body" %}
+
+        <div class="loader htmx-indicator" id="encaissements-loader">
+          {% component "loader" %}{% endcomponent %}
+        </div>
+
+        <div class="billing-table-wrapper">
+          <table class="billing-table" aria-label="Liste des encaissements">
+            <thead>
+              <tr>
+                <th scope="col">Date de réception</th>
+                <th scope="col">Date de dépôt</th>
+                <th scope="col">TVA</th>
+                <th scope="col" class="th--right">Montant TTC</th>
+                <th scope="col">Moyen de paiement</th>
+              </tr>
+            </thead>
+            <tbody id="encaissements-table-body">
+              {% for encaissement in encaissements %}
+              <tr>
+                <td data-label="Réception">{{ encaissement.date_reception|date:"d F Y" }}</td>
+                <td data-label="Dépôt">{{ encaissement.date_depot|date:"d F Y" }}</td>
+                <td data-label="TVA">{{ encaissement.tva_rate }} %</td>
+                <td data-label="Montant TTC" class="td--right billing-table__amount">{{ encaissement.montant_ttc|floatformat:2 }} €</td>
+                <td data-label="Moyen">{% component "chip" text=encaissement.moyen_paiement %}{% endcomponent %}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5">
+                  {% component "empty_state" icon="credit-card" message="Aucun encaissement enregistré." %}{% endcomponent %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      {% endfill %}
+    {% endcomponent %}
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : REMBOURSEMENTS
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-remboursements" role="tabpanel" aria-labelledby="tab-remboursements">
+    {% component "card" has_header=False flush=True %}
+      {% fill "body" %}
+        <div class="billing-table-wrapper">
+          <table class="billing-table" aria-label="Liste des remboursements">
+            <thead>
+              <tr>
+                <th scope="col">Date de réception</th>
+                <th scope="col" class="th--right">Montant</th>
+                <th scope="col">Moyen de paiement</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for remboursement in remboursements %}
+              <tr>
+                <td data-label="Réception">{{ remboursement.date_reception|date:"d F Y" }}</td>
+                <td data-label="Montant" class="td--right billing-table__amount">{{ remboursement.montant|floatformat:2 }} €</td>
+                <td data-label="Moyen">{% component "chip" text=remboursement.moyen_paiement %}{% endcomponent %}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="3">
+                  {% component "empty_state" icon="rotate-ccw" message="Aucun remboursement enregistré." %}{% endcomponent %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endfill %}
+    {% endcomponent %}
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : AVOIRS
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-avoirs" role="tabpanel" aria-labelledby="tab-avoirs">
+    {% component "card" has_header=False %}
+      {% fill "body" %}
+        {% for avoir in avoirs %}
+          {# TODO: structure table avoirs quand specs définies #}
+        {% empty %}
+          {% component "empty_state" icon="file-text" message="Aucun avoir pour le moment." %}{% endcomponent %}
+        {% endfor %}
+      {% endfill %}
+    {% endcomponent %}
+  </div>
+
+  {# Conteneur pour les modales (htmx target) #}
+  <div id="modal-container"></div>
+
+{% endblock page_content %}

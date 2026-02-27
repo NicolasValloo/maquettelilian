@@ -1,0 +1,35 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : indicator_card — carte indicateur chiffré
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+
+
+.indicator-card
+  background: colors.$white
+  border-radius: variables.$border-radius-medium
+  border: 1px solid colors.$main-border
+  padding: variables.$spacing-big
+  flex: 1
+  min-width: 0
+
+  &__label
+    @include fonts.font-size-very-small
+    color: colors.$main-color-lighter
+    @include fonts.font-weight-medium
+    margin-bottom: variables.$spacing-small
+    text-transform: uppercase
+    letter-spacing: 0.04em
+
+  &__value
+    @include fonts.font-size-medium
+    @include fonts.font-weight-bold
+    color: colors.$main-color
+    letter-spacing: -0.02em
+
+  &__subtitle
+    @include fonts.font-size-very-small
+    color: colors.$main-color-lighter
+    margin-top: variables.$spacing-small

@@ -1,0 +1,45 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : filter_bar — barre de filtres
+// Selects basés sur select.css du design actuel
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+@use 'common_m2bpo/css/utils/media_queries'
+
+
+.filter-bar
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+  margin-bottom: variables.$spacing-big
+
+  @include media_queries.lte-mobile
+    flex-wrap: wrap
+
+  &__spacer
+    flex: 1
+
+  &__select
+    @include fonts.font-size-normal
+    padding: variables.$spacing-small 28px variables.$spacing-small variables.$spacing-medium
+    border: 1px solid colors.$grey-blue-dark
+    border-radius: variables.$border-radius-small
+    background: colors.$blue-very-light
+    color: colors.$main-color-light
+    cursor: pointer
+    appearance: none
+    // Chevron SVG inline — même couleur que $grey-blue-dark
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239A9DB7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    background-repeat: no-repeat
+    background-position: right variables.$spacing-medium center
+    outline: none
+    transition: border-color 0.2s
+
+    &:hover
+      background-color: colors.$grey-blue
+      border-color: colors.$grey-blue
+
+    &:focus
+      border-color: colors.$blue

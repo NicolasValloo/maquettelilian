@@ -1,0 +1,16 @@
+{# ══════════════════════════════════════════════════════════════════
+   Sous-composant : tab_underline_button
+   Un bouton individuel dans un tab_underline wrapper
+   ══════════════════════════════════════════════════════════════════ #}
+{% inject 'tab_wrapper_data' as tab_data %}
+
+<button
+  class="tab-underline__item{% if tab_data.active_tab == tab_id %} tab-underline__item--active{% endif %}"
+  id="tab-{{ tab_id }}"
+  data-tab-id="{{ tab_id }}"
+  role="tab"
+  aria-selected="{% if tab_data.active_tab == tab_id %}true{% else %}false{% endif %}"
+  aria-controls="panel-{{ tab_id }}"
+>
+  {{ label }}{% if counter is not None %} <span class="tab-underline__count" id="{{ tab_id }}_counter" {% if use_oob_swap %}hx-swap-oob="true"{% endif %}>{{ counter }}</span>{% endif %}
+</button>

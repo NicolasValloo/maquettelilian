@@ -1,0 +1,39 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : empty_state — message d'état vide ou d'erreur
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+
+
+.empty-state
+  text-align: center
+  padding: variables.$spacing-very-big variables.$spacing-big
+  color: colors.$main-color-lighter
+
+  &__icon
+    width: 40px
+    height: 40px
+    margin: 0 auto variables.$spacing-medium
+    opacity: 0.3
+    stroke: currentColor
+    fill: none
+    stroke-width: 1.5
+
+  &__text
+    @include fonts.font-size-normal
+
+  // Variante erreur
+  &--error
+    color: colors.$red
+
+    .empty-state__icon
+      opacity: 0.6
+
+
+// ── Error state — conteneur pour l'état erreur htmx ──
+// Utilisé comme wrapper autour d'un empty_state--error
+// Masqué par défaut, affiché par les événements htmx
+.error-state
+  display: none

@@ -1,0 +1,16 @@
+{# ══════════════════════════════════════════════════════════════════
+   Composant : tab_underline
+   Onglets avec indicateur underline (style maquette, tokens design actuel)
+   Variante du tab_wrapper existant — même logique, style différent
+   ══════════════════════════════════════════════════════════════════ #}
+<div class="tab-underline js-tabs" id="{{ tab_wrapper_id }}"
+     {% slot 'tab_wrapper_htmx_attrs' / %}
+     role="tablist"
+     aria-label="{{ aria_label|default:'Onglets' }}">
+  {% provide 'tab_wrapper_data'
+    active_tab=active_tab
+    tab_wrapper_id=tab_wrapper_id
+  %}
+    {% slot "tabs" / %}
+  {% endprovide %}
+</div>

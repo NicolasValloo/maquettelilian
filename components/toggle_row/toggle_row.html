@@ -1,0 +1,13 @@
+{# ══════════════════════════════════════════════════════════════════
+   Composant : toggle_row
+   Ligne avec label, description et switch toggle à droite
+   ══════════════════════════════════════════════════════════════════ #}
+<div class="toggle-row">
+  <div>
+    <div class="toggle-row__label" id="{{ label_id }}">{{ label }}</div>
+    {% if description %}
+      <div class="toggle-row__description">{{ description }}</div>
+    {% endif %}
+  </div>
+  {% slot "toggle" / %}
+</div>

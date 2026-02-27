@@ -1,0 +1,19 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : chip — élément inline léger
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+
+
+.chip
+  display: inline-flex
+  align-items: center
+  gap: variables.$spacing-small
+  @include fonts.font-size-small
+  @include fonts.font-weight-medium
+  padding: variables.$spacing-very-small variables.$spacing-medium
+  border-radius: variables.$border-radius-small
+  background: colors.$blue-very-light
+  color: colors.$main-color-light

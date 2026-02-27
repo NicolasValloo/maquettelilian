@@ -1,0 +1,11 @@
+{# ══════════════════════════════════════════════════════════════════
+   Composant : indicator_card
+   Carte indicateur chiffré pour les dashboards et récapitulatifs
+   ══════════════════════════════════════════════════════════════════ #}
+<div class="indicator-card">
+  <div class="indicator-card__label">{{ label }}</div>
+  <div class="indicator-card__value">{{ value }}</div>
+  {% if subtitle %}
+    <div class="indicator-card__subtitle">{{ subtitle }}</div>
+  {% endif %}
+</div>

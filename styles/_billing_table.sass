@@ -1,0 +1,112 @@
+// ══════════════════════════════════════════════════════════════════
+// Style : billing_table — tableau de données factures
+// Partial Sass (pas un django-component : pas de .html/.py)
+// Basé sur _table.sass du design actuel
+// Variables table : $bg-thead, $bg-row-hover, $bg-row-even,
+//                   $border-th, $border-td
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+@use 'common_m2bpo/css/utils/media_queries'
+
+// Variables table reprises de _table.sass du design actuel
+$billing-table-background-thead: #f0f4f8
+$billing-table-background-row-hover: #eef3fb
+$billing-table-background-row-even: #f9f9f9
+$billing-table-border-thead: #c4c4c4
+$billing-table-border-cell: #e0e0e0
+
+
+// ── Wrapper — gestion du scroll horizontal ──
+.billing-table-wrapper
+  overflow-x: auto
+
+
+.billing-table
+  @include fonts.font-size-normal
+  width: 100%
+  border-collapse: collapse
+  line-height: variables.$line-height-normal
+  color: colors.$main-color
+
+  // ── Header ──
+  thead th
+    padding: variables.$spacing-medium variables.$spacing-big
+    text-align: left
+    @include fonts.font-weight-bold
+    @include fonts.font-size-very-small
+    text-transform: uppercase
+    letter-spacing: 0.04em
+    color: colors.$main-color-light
+    background: $billing-table-background-thead
+    border-bottom: 2px solid $billing-table-border-thead
+    white-space: nowrap
+
+  .th--right
+    text-align: right
+
+  // ── Body ──
+  tbody tr
+    transition: background-color 0.15s ease
+
+  tbody tr:nth-child(even)
+    background-color: $billing-table-background-row-even
+
+  tbody tr:hover
+    background-color: $billing-table-background-row-hover
+
+  tbody td
+    padding: variables.$spacing-medium variables.$spacing-big
+    border-bottom: 1px solid $billing-table-border-cell
+    vertical-align: middle
+    color: colors.$main-color-light
+    word-break: break-word
+
+  tbody tr:last-child td
+    border-bottom: none
+
+  .td--right
+    text-align: right
+
+  // ── Éléments spécifiques ──
+  &__link
+    color: colors.$blue
+    @include fonts.font-weight-bold
+    cursor: pointer
+
+    &:hover
+      text-decoration: underline
+
+  &__amount
+    @include fonts.font-weight-bold
+    @include fonts.font-size-normal
+    color: colors.$main-color
+
+  // ── Responsive — tablette et mobile ──
+  @include media_queries.lte-tablet
+    thead
+      display: none
+
+    tbody,
+    tbody tr
+      display: block
+
+    tbody td
+      display: block
+      text-align: right
+      padding: variables.$spacing-small variables.$spacing-medium
+
+      &::before
+        content: attr(data-label)
+        float: left
+        @include fonts.font-weight-bold
+        color: colors.$main-color-light
+        text-transform: uppercase
+        @include fonts.font-size-very-small
+
+    tbody tr + tr
+      border-top: 1px solid colors.$main-border
+      margin-top: variables.$spacing-medium
+      padding-top: variables.$spacing-medium

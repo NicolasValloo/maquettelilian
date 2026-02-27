@@ -1,0 +1,27 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : toggle_row — ligne paramètre avec switch
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+
+
+.toggle-row
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: variables.$spacing-medium 0
+
+  & + &
+    border-top: 1px solid colors.$main-border
+
+  &__label
+    @include fonts.font-size-normal
+    @include fonts.font-weight-medium
+    color: colors.$main-color
+
+  &__description
+    @include fonts.font-size-small
+    color: colors.$main-color-lighter
+    margin-top: variables.$spacing-very-small

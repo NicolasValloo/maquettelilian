@@ -1,0 +1,45 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : information_row — paire label/valeur
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+@use 'common_m2bpo/css/utils/media_queries'
+
+// Largeur fixe du label — pas de variable design system correspondante
+$information-row-label-width: 180px
+
+
+.information-row
+  display: flex
+  align-items: flex-start
+  padding: variables.$spacing-medium 0
+
+  & + &
+    border-top: 1px solid colors.$main-border
+
+  &__label
+    flex: 0 0 $information-row-label-width
+    @include fonts.font-size-small
+    color: colors.$main-color-lighter
+    @include fonts.font-weight-medium
+
+  &__value
+    @include fonts.font-size-normal
+    color: colors.$main-color
+    @include fonts.font-weight-medium
+    line-height: variables.$line-height-normal
+
+    &--subtitle
+      display: block
+      @include fonts.font-size-very-small
+      color: colors.$main-color-lighter
+      margin-top: variables.$spacing-very-small
+
+  @include media_queries.lte-tablet
+    flex-direction: column
+    gap: variables.$spacing-small
+
+    &__label
+      flex: none

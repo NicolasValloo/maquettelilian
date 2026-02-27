@@ -1,0 +1,46 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : status_tag — tag de statut avec pastille
+// Basé sur _tag.sass du design actuel + couleurs de _colors.sass
+// ══════════════════════════════════════════════════════════════════
+
+@use 'common_m2bpo/css/utils/colors'
+@use 'common_m2bpo/css/utils/variables'
+@use 'common_m2bpo/css/utils/fonts'
+
+
+.status-tag
+  display: inline-flex
+  align-items: center
+  gap: variables.$spacing-small
+  @include fonts.font-size-small
+  @include fonts.font-weight-bold
+  padding: variables.$spacing-small variables.$spacing-medium
+  border-radius: variables.$border-radius-big
+  border: 1px solid
+  white-space: nowrap
+
+  &::before
+    content: ""
+    width: 6px
+    height: 6px
+    border-radius: 50%
+    background: currentColor
+    flex-shrink: 0
+
+  // Payée — vert
+  &--paid
+    background: colors.$green-light
+    color: colors.$green
+    border-color: colors.$green-light
+
+  // En attente — orange
+  &--pending
+    background: colors.$orange-light
+    color: colors.$orange
+    border-color: colors.$orange-light
+
+  // En retard — rouge
+  &--overdue
+    background: colors.$red-light
+    color: colors.$red
+    border-color: colors.$red-light

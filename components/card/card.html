@@ -1,0 +1,18 @@
+{# ══════════════════════════════════════════════════════════════════
+   Composant : card
+   Conteneur générique avec header optionnel — basé sur list_card du design actuel
+   ══════════════════════════════════════════════════════════════════ #}
+<div class="card{% if full_width %} card--full{% endif %}{% if extra_css_class %} {{ extra_css_class }}{% endif %}">
+  {% if has_header %}
+  <div class="card__header">
+    <h2 class="card__title">
+      {% slot "icon" / %}
+      {% slot "title" / %}
+    </h2>
+    {% slot "header_actions" / %}
+  </div>
+  {% endif %}
+  <div class="card__body{% if flush %} card__body--flush{% endif %}">
+    {% slot "body" / %}
+  </div>
+</div>

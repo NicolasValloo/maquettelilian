@@ -1,0 +1,9 @@
+{# ══════════════════════════════════════════════════════════════════
+   Composant : filter_bar
+   Barre de filtres horizontale avec selects + actions à droite
+   ══════════════════════════════════════════════════════════════════ #}
+<div class="filter-bar">
+  {% slot "filters" / %}
+  <div class="filter-bar__spacer"></div>
+  {% slot "actions" / %}
+</div>
