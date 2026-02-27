@@ -1,0 +1,58 @@
+{% load component_tags %}
+
+{# ══════════════════════════════════════════════════════════════════════════════
+   Partial htmx — Drawer d'édition des destinataires de factures
+   Retourné par l'endpoint billing:edit-recipients, injecté dans #drawer-container
+   ══════════════════════════════════════════════════════════════════════════════ #}
+
+{% component "drawer" drawer_id="drawer-edit-recipients" title="Modifier les destinataires" icon="mail" is_open=True is_htmx=True %}
+
+  {% fill "drawer_content" %}
+    <form id="form-edit-recipients"
+          hx-post="{% url 'billing:update-recipients' %}"
+          hx-target="#card-billing-recipients"
+          hx-swap="outerHTML"
+          hx-on::after-request="document.querySelector('#drawer-edit-recipients .js-close-drawer').click()">
+
+      {# -- Utilisateur principal (lecture seule) -- #}
+      <div class="form-field">
+        <label class="form-field__label" for="field-user-principal">Utilisateur principal</label>
+        <input class="form-field__input form-field__input--readonly"
+               type="text"
+               id="field-user-principal"
+               value="{{ user.get_full_name }}"
+               readonly
+               aria-describedby="field-user-principal-hint">
+        <span class="form-field__hint" id="field-user-principal-hint">
+          {{ user.email }} — Non modifiable
+        </span>
+      </div>
+
+      {# -- Email supplémentaire -- #}
+      <div class="form-field">
+        <label class="form-field__label" for="field-extra-email">Email supplémentaire</label>
+        <input class="form-field__input"
+               type="email"
+               id="field-extra-email"
+               name="extra_email"
+               value="{{ billing_extra_email }}"
+               placeholder="comptabilite@entreprise.fr">
+        <span class="form-field__hint">
+          Recevra une copie de chaque facture émise.
+        </span>
+      </div>
+
+    </form>
+  {% endfill %}
+
+  {% fill "drawer_footer" %}
+    {% component "button" modifier="quaternary" variant="small" label="Annuler" extra_css_class="js-close-drawer" %}{% endcomponent %}
+    {% component "button" modifier="primary" variant="small" label="Enregistrer" %}
+      {% fill "button_extra_attrs" %}
+        type="submit"
+        form="form-edit-recipients"
+      {% endfill %}
+    {% endcomponent %}
+  {% endfill %}
+
+{% endcomponent %}

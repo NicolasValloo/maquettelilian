@@ -8,7 +8,7 @@
     /* ══════════════════════════════════════════════════════════════════
        PRÉVISUALISATION STATIQUE — compilé depuis les fichiers .sass
        Ce fichier sert uniquement à voir le rendu visuel.
-       Le vrai template est billing.html (Django + htmx + django-components).
+       Le vrai template est Facture/billing.html (Django + htmx + django-components).
        ══════════════════════════════════════════════════════════════════ */
 
     /* ── Reset minimal + variables design system ── */
@@ -597,6 +597,18 @@
       background: var(--grey-blue);
     }
 
+    /* ── Bouton primary ── */
+    .button--primary {
+      background: var(--blue);
+      color: var(--white);
+      border-color: var(--blue);
+    }
+
+    .button--primary:hover {
+      background: var(--blue-dark);
+      border-color: var(--blue-dark);
+    }
+
     /* ── Icônes SVG simplifiées pour la preview ── */
     .icon-inline {
       width: 16px;
@@ -606,6 +618,143 @@
       stroke: currentColor;
       fill: none;
       stroke-width: 2;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPOSANT : drawer (simplifié pour la preview)
+       ══════════════════════════════════════════════════════════════════ */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .drawer-overlay--visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -650px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 650px;
+      width: 100%;
+      background-color: var(--white);
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+      transition: right 0.3s ease;
+    }
+
+    .drawer.open {
+      right: 0;
+    }
+
+    .drawer__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 56px;
+      padding: 0 var(--spacing-big);
+      border-bottom: 1px solid var(--grey-blue);
+    }
+
+    .drawer__header-title-wrapper {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-medium);
+      font-size: var(--font-size-medium);
+      color: var(--grey-blue-darker);
+    }
+
+    .drawer__close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--spacing-small);
+      color: var(--grey-blue-dark);
+      display: flex;
+      align-items: center;
+      border-radius: var(--border-radius-small);
+      transition: background-color 0.15s;
+    }
+
+    .drawer__close:hover {
+      background: var(--grey-blue-lighter);
+    }
+
+    .drawer__content {
+      flex: 1;
+      padding: var(--spacing-big);
+      overflow-y: auto;
+    }
+
+    .drawer__footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--spacing-medium);
+      min-height: 56px;
+      padding: 0 var(--spacing-big);
+      border-top: 1px solid var(--grey-blue);
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       STYLE : form-field (champs dans les drawers d'édition)
+       ══════════════════════════════════════════════════════════════════ */
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-small);
+    }
+
+    .form-field + .form-field {
+      margin-top: var(--spacing-big);
+    }
+
+    .form-field__label {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      color: var(--black);
+    }
+
+    .form-field__input {
+      font-family: inherit;
+      font-size: var(--font-size-normal);
+      padding: var(--spacing-medium);
+      border: 1px solid var(--grey-blue);
+      border-radius: var(--border-radius-small);
+      color: var(--black);
+      background-color: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-field__input:focus {
+      border-color: var(--blue);
+    }
+
+    .form-field__input--readonly {
+      background-color: var(--grey-blue-lighter);
+      color: var(--grey-blue-dark);
+      cursor: not-allowed;
+    }
+
+    .form-field__hint {
+      font-size: var(--font-size-very-small);
+      color: var(--grey-blue-dark);
     }
   </style>
 </head>
@@ -653,7 +802,7 @@
             <svg class="icon-inline" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Informations de facturation
           </h2>
-          <button class="button button--fifth">Modifier</button>
+          <button class="button button--fifth" data-drawer-target="drawer-edit-info" aria-label="Modifier les informations de facturation">Modifier</button>
         </div>
         <div class="card__body">
           <div class="information-row">
@@ -678,7 +827,7 @@
             <svg class="icon-inline" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             Destinataires des factures
           </h2>
-          <button class="button button--fifth">Modifier</button>
+          <button class="button button--fifth" data-drawer-target="drawer-edit-recipients" aria-label="Modifier les destinataires des factures">Modifier</button>
         </div>
         <div class="card__body">
           <div class="information-row">
@@ -991,36 +1140,222 @@
 
 
   <!-- ══════════════════════════════════════════════════════════════════
+       DRAWER : Modifier les informations de facturation
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="drawer" id="drawer-edit-info" aria-label="Modifier les informations de facturation">
+    <div class="drawer__header">
+      <div class="drawer__header-title-wrapper">
+        <svg class="icon-inline" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Modifier les informations de facturation
+      </div>
+      <button class="drawer__close js-close-drawer" aria-label="Fermer">
+        <svg class="icon-inline" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer__content">
+      <form id="form-edit-info">
+        <div class="form-field">
+          <label class="form-field__label" for="field-raison-sociale">Raison sociale</label>
+          <input class="form-field__input" type="text" id="field-raison-sociale" name="raison_sociale" value="SAS Dupont &amp; Fils" required>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-adresse">Adresse</label>
+          <input class="form-field__input" type="text" id="field-adresse" name="adresse" value="12 rue de la Paix" required>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-code-postal">Code postal</label>
+          <input class="form-field__input" type="text" id="field-code-postal" name="code_postal" value="75002" pattern="[0-9]{5}" maxlength="5" required>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-ville">Ville</label>
+          <input class="form-field__input" type="text" id="field-ville" name="ville" value="Paris" required>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-tva-intra">TVA intracommunautaire</label>
+          <input class="form-field__input" type="text" id="field-tva-intra" name="tva_intra" value="FR 82 123456789" placeholder="FR XX XXXXXXXXX">
+        </div>
+      </form>
+    </div>
+    <div class="drawer__footer">
+      <button class="button button--fifth js-close-drawer">Annuler</button>
+      <button class="button button--primary" type="submit" form="form-edit-info">Enregistrer</button>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       DRAWER : Modifier les destinataires des factures
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="drawer" id="drawer-edit-recipients" aria-label="Modifier les destinataires">
+    <div class="drawer__header">
+      <div class="drawer__header-title-wrapper">
+        <svg class="icon-inline" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Modifier les destinataires
+      </div>
+      <button class="drawer__close js-close-drawer" aria-label="Fermer">
+        <svg class="icon-inline" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer__content">
+      <form id="form-edit-recipients">
+        <div class="form-field">
+          <label class="form-field__label" for="field-user-principal">Utilisateur principal</label>
+          <input class="form-field__input form-field__input--readonly" type="text" id="field-user-principal" value="Jean Dupont" readonly aria-describedby="field-user-principal-hint">
+          <span class="form-field__hint" id="field-user-principal-hint">jean.dupont@dupont-fils.fr — Non modifiable</span>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-extra-email">Email supplémentaire</label>
+          <input class="form-field__input" type="email" id="field-extra-email" name="extra_email" value="compta@dupont-fils.fr" placeholder="comptabilite@entreprise.fr">
+          <span class="form-field__hint">Recevra une copie de chaque facture émise.</span>
+        </div>
+      </form>
+    </div>
+    <div class="drawer__footer">
+      <button class="button button--fifth js-close-drawer">Annuler</button>
+      <button class="button button--primary" type="submit" form="form-edit-recipients">Enregistrer</button>
+    </div>
+  </section>
+
+  <!-- Overlay pour les drawers -->
+  <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
        JavaScript : navigation onglets
        ══════════════════════════════════════════════════════════════════ -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+
+      /* ── Navigation onglets ── */
       var tabWrapper = document.querySelector(".tab-underline");
-      if (!tabWrapper) return;
+      if (tabWrapper) {
+        var tabs = tabWrapper.querySelectorAll(".tab-underline__item");
+        var panels = document.querySelectorAll(".panel");
 
-      var tabs = tabWrapper.querySelectorAll(".tab-underline__item");
-      var panels = document.querySelectorAll(".panel");
+        tabs.forEach(function (tab) {
+          tab.addEventListener("click", function () {
+            var targetId = tab.getAttribute("data-tab");
 
-      tabs.forEach(function (tab) {
-        tab.addEventListener("click", function () {
-          var targetId = tab.getAttribute("data-tab");
+            tabs.forEach(function (t) {
+              t.classList.remove("tab-underline__item--active");
+              t.setAttribute("aria-selected", "false");
+            });
+            tab.classList.add("tab-underline__item--active");
+            tab.setAttribute("aria-selected", "true");
 
-          tabs.forEach(function (t) {
-            t.classList.remove("tab-underline__item--active");
-            t.setAttribute("aria-selected", "false");
+            panels.forEach(function (p) {
+              p.classList.remove("panel--active");
+            });
+            var targetPanel = document.getElementById("panel-" + targetId);
+            if (targetPanel) {
+              targetPanel.classList.add("panel--active");
+            }
           });
-          tab.classList.add("tab-underline__item--active");
-          tab.setAttribute("aria-selected", "true");
+        });
+      }
 
-          panels.forEach(function (p) {
-            p.classList.remove("panel--active");
-          });
-          var targetPanel = document.getElementById("panel-" + targetId);
-          if (targetPanel) {
-            targetPanel.classList.add("panel--active");
-          }
+
+      /* ── Drawers : ouverture / fermeture ── */
+      var overlay = document.getElementById("drawer-overlay");
+
+      function openDrawer(drawerId) {
+        var drawer = document.getElementById(drawerId);
+        if (!drawer) return;
+        drawer.classList.add("open");
+        overlay.classList.add("drawer-overlay--visible");
+        overlay.setAttribute("aria-hidden", "false");
+        /* Focus sur le premier champ éditable du formulaire */
+        var firstInput = drawer.querySelector("input:not([readonly])");
+        if (firstInput) {
+          firstInput.focus();
+        }
+      }
+
+      function closeAllDrawers() {
+        document.querySelectorAll(".drawer.open").forEach(function (d) {
+          d.classList.remove("open");
+        });
+        overlay.classList.remove("drawer-overlay--visible");
+        overlay.setAttribute("aria-hidden", "true");
+      }
+
+      /* Boutons "Modifier" : ouvrent le drawer cible */
+      document.querySelectorAll("[data-drawer-target]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          openDrawer(button.getAttribute("data-drawer-target"));
         });
       });
+
+      /* Boutons de fermeture et overlay */
+      document.querySelectorAll(".js-close-drawer").forEach(function (button) {
+        button.addEventListener("click", function () {
+          closeAllDrawers();
+        });
+      });
+
+      overlay.addEventListener("click", closeAllDrawers);
+
+      /* Fermeture par Échap */
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeAllDrawers();
+        }
+      });
+
+
+      /* ── Formulaires : soumission (mise à jour des cards en preview) ── */
+      var formEditInfo = document.getElementById("form-edit-info");
+      if (formEditInfo) {
+        formEditInfo.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          /* Récupération des valeurs */
+          var raisonSociale = document.getElementById("field-raison-sociale").value;
+          var adresse = document.getElementById("field-adresse").value;
+          var codePostal = document.getElementById("field-code-postal").value;
+          var ville = document.getElementById("field-ville").value;
+          var tvaIntra = document.getElementById("field-tva-intra").value;
+
+          /* Mise à jour de la card "Informations de facturation" */
+          var infoCard = document.querySelector("#panel-prefs .card:first-child .card__body");
+          if (infoCard) {
+            var rows = infoCard.querySelectorAll(".information-row__value");
+            if (rows[0]) rows[0].textContent = raisonSociale;
+            if (rows[1]) rows[1].innerHTML = adresse + "<br>" + codePostal + " " + ville;
+            if (rows[2]) rows[2].textContent = tvaIntra;
+          }
+
+          /* Mise à jour du sous-titre du page-header */
+          var subtitle = document.querySelector(".page-header__subtitle");
+          if (subtitle) {
+            subtitle.textContent = "Gestion de l\u2019abonnement, factures et paiements \u2014 " + raisonSociale;
+          }
+
+          closeAllDrawers();
+        });
+      }
+
+      var formEditRecipients = document.getElementById("form-edit-recipients");
+      if (formEditRecipients) {
+        formEditRecipients.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          var extraEmail = document.getElementById("field-extra-email").value;
+
+          /* Mise à jour de la card "Destinataires" */
+          var recipientsCard = document.querySelector("#panel-prefs .preferences-grid > .card:nth-child(2) .card__body");
+          if (recipientsCard) {
+            var rows = recipientsCard.querySelectorAll(".information-row");
+            /* Email supplémentaire : dernière ligne */
+            if (rows[1]) {
+              var valueEl = rows[1].querySelector(".information-row__value");
+              if (valueEl) valueEl.textContent = extraEmail;
+            }
+          }
+
+          closeAllDrawers();
+        });
+      }
     });
   </script>
 

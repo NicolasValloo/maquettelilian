@@ -43,55 +43,59 @@
     <div class="preferences-grid">
 
       {# -- Card : Informations de facturation -- #}
-      {% component "card" %}
-        {% fill "icon" %}{% component "icon_inline" name="user" %}{% endcomponent %}{% endfill %}
-        {% fill "title" %}Informations de facturation{% endfill %}
-        {% fill "header_actions" %}
-          {% component "button" modifier="fifth" variant="small" label="Modifier" %}
-            {% fill "button_htmx_attrs" %}
-              hx-get="{% url 'billing:edit-info' %}"
-              hx-target="#modal-container"
-              hx-swap="innerHTML"
-            {% endfill %}
-          {% endcomponent %}
-        {% endfill %}
-        {% fill "body" %}
-          {% component "information_row" label="Raison sociale" %}
-            {% fill "value" %}{{ client.raison_sociale }}{% endfill %}
-          {% endcomponent %}
-          {% component "information_row" label="Adresse" %}
-            {% fill "value" %}{{ client.adresse }}<br>{{ client.code_postal }} {{ client.ville }}{% endfill %}
-          {% endcomponent %}
-          {% component "information_row" label="TVA intracommunautaire" %}
-            {% fill "value" %}{{ client.tva_intra }}{% endfill %}
-          {% endcomponent %}
-        {% endfill %}
-      {% endcomponent %}
+      <div id="card-billing-info">
+        {% component "card" %}
+          {% fill "icon" %}{% component "icon_inline" name="user" %}{% endcomponent %}{% endfill %}
+          {% fill "title" %}Informations de facturation{% endfill %}
+          {% fill "header_actions" %}
+            {% component "button" modifier="fifth" variant="small" label="Modifier" %}
+              {% fill "button_htmx_attrs" %}
+                hx-get="{% url 'billing:edit-info' %}"
+                hx-target="#drawer-container"
+                hx-swap="innerHTML"
+              {% endfill %}
+            {% endcomponent %}
+          {% endfill %}
+          {% fill "body" %}
+            {% component "information_row" label="Raison sociale" %}
+              {% fill "value" %}{{ client.raison_sociale }}{% endfill %}
+            {% endcomponent %}
+            {% component "information_row" label="Adresse" %}
+              {% fill "value" %}{{ client.adresse }}<br>{{ client.code_postal }} {{ client.ville }}{% endfill %}
+            {% endcomponent %}
+            {% component "information_row" label="TVA intracommunautaire" %}
+              {% fill "value" %}{{ client.tva_intra }}{% endfill %}
+            {% endcomponent %}
+          {% endfill %}
+        {% endcomponent %}
+      </div>
 
       {# -- Card : Destinataires des factures -- #}
-      {% component "card" %}
-        {% fill "icon" %}{% component "icon_inline" name="mail" %}{% endcomponent %}{% endfill %}
-        {% fill "title" %}Destinataires des factures{% endfill %}
-        {% fill "header_actions" %}
-          {% component "button" modifier="fifth" variant="small" label="Modifier" %}
-            {% fill "button_htmx_attrs" %}
-              hx-get="{% url 'billing:edit-recipients' %}"
-              hx-target="#modal-container"
-              hx-swap="innerHTML"
-            {% endfill %}
-          {% endcomponent %}
-        {% endfill %}
-        {% fill "body" %}
-          {% component "information_row" label="Utilisateur principal" subtitle=user.email %}
-            {% fill "value" %}{{ user.get_full_name }}{% endfill %}
-          {% endcomponent %}
-          {% if billing_extra_email %}
-          {% component "information_row" label="Email supplémentaire" %}
-            {% fill "value" %}{{ billing_extra_email }}{% endfill %}
-          {% endcomponent %}
-          {% endif %}
-        {% endfill %}
-      {% endcomponent %}
+      <div id="card-billing-recipients">
+        {% component "card" %}
+          {% fill "icon" %}{% component "icon_inline" name="mail" %}{% endcomponent %}{% endfill %}
+          {% fill "title" %}Destinataires des factures{% endfill %}
+          {% fill "header_actions" %}
+            {% component "button" modifier="fifth" variant="small" label="Modifier" %}
+              {% fill "button_htmx_attrs" %}
+                hx-get="{% url 'billing:edit-recipients' %}"
+                hx-target="#drawer-container"
+                hx-swap="innerHTML"
+              {% endfill %}
+            {% endcomponent %}
+          {% endfill %}
+          {% fill "body" %}
+            {% component "information_row" label="Utilisateur principal" subtitle=user.email %}
+              {% fill "value" %}{{ user.get_full_name }}{% endfill %}
+            {% endcomponent %}
+            {% if billing_extra_email %}
+            {% component "information_row" label="Email supplémentaire" %}
+              {% fill "value" %}{{ billing_extra_email }}{% endfill %}
+            {% endcomponent %}
+            {% endif %}
+          {% endfill %}
+        {% endcomponent %}
+      </div>
 
       {# -- Card : Abonnement (pleine largeur) -- #}
       {% component "card" full_width=True %}
@@ -216,7 +220,7 @@
                   <a class="billing-table__link"
                      href="{% url 'billing:facture-detail' pk=facture.pk %}"
                      hx-get="{% url 'billing:facture-detail' pk=facture.pk %}"
-                     hx-target="#modal-container"
+                     hx-target="#drawer-container"
                      hx-swap="innerHTML">
                     {{ facture.numero }}
                   </a>
@@ -407,7 +411,8 @@
     {% endcomponent %}
   </div>
 
-  {# Conteneur pour les modales (htmx target) #}
-  <div id="modal-container"></div>
+  {# Conteneur pour les drawers d'édition (htmx target) #}
+  <div id="drawer-container"></div>
+  <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
 
 {% endblock page_content %}

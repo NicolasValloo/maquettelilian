@@ -83,3 +83,58 @@ $page-header-badge-dot-size: 6px
 
     &--secondary
       color: colors.$main-color-lighter
+
+
+// ── Overlay du drawer — fond semi-transparent ─────────────────────────
+.drawer-overlay
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: rgba(0, 0, 0, 0.4)
+  z-index: 1
+  opacity: 0
+  pointer-events: none
+  transition: opacity 0.25s ease
+
+  &--visible
+    opacity: 1
+    pointer-events: auto
+
+
+// ── Champs de formulaire — utilisés dans les drawers d'édition ────────
+.form-field
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-small
+
+  & + &
+    margin-top: variables.$spacing-big
+
+  &__label
+    @include fonts.font-size-small
+    @include fonts.font-weight-bold
+    color: colors.$main-color
+
+  &__input
+    @include fonts.font-size-normal
+    padding: variables.$spacing-medium
+    border: 1px solid colors.$main-border
+    border-radius: variables.$border-radius-small
+    color: colors.$main-color
+    background-color: colors.$white
+    outline: none
+    transition: border-color 0.2s
+
+    &:focus
+      border-color: colors.$blue
+
+    &--readonly
+      background-color: colors.$grey-blue-lighter
+      color: colors.$main-color-lighter
+      cursor: not-allowed
+
+  &__hint
+    @include fonts.font-size-very-small
+    color: colors.$main-color-lighter

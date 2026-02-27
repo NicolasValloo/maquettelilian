@@ -1,0 +1,87 @@
+{% load component_tags %}
+
+{# ══════════════════════════════════════════════════════════════════════════════
+   Partial htmx — Drawer d'édition des informations de facturation
+   Retourné par l'endpoint billing:edit-info, injecté dans #drawer-container
+   ══════════════════════════════════════════════════════════════════════════════ #}
+
+{% component "drawer" drawer_id="drawer-edit-info" title="Modifier les informations de facturation" icon="user" is_open=True is_htmx=True %}
+
+  {% fill "drawer_content" %}
+    <form id="form-edit-info"
+          hx-post="{% url 'billing:update-info' %}"
+          hx-target="#card-billing-info"
+          hx-swap="outerHTML"
+          hx-on::after-request="document.querySelector('#drawer-edit-info .js-close-drawer').click()">
+
+      {# -- Raison sociale -- #}
+      <div class="form-field">
+        <label class="form-field__label" for="field-raison-sociale">Raison sociale</label>
+        <input class="form-field__input"
+               type="text"
+               id="field-raison-sociale"
+               name="raison_sociale"
+               value="{{ client.raison_sociale }}"
+               required>
+      </div>
+
+      {# -- Adresse -- #}
+      <div class="form-field">
+        <label class="form-field__label" for="field-adresse">Adresse</label>
+        <input class="form-field__input"
+               type="text"
+               id="field-adresse"
+               name="adresse"
+               value="{{ client.adresse }}"
+               required>
+      </div>
+
+      {# -- Code postal -- #}
+      <div class="form-field">
+        <label class="form-field__label" for="field-code-postal">Code postal</label>
+        <input class="form-field__input"
+               type="text"
+               id="field-code-postal"
+               name="code_postal"
+               value="{{ client.code_postal }}"
+               pattern="[0-9]{5}"
+               maxlength="5"
+               required>
+      </div>
+
+      {# -- Ville -- #}
+      <div class="form-field">
+        <label class="form-field__label" for="field-ville">Ville</label>
+        <input class="form-field__input"
+               type="text"
+               id="field-ville"
+               name="ville"
+               value="{{ client.ville }}"
+               required>
+      </div>
+
+      {# -- TVA intracommunautaire -- #}
+      <div class="form-field">
+        <label class="form-field__label" for="field-tva-intra">TVA intracommunautaire</label>
+        <input class="form-field__input"
+               type="text"
+               id="field-tva-intra"
+               name="tva_intra"
+               value="{{ client.tva_intra }}"
+               placeholder="FR XX XXXXXXXXX">
+      </div>
+
+    </form>
+  {% endfill %}
+
+  {% fill "drawer_footer" %}
+    {% component "button" modifier="quaternary" variant="small" label="Annuler" extra_css_class="js-close-drawer" %}{% endcomponent %}
+    {% component "button" modifier="primary" variant="small" label="Enregistrer" %}
+      {% fill "button_extra_attrs" %}
+        type="submit"
+        form="form-edit-info"
+      {% endfill %}
+    {% endcomponent %}
+  {% endfill %}
+
+{% endcomponent %}
