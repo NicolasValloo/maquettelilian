@@ -1,22 +1,14 @@
 // ══════════════════════════════════════════════════════════════════
 // Style : billing_table — tableau de données factures
-// Partial Sass (pas un django-component : pas de .html/.py)
-// Basé sur _table.sass du design actuel
-// Variables table : $bg-thead, $bg-row-hover, $bg-row-even,
-//                   $border-th, $border-td
+// Design system Blaise : fond neutral-50 pour thead,
+// séparateurs légers neutral-100/200, font-size 13px,
+// montants en font-mono
 // ══════════════════════════════════════════════════════════════════
 
-@use 'common_m2bpo/css/utils/colors'
-@use 'common_m2bpo/css/utils/variables'
-@use 'common_m2bpo/css/utils/fonts'
-@use 'common_m2bpo/css/utils/media_queries'
-
-// Variables table reprises de _table.sass du design actuel
-$billing-table-background-thead: #f0f4f8
-$billing-table-background-row-hover: #eef3fb
-$billing-table-background-row-even: #f9f9f9
-$billing-table-border-thead: #c4c4c4
-$billing-table-border-cell: #e0e0e0
+@use 'utils/colors'
+@use 'utils/variables'
+@use 'utils/fonts'
+@use 'utils/media_queries'
 
 
 // ── Wrapper — gestion du scroll horizontal ──
@@ -25,41 +17,37 @@ $billing-table-border-cell: #e0e0e0
 
 
 .billing-table
-  @include fonts.font-size-normal
   width: 100%
   border-collapse: collapse
-  line-height: variables.$line-height-normal
-  color: colors.$main-color
+  font-size: 13px
 
   // ── Header ──
   thead th
-    padding: variables.$spacing-medium variables.$spacing-big
+    padding: 10px 16px
     text-align: left
     @include fonts.font-weight-bold
-    @include fonts.font-size-very-small
+    font-size: 11px
     text-transform: uppercase
-    letter-spacing: 0.04em
-    color: colors.$main-color-light
-    background: $billing-table-background-thead
-    border-bottom: 2px solid $billing-table-border-thead
+    letter-spacing: 0.06em
+    color: colors.$main-color-lighter
+    background: colors.$grey-light
+    border-bottom: 1px solid colors.$grey-blue
     white-space: nowrap
+    user-select: none
 
   .th--right
     text-align: right
 
   // ── Body ──
   tbody tr
-    transition: background-color 0.15s ease
-
-  tbody tr:nth-child(even)
-    background-color: $billing-table-background-row-even
+    transition: background-color variables.$transition-default
 
   tbody tr:hover
-    background-color: $billing-table-background-row-hover
+    background-color: colors.$grey-light
 
   tbody td
-    padding: variables.$spacing-medium variables.$spacing-big
-    border-bottom: 1px solid $billing-table-border-cell
+    padding: 14px 16px
+    border-bottom: 1px solid colors.$grey-light
     vertical-align: middle
     color: colors.$main-color-light
     word-break: break-word
@@ -70,18 +58,24 @@ $billing-table-border-cell: #e0e0e0
   .td--right
     text-align: right
 
+  .td--mono
+    font-family: fonts.$font-mono
+    font-size: 12px
+
   // ── Éléments spécifiques ──
   &__link
     color: colors.$blue
     @include fonts.font-weight-bold
+    text-decoration: none
     cursor: pointer
 
     &:hover
       text-decoration: underline
 
   &__amount
-    @include fonts.font-weight-bold
-    @include fonts.font-size-normal
+    font-weight: 600
+    font-family: fonts.$font-mono
+    font-size: 13px
     color: colors.$main-color
 
   // ── Responsive — tablette et mobile ──
@@ -104,9 +98,9 @@ $billing-table-border-cell: #e0e0e0
         @include fonts.font-weight-bold
         color: colors.$main-color-light
         text-transform: uppercase
-        @include fonts.font-size-very-small
+        font-size: 11px
 
     tbody tr + tr
-      border-top: 1px solid colors.$main-border
+      border-top: 1px solid colors.$grey-blue
       margin-top: variables.$spacing-medium
       padding-top: variables.$spacing-medium

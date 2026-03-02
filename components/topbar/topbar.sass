@@ -1,0 +1,100 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : topbar — barre supérieure
+// Design system Blaise : fond blanc, bordure neutral-200,
+// hauteur 56px, sticky top
+// ══════════════════════════════════════════════════════════════════
+
+@use '../../styles/utils/colors'
+@use '../../styles/utils/variables'
+@use '../../styles/utils/fonts'
+
+
+// ── Largeur sidebar collapsée (pour le décalage) ──
+$sidebar-collapsed-width: 58px
+
+
+.topbar
+  position: fixed
+  top: 0
+  left: $sidebar-collapsed-width
+  right: 0
+  height: variables.$header-height
+  background: colors.$white
+  border-bottom: 1px solid colors.$grey-blue
+  display: flex
+  align-items: center
+  padding: 0 variables.$spacing-big
+  gap: 16px
+  z-index: 50
+
+  // ── Breadcrumb ──
+  &__breadcrumb
+    display: flex
+    align-items: center
+    gap: variables.$spacing-small
+    @include fonts.font-size-normal
+    color: colors.$main-color-lighter
+
+    span
+      color: colors.$main-color
+      @include fonts.font-weight-medium
+
+    svg
+      width: 14px
+      height: 14px
+      opacity: 0.4
+
+  // ── Spacer ──
+  &__spacer
+    flex: 1
+
+  // ── Champ de recherche ──
+  &__search
+    display: flex
+    align-items: center
+    gap: variables.$spacing-small
+    background: colors.$grey
+    border: 1px solid transparent
+    border-radius: variables.$border-radius-medium
+    padding: 0 variables.$spacing-medium
+    height: 36px
+    min-width: 200px
+    flex: 0 1 340px
+    transition: border-color variables.$transition-default, box-shadow variables.$transition-default, background variables.$transition-default
+
+    &:focus-within
+      border-color: colors.$blue
+      box-shadow: 0 0 0 3px rgba(0, 115, 230, 0.15)
+      background: colors.$white
+
+    svg
+      width: 15px
+      height: 15px
+      color: colors.$grey-dark
+      flex-shrink: 0
+
+  &__search-input
+    border: none
+    background: transparent
+    font-family: fonts.$font-sans
+    font-size: 0.85rem
+    color: colors.$main-color
+    width: 100%
+    outline: none
+
+    &::placeholder
+      color: colors.$grey-dark
+
+  // ── Avatar utilisateur ──
+  &__avatar
+    width: 34px
+    height: 34px
+    border-radius: variables.$border-radius-medium
+    background: colors.$blue-very-light
+    color: colors.$blue-very-dark
+    display: grid
+    place-items: center
+    font-size: 0.75rem
+    @include fonts.font-weight-bold
+    flex-shrink: 0
+    cursor: pointer

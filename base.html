@@ -1,0 +1,53 @@
+{# ══════════════════════════════════════════════════════════════════════════════
+   Maquette Blaise — Template de base (layout)
+   Inclut sidebar, topbar et zone de contenu principal.
+   Chaque page extends ce template et remplit {% block page_content %}.
+   ══════════════════════════════════════════════════════════════════════════════ #}
+{% load component_tags %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block page_title %}M2BPO{% endblock %} — M2BPO</title>
+
+  {# -- Google Fonts : DM Sans + JetBrains Mono (design system Blaise) -- #}
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  {# -- CSS global + composants chargés via django-components -- #}
+  {% component_css_dependencies %}
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  {# ── Sidebar ── #}
+  {# active_section est passé par la view Django (ou défini dans le contexte du template) #}
+  {% component "sidebar"
+     active_section=active_section
+     user_initials=user_initials|default:"NV"
+     user_name=user_name|default:"N. Vidal"
+     user_role=user_role|default:"Administrateur"
+  %}{% endcomponent %}
+
+  {# ── Topbar ── #}
+  {# breadcrumb_parent et breadcrumb_current sont passés par la view Django #}
+  {% component "topbar"
+     breadcrumb_parent=breadcrumb_parent|default:"M2BPO"
+     breadcrumb_current=breadcrumb_current|default:""
+     user_initials=user_initials|default:"NV"
+  %}{% endcomponent %}
+
+  {# ── Zone de contenu principal ── #}
+  <main class="layout-main">
+    <div class="page">
+      {% block page_content %}{% endblock %}
+    </div>
+  </main>
+
+  {# -- JS composants chargés via django-components -- #}
+  {% component_js_dependencies %}
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

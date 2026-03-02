@@ -1,0 +1,556 @@
+// ══════════════════════════════════════════════════════════════════════════════
+// Maquette Blaise — Page Contacts (Réseau) : styles spécifiques à cette page
+// Design system Blaise : DM Sans, palette neutral, shadow-card
+// Les composants réutilisables sont dans components/
+// Les utilitaires globaux sont dans styles/
+// ══════════════════════════════════════════════════════════════════════════════
+
+@use '../styles/utils/colors'
+@use '../styles/utils/variables'
+@use '../styles/utils/fonts'
+@use '../styles/utils/media_queries'
+
+
+// ── Page header — extensions spécifiques réseau ────────────────────────────
+
+.page-header__title
+  font-size: 22px
+  font-weight: 700
+  color: colors.$black
+  letter-spacing: -0.02em
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+
+.page-header__subtitle
+  @include fonts.font-size-normal
+  color: colors.$main-color-lighter
+  margin-top: variables.$spacing-very-small
+
+.page-header__badge
+  display: inline-flex
+  align-items: center
+  background-color: colors.$blue-very-light
+  color: colors.$blue
+  @include fonts.font-size-small
+  @include fonts.font-weight-bold
+  padding: 3px 10px
+  border-radius: variables.$border-radius-very-big
+
+
+// ── Grille de cartes entreprise ────────────────────────────────────────────
+
+.company-grid
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr))
+  gap: 20px
+
+
+// ── Carte entreprise ───────────────────────────────────────────────────────
+
+.company-card
+  background: colors.$white
+  border-radius: variables.$border-radius-big
+  box-shadow: colors.$shadow-card
+  padding: variables.$spacing-big
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-medium
+  transition: box-shadow 0.15s
+
+  &:hover
+    box-shadow: colors.$shadow-medium
+
+  // -- En-tête : logo + identité --
+  &__header
+    display: flex
+    align-items: flex-start
+    gap: variables.$spacing-medium
+
+  &__logo
+    width: 48px
+    height: 48px
+    border-radius: variables.$border-radius-medium
+    background: colors.$blue-very-light
+    color: colors.$blue
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+    overflow: hidden
+
+    svg
+      width: 24px
+      height: 24px
+      stroke: currentColor
+      fill: none
+      stroke-width: 1.5
+
+    img
+      width: 100%
+      height: 100%
+      object-fit: cover
+
+  &__identity
+    flex: 1
+    min-width: 0
+
+  &__name
+    @include fonts.font-size-normal
+    @include fonts.font-weight-bold
+    color: colors.$main-color
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  &__location
+    @include fonts.font-size-small
+    color: colors.$grey-dark
+    display: flex
+    align-items: center
+    gap: variables.$spacing-small
+    margin-top: variables.$spacing-very-small
+
+    svg
+      width: 12px
+      height: 12px
+      stroke: currentColor
+      fill: none
+      stroke-width: 2
+      flex-shrink: 0
+
+  // -- Coordonnées : email + téléphone --
+  &__contact-info
+    display: flex
+    flex-direction: column
+    gap: variables.$spacing-very-small
+
+  &__contact-item
+    @include fonts.font-size-small
+    color: colors.$main-color-light
+    display: flex
+    align-items: center
+    gap: variables.$spacing-small
+
+    svg
+      width: 12px
+      height: 12px
+      stroke: currentColor
+      fill: none
+      stroke-width: 2
+      flex-shrink: 0
+
+  // -- Compétences (chips bleus) --
+  &__competences
+    display: flex
+    flex-wrap: wrap
+    gap: variables.$spacing-small
+
+  // -- Certifications (chips verts) --
+  &__certifications
+    display: flex
+    flex-wrap: wrap
+    gap: variables.$spacing-small
+
+  // -- Tags / Listes (chips orange) --
+  &__tags
+    display: flex
+    flex-wrap: wrap
+    gap: variables.$spacing-small
+
+  // -- Pied de carte : actions --
+  &__footer
+    display: flex
+    align-items: center
+    justify-content: flex-end
+    gap: variables.$spacing-small
+    padding-top: variables.$spacing-medium
+    border-top: 1px solid colors.$grey-light
+    margin-top: auto
+
+  &__footer-left
+    margin-right: auto
+
+  // -- Variante invitation : date d'envoi / réception --
+  &__date
+    @include fonts.font-size-very-small
+    color: colors.$grey-dark
+    display: flex
+    align-items: center
+    gap: variables.$spacing-small
+
+    svg
+      width: 12px
+      height: 12px
+      stroke: currentColor
+      fill: none
+      stroke-width: 2
+
+
+// ── Toggle de vues (grille / liste / tableau) ─────────────────────────────
+
+.view-toggle
+  display: inline-flex
+  gap: 0
+  border: 1px solid colors.$grey-blue
+  border-radius: variables.$border-radius-small
+  overflow: hidden
+
+  &__button
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 30px
+    height: 28px
+    background: colors.$white
+    border: none
+    cursor: pointer
+    color: colors.$grey-dark
+    transition: background-color 0.15s, color 0.15s
+
+    &:hover
+      background: colors.$grey-light
+      color: colors.$main-color-light
+
+    &--active
+      background: colors.$blue
+      color: colors.$white
+
+    & + &
+      border-left: 1px solid colors.$grey-blue
+
+    svg
+      width: 14px
+      height: 14px
+      stroke: currentColor
+      fill: none
+      stroke-width: 2
+
+
+// ── Vue liste compacte ─────────────────────────────────────────────────────
+
+.company-list
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-small
+
+.company-row
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+  background: colors.$white
+  border-radius: variables.$border-radius-small
+  box-shadow: colors.$shadow-small
+  padding: variables.$spacing-medium variables.$spacing-big
+  transition: box-shadow 0.15s
+
+  &:hover
+    box-shadow: colors.$shadow-medium
+
+  &__logo
+    width: 36px
+    height: 36px
+    border-radius: variables.$border-radius-small
+    background: colors.$blue-very-light
+    color: colors.$blue
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+
+    svg
+      width: 18px
+      height: 18px
+      stroke: currentColor
+      fill: none
+      stroke-width: 1.5
+
+  &__name
+    @include fonts.font-size-normal
+    @include fonts.font-weight-bold
+    color: colors.$main-color
+    min-width: 200px
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  &__location
+    @include fonts.font-size-small
+    color: colors.$grey-dark
+    min-width: 120px
+    white-space: nowrap
+    display: flex
+    align-items: center
+    gap: variables.$spacing-small
+
+    svg
+      width: 12px
+      height: 12px
+      stroke: currentColor
+      fill: none
+      stroke-width: 2
+      flex-shrink: 0
+
+  &__contact
+    @include fonts.font-size-small
+    color: colors.$main-color-light
+    min-width: 180px
+    display: flex
+    align-items: center
+    gap: variables.$spacing-small
+
+    svg
+      width: 12px
+      height: 12px
+      stroke: currentColor
+      fill: none
+      stroke-width: 2
+      flex-shrink: 0
+
+  &__competences
+    display: flex
+    flex-wrap: wrap
+    gap: variables.$spacing-very-small
+    flex: 1
+    min-width: 0
+
+  &__actions
+    display: flex
+    gap: variables.$spacing-small
+    flex-shrink: 0
+    margin-left: auto
+
+
+// ── Vue tableau ────────────────────────────────────────────────────────────
+
+.company-table
+  width: 100%
+  border-collapse: separate
+  border-spacing: 0
+  background: colors.$white
+  border-radius: variables.$border-radius-big
+  box-shadow: colors.$shadow-card
+  overflow: hidden
+
+  thead th
+    font-size: 11px
+    @include fonts.font-weight-bold
+    color: colors.$main-color-lighter
+    text-transform: uppercase
+    letter-spacing: 0.06em
+    text-align: left
+    padding: 10px 16px
+    background: colors.$grey-light
+    border-bottom: 1px solid colors.$grey-blue
+    white-space: nowrap
+    user-select: none
+
+  tbody td
+    @include fonts.font-size-normal
+    padding: 14px 16px
+    border-bottom: 1px solid colors.$grey-light
+    vertical-align: middle
+
+  tbody tr:last-child td
+    border-bottom: none
+
+  tbody tr:hover
+    background: colors.$grey-light
+
+  &__name-cell
+    display: flex
+    align-items: center
+    gap: variables.$spacing-medium
+
+  &__logo
+    width: 28px
+    height: 28px
+    border-radius: variables.$border-radius-small
+    background: colors.$blue-very-light
+    color: colors.$blue
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+
+    svg
+      width: 14px
+      height: 14px
+      stroke: currentColor
+      fill: none
+      stroke-width: 1.5
+
+  &__chips
+    display: flex
+    flex-wrap: wrap
+    gap: variables.$spacing-very-small
+    max-width: 300px
+
+  &__actions
+    display: flex
+    gap: variables.$spacing-small
+
+.th--actions
+  text-align: right
+
+.td--actions
+  text-align: right
+
+
+// ── Variante chip certification (vert) ─────────────────────────────────────
+
+.chip--certification
+  background: colors.$green-light
+  color: colors.$green
+
+// ── Variante chip tag (orange) ─────────────────────────────────────────────
+
+.chip--tag
+  background: colors.$orange-light
+  color: colors.$orange
+
+
+// ── Onglet Listes : tags de contacts ───────────────────────────────────────
+
+.tags-section
+  display: flex
+  gap: variables.$spacing-big
+  align-items: flex-start
+
+  @include media_queries.lte-tablet
+    flex-direction: column
+
+.tags-sidebar
+  width: 240px
+  flex-shrink: 0
+  background: colors.$white
+  border-radius: variables.$border-radius-big
+  box-shadow: colors.$shadow-card
+  overflow: hidden
+
+  @include media_queries.lte-tablet
+    width: 100%
+
+  &__header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: variables.$spacing-medium variables.$spacing-big
+    border-bottom: 1px solid colors.$grey-light
+
+  &__title
+    @include fonts.font-size-small
+    @include fonts.font-weight-bold
+    color: colors.$main-color
+
+  &__list
+    list-style: none
+
+  &__item
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: variables.$spacing-medium variables.$spacing-big
+    @include fonts.font-size-normal
+    color: colors.$main-color-light
+    cursor: pointer
+    transition: background-color 0.15s
+    border-left: 3px solid transparent
+
+    &:hover
+      background: colors.$grey-light
+
+    &--active
+      background: colors.$blue-very-light
+      color: colors.$blue
+      @include fonts.font-weight-bold
+      border-left-color: colors.$blue
+
+    & + &
+      border-top: 1px solid colors.$grey-light
+
+  &__count
+    @include fonts.font-size-very-small
+    color: colors.$grey-dark
+    background: colors.$grey
+    padding: variables.$spacing-very-small variables.$spacing-small
+    border-radius: variables.$border-radius-small
+    @include fonts.font-weight-bold
+
+  &__item--active &__count
+    background: colors.$blue
+    color: colors.$white
+
+.tags-content
+  flex: 1
+  min-width: 0
+
+  &__header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: variables.$spacing-big
+
+  &__title
+    @include fonts.font-size-normal
+    @include fonts.font-weight-bold
+    color: colors.$main-color
+
+
+// ── Onglet Recherche ───────────────────────────────────────────────────────
+
+.search-panel__input-wrapper
+  display: flex
+  gap: variables.$spacing-medium
+  margin-bottom: variables.$spacing-big
+
+.search-panel__input
+  flex: 1
+  @include fonts.font-size-normal
+  padding: variables.$spacing-medium variables.$spacing-big
+  padding-left: 36px
+  border: 1px solid colors.$grey-blue
+  border-radius: variables.$border-radius-medium
+  background: colors.$white
+  color: colors.$main-color
+  outline: none
+  transition: border-color 0.2s
+  // Icône loupe inline — couleur neutral-400
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E")
+  background-repeat: no-repeat
+  background-position: variables.$spacing-medium center
+
+  &:focus
+    border-color: colors.$blue
+
+  &::placeholder
+    color: colors.$grey-dark
+
+.search-results__section
+  margin-bottom: variables.$spacing-big
+
+.search-results__section-title
+  font-size: 11px
+  @include fonts.font-weight-bold
+  color: colors.$grey-dark
+  text-transform: uppercase
+  letter-spacing: 0.06em
+  margin-bottom: variables.$spacing-medium
+  display: flex
+  align-items: center
+  gap: variables.$spacing-small
+
+.search-results__section-count
+  @include fonts.font-size-very-small
+  background: colors.$grey
+  color: colors.$grey-dark
+  padding: variables.$spacing-very-small variables.$spacing-small
+  border-radius: variables.$border-radius-small
+  @include fonts.font-weight-bold
+
+
+// ── Compteur filtres ───────────────────────────────────────────────────────
+
+.filter-bar__count
+  @include fonts.font-size-small
+  color: colors.$grey-dark

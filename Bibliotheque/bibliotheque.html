@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+{% load component_tags %}
+
+{# ══════════════════════════════════════════════════════════════════════════════
+   Maquette Blaise — Page Bibliothèque
+   Template Django — zone contenu uniquement (layout géré par base.html)
+   Sidebar : active_section = 'bibliotheque' (dans Paramètres de compte)
+   Topbar : breadcrumb_current = 'Bibliothèque'
+   Composants réutilisables : filter_bar, empty_state, card, status_tag, chip
+   ══════════════════════════════════════════════════════════════════════════════ #}
+
+{% block page_content %}
+
+  {# ── Page header ── #}
+  <div class="page-header">
+    <div class="page-header__content-container">
+      <div>
+        <h1 class="page-header__title">
+          Bibliothèque
+          <span class="page-header__badge">{{ documents_count }} document{{ documents_count|pluralize }}</span>
+        </h1>
+        <p class="page-header__subtitle">
+          Documents administratifs de votre agence — {{ agence.raison_sociale }}
+        </p>
+      </div>
+      <div class="page-header__actions">
+        {# -- Partager aux contacts (ouvre la modale) -- #}
+        {% component "button" modifier="fifth" variant="small" icon="user-plus" label="Partager aux contacts" %}
+          {% fill "button_htmx_attrs" %}
+            hx-get="{% url 'bibliotheque:share-contacts-modal' %}"
+            hx-target="#modal-container"
+            hx-swap="innerHTML"
+          {% endfill %}
+        {% endcomponent %}
+
+        {# -- Upload — ouvre le sélecteur de fichier -- #}
+        {% component "button" modifier="primary" variant="small" icon="upload" label="Ajouter un document" %}
+          {% fill "button_extra_attrs" %}
+            onclick="document.getElementById('file-input').click()"
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+    </div>
+  </div>
+
+
+  {# ── Barre de partage bibliothèque (lien public) ── #}
+  <div class="library-share-bar">
+    {% component "icon_inline" name="link" %}{% endcomponent %}
+    <span class="library-share-bar__text">Lien de partage de la bibliothèque</span>
+    <span class="library-share-bar__link" title="{{ share_url }}">
+      {% component "icon_inline" name="link" %}{% endcomponent %}
+      {{ share_url }}
+    </span>
+    {% component "button" modifier="quaternary" variant="small" icon="copy" label="Copier" %}
+      {% fill "button_extra_attrs" %}
+        data-copy-url="{{ share_url }}"
+        aria-label="Copier le lien de partage"
+      {% endfill %}
+    {% endcomponent %}
+  </div>
+
+
+  {# ── Zone d'upload par glisser-déposer ── #}
+  <div class="upload-zone"
+       id="upload-zone"
+       role="button"
+       tabindex="0"
+       aria-label="Glisser-déposer des fichiers ou cliquer pour sélectionner"
+       hx-post="{% url 'bibliotheque:upload' %}"
+       hx-target="#documents-table-body"
+       hx-swap="innerHTML"
+       hx-encoding="multipart/form-data"
+       hx-indicator="#upload-loader">
+    {% component "icon_inline" name="upload" %}{% endcomponent %}
+    <p class="upload-zone__text">Glissez vos fichiers ici ou <strong>parcourez</strong></p>
+    <p class="upload-zone__hint">PDF, images, documents Word — 20 Mo maximum par fichier</p>
+  </div>
+
+  {# Input fichier masqué #}
+  <input type="file"
+         id="file-input"
+         class="screen-reader-only"
+         multiple
+         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.tiff"
+         hx-post="{% url 'bibliotheque:upload' %}"
+         hx-target="#documents-table-body"
+         hx-swap="innerHTML"
+         hx-encoding="multipart/form-data"
+         hx-indicator="#upload-loader"
+         aria-label="Sélectionner des fichiers">
+
+
+  {# ── Filtres (htmx : rechargement partiel de la table) ── #}
+  {% component "filter_bar" %}
+    {% fill "filters" %}
+      <label for="filter-search" class="screen-reader-only">Rechercher un document</label>
+      <input type="search"
+             class="filter-bar__search"
+             id="filter-search"
+             name="q"
+             placeholder="Rechercher un document…"
+             hx-get="{% url 'bibliotheque:documents-table' %}"
+             hx-target="#documents-table-body"
+             hx-trigger="input changed delay:300ms"
+             hx-include="#filter-tag, #filter-doc-status"
+             hx-swap="innerHTML"
+             hx-indicator="#documents-loader">
+
+      <label for="filter-tag" class="screen-reader-only">Filtrer par tag</label>
+      <select class="filter-bar__select{% if selected_tag %} filter-bar__select--active{% endif %}"
+              id="filter-tag"
+              name="tag"
+              hx-get="{% url 'bibliotheque:documents-table' %}"
+              hx-target="#documents-table-body"
+              hx-include="#filter-search, #filter-doc-status"
+              hx-swap="innerHTML"
+              hx-indicator="#documents-loader">
+        <option value="">Tous les tags</option>
+        {% for tag in available_tags %}
+          <option value="{{ tag.slug }}" {% if tag.slug == selected_tag %}selected{% endif %}>{{ tag.name }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="filter-doc-status" class="screen-reader-only">Filtrer par statut</label>
+      <select class="filter-bar__select{% if selected_status %} filter-bar__select--active{% endif %}"
+              id="filter-doc-status"
+              name="status"
+              hx-get="{% url 'bibliotheque:documents-table' %}"
+              hx-target="#documents-table-body"
+              hx-include="#filter-search, #filter-tag"
+              hx-swap="innerHTML"
+              hx-indicator="#documents-loader">
+        <option value="">Tous les statuts</option>
+        <option value="active" {% if selected_status == "active" %}selected{% endif %}>Actif</option>
+        <option value="archived" {% if selected_status == "archived" %}selected{% endif %}>Archivé</option>
+      </select>
+    {% endfill %}
+    {% fill "actions" %}
+      <span class="filter-bar__count">{{ filtered_count }} document{{ filtered_count|pluralize }}</span>
+    {% endfill %}
+  {% endcomponent %}
+
+
+  {# ── Table des documents ── #}
+  {% component "card" has_header=False flush=True %}
+    {% fill "body" %}
+
+      {# État : chargement #}
+      <div class="loader htmx-indicator" id="documents-loader">
+        {% component "loader" %}{% endcomponent %}
+      </div>
+
+      <div class="document-table-wrapper">
+        <table class="document-table" aria-label="Liste des documents de la bibliothèque">
+          <thead>
+            <tr>
+              <th scope="col">Document</th>
+              <th scope="col">Tags</th>
+              <th scope="col">Ajouté le</th>
+              <th scope="col" class="th--center">Dossier AO</th>
+              <th scope="col" class="th--center">Lien</th>
+              <th scope="col" class="th--center">Réseau</th>
+              <th scope="col">Statut</th>
+              <th scope="col"><span class="screen-reader-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="documents-table-body"
+                 hx-get="{% url 'bibliotheque:documents-table' %}"
+                 hx-trigger="load"
+                 hx-swap="innerHTML"
+                 hx-indicator="#documents-loader">
+
+            {# ── État rempli (rendu serveur, un <tr> par document) ── #}
+            {% for doc in documents %}
+            <tr{% if doc.is_archived %} class="document-row--archived"{% endif %}>
+              <td data-label="Document">
+                <div class="document-table__name">
+                  <div class="document-table__name-icon document-table__name-icon--{{ doc.file_type }}">
+                    {% component "icon_inline" name=doc.file_icon %}{% endcomponent %}
+                  </div>
+                  <div class="document-table__name-text">
+                    <span class="document-table__filename">{{ doc.filename }}</span>
+                    <span class="document-table__filesize">{{ doc.filesize_display }}</span>
+                  </div>
+                </div>
+              </td>
+              <td data-label="Tags">
+                <div class="document-table__tags">
+                  {% for tag in doc.tags.all %}
+                    {% component "chip" text=tag.name %}{% endcomponent %}
+                  {% endfor %}
+                </div>
+              </td>
+              <td data-label="Ajouté le">{{ doc.created_at|date:"d/m/Y" }}</td>
+
+              {# -- Toggle : Dossier AO -- #}
+              <td data-label="Dossier AO" class="td--center">
+                <div class="document-table__toggle-cell">
+                  {% component "switch" input_id="auto-dossier-"|add:doc.pk %}
+                    {% fill "switch_extra_attrs" %}
+                      {% if doc.auto_dossier %}checked{% endif %}
+                      aria-label="Ajout automatique au dossier AO pour {{ doc.filename }}"
+                      hx-post="{% url 'bibliotheque:toggle-auto-dossier' pk=doc.pk %}"
+                      hx-swap="none"
+                    {% endfill %}
+                  {% endcomponent %}
+                </div>
+              </td>
+
+              {# -- Toggle : Lien de partage -- #}
+              <td data-label="Lien" class="td--center">
+                <div class="document-table__toggle-cell">
+                  {% component "switch" input_id="share-link-"|add:doc.pk %}
+                    {% fill "switch_extra_attrs" %}
+                      {% if doc.share_link_enabled %}checked{% endif %}
+                      aria-label="Partageable par lien pour {{ doc.filename }}"
+                      hx-post="{% url 'bibliotheque:toggle-share-link' pk=doc.pk %}"
+                      hx-swap="none"
+                    {% endfill %}
+                  {% endcomponent %}
+                </div>
+              </td>
+
+              {# -- Toggle : Réseau (contacts) -- #}
+              <td data-label="Réseau" class="td--center">
+                <div class="document-table__toggle-cell">
+                  {% component "switch" input_id="share-network-"|add:doc.pk %}
+                    {% fill "switch_extra_attrs" %}
+                      {% if doc.share_contacts_enabled %}checked{% endif %}
+                      aria-label="Visible sur le réseau pour {{ doc.filename }}"
+                      hx-post="{% url 'bibliotheque:toggle-share-network' pk=doc.pk %}"
+                      hx-swap="none"
+                    {% endfill %}
+                  {% endcomponent %}
+                </div>
+              </td>
+
+              <td data-label="Statut">
+                {% if doc.is_archived %}
+                  {% component "status_tag" status="archived" %}{% endcomponent %}
+                {% else %}
+                  {% component "status_tag" status="active" %}{% endcomponent %}
+                {% endif %}
+              </td>
+              <td>
+                <div class="document-table__actions">
+                  {% if not doc.is_archived %}
+                    {# -- Télécharger -- #}
+                    {% component "button" modifier="quaternary" variant="very-small" icon="download" %}
+                      {% fill "button_extra_attrs" %}
+                        aria-label="Télécharger {{ doc.filename }}"
+                      {% endfill %}
+                      {% fill "button_htmx_attrs" %}
+                        hx-get="{% url 'bibliotheque:download' pk=doc.pk %}"
+                        hx-swap="none"
+                      {% endfill %}
+                    {% endcomponent %}
+
+                    {# -- Archiver -- #}
+                    {% component "button" modifier="quaternary" variant="very-small" icon="archive" %}
+                      {% fill "button_extra_attrs" %}
+                        aria-label="Archiver {{ doc.filename }}"
+                      {% endfill %}
+                      {% fill "button_htmx_attrs" %}
+                        hx-post="{% url 'bibliotheque:archive' pk=doc.pk %}"
+                        hx-target="closest tr"
+                        hx-swap="outerHTML"
+                        hx-confirm="Archiver ce document ?"
+                      {% endfill %}
+                    {% endcomponent %}
+
+                    {# -- Supprimer -- #}
+                    {% component "button" modifier="red" variant="very-small" icon="trash-2" %}
+                      {% fill "button_extra_attrs" %}
+                        aria-label="Supprimer {{ doc.filename }}"
+                      {% endfill %}
+                      {% fill "button_htmx_attrs" %}
+                        hx-delete="{% url 'bibliotheque:delete' pk=doc.pk %}"
+                        hx-target="closest tr"
+                        hx-swap="outerHTML swap:300ms"
+                        hx-confirm="Supprimer définitivement ce document ?"
+                      {% endfill %}
+                    {% endcomponent %}
+
+                  {% else %}
+                    {# -- Restaurer (document archivé) -- #}
+                    {% component "button" modifier="quaternary" variant="very-small" icon="rotate-ccw" %}
+                      {% fill "button_extra_attrs" %}
+                        aria-label="Restaurer {{ doc.filename }}"
+                      {% endfill %}
+                      {% fill "button_htmx_attrs" %}
+                        hx-post="{% url 'bibliotheque:restore' pk=doc.pk %}"
+                        hx-target="closest tr"
+                        hx-swap="outerHTML"
+                      {% endfill %}
+                    {% endcomponent %}
+
+                    {# -- Supprimer définitivement -- #}
+                    {% component "button" modifier="red" variant="very-small" icon="trash-2" %}
+                      {% fill "button_extra_attrs" %}
+                        aria-label="Supprimer définitivement {{ doc.filename }}"
+                      {% endfill %}
+                      {% fill "button_htmx_attrs" %}
+                        hx-delete="{% url 'bibliotheque:delete' pk=doc.pk %}"
+                        hx-target="closest tr"
+                        hx-swap="outerHTML swap:300ms"
+                        hx-confirm="Cette suppression est définitive. Continuer ?"
+                      {% endfill %}
+                    {% endcomponent %}
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+
+            {# ── État vide ── #}
+            {% empty %}
+            <tr>
+              <td colspan="8">
+                {% component "empty_state" icon="file-text" message="Aucun document dans la bibliothèque." %}
+                  {% fill "action" %}
+                    {% component "button" modifier="primary" variant="small" icon="upload" label="Ajouter un document" %}
+                      {% fill "button_extra_attrs" %}
+                        onclick="document.getElementById('file-input').click()"
+                      {% endfill %}
+                    {% endcomponent %}
+                  {% endfill %}
+                {% endcomponent %}
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+
+      {# ── État erreur (affiché par htmx sur erreur serveur) ── #}
+      <div class="error-state" id="documents-error"
+           hx-on:htmx:response-error="this.style.display='block'"
+           hx-on:htmx:before-request="this.style.display='none'">
+        {% component "empty_state" icon="alert-triangle" message="Erreur lors du chargement des documents." variant="error" %}
+          {% fill "action" %}
+            {% component "button" modifier="fifth" variant="small" label="Réessayer" %}
+              {% fill "button_extra_attrs" %}
+                onclick="htmx.trigger('#documents-table-body', 'load')"
+              {% endfill %}
+            {% endcomponent %}
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+    {% endfill %}
+  {% endcomponent %}
+
+
+  {# État : chargement upload #}
+  <div class="loader htmx-indicator" id="upload-loader">
+    {% component "loader" %}{% endcomponent %}
+  </div>
+
+  {# Conteneur pour les modales (htmx target) #}
+  <div id="modal-container"></div>
+
+{% endblock page_content %}

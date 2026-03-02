@@ -1,0 +1,76 @@
+// ══════════════════════════════════════════════════════════════════
+// Design System Blaise — Media queries
+// Mêmes breakpoints que common_m2bpo (pas de changement ici,
+// la charte graphique ne modifie pas les points de rupture)
+// ══════════════════════════════════════════════════════════════════
+
+
+// ── Breakpoints ─────────────────────────────────────────────────
+$breakpoint-mobile: 576px
+$breakpoint-tablet: 768px
+$breakpoint-laptop: 1200px
+
+
+// ── Mixins « uniquement » ───────────────────────────────────────
+
+@mixin mobile-only
+  @media (max-width: #{$breakpoint-mobile})
+    @content
+
+@mixin tablet-only
+  @media (min-width: #{$breakpoint-mobile + 0.2px}) and (max-width: #{$breakpoint-tablet})
+    @content
+
+@mixin laptop-only
+  @media (min-width: #{$breakpoint-tablet + 0.2px}) and (max-width: #{$breakpoint-laptop})
+    @content
+
+@mixin desktop-only
+  @media (min-width: #{$breakpoint-laptop + 0.2px})
+    @content
+
+
+// ── Mixins comparatifs ──────────────────────────────────────────
+
+@mixin lte-mobile
+  @media (max-width: #{$breakpoint-mobile})
+    @content
+
+@mixin gt-mobile
+  @media (min-width: #{$breakpoint-mobile + 0.2px})
+    @content
+
+@mixin lte-tablet
+  @media (max-width: #{$breakpoint-tablet})
+    @content
+
+@mixin gt-tablet
+  @media (min-width: #{$breakpoint-tablet + 0.2px})
+    @content
+
+@mixin lte-laptop
+  @media (max-width: #{$breakpoint-laptop})
+    @content
+
+@mixin gt-laptop
+  @media (min-width: #{$breakpoint-laptop + 0.2px})
+    @content
+
+
+// ── Classes utilitaires responsive ──────────────────────────────
+
+.hidden-lte-tablet
+  @include lte-tablet
+    display: none !important
+
+.hidden-gt-tablet
+  @include gt-tablet
+    display: none !important
+
+.hidden-lte-mobile
+  @include lte-mobile
+    display: none !important
+
+.hidden-gt-mobile
+  @include gt-mobile
+    display: none !important

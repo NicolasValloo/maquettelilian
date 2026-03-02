@@ -1,23 +1,23 @@
 // ══════════════════════════════════════════════════════════════════
 // Composant : tab_underline
-// Style underline — tokens du design system existant
-// Inclut le panel associé (affichage/masquage des onglets)
+// Design system Blaise : padding 10px 20px, count min-width 20px,
+// couleur accent pour l'onglet actif, animation fadeIn sur panels
 // ══════════════════════════════════════════════════════════════════
 
-@use 'common_m2bpo/css/utils/colors'
-@use 'common_m2bpo/css/utils/variables'
-@use 'common_m2bpo/css/utils/fonts'
-@use 'common_m2bpo/css/utils/media_queries'
+@use '../../styles/utils/colors'
+@use '../../styles/utils/variables'
+@use '../../styles/utils/fonts'
+@use '../../styles/utils/media_queries'
 
-// Dimensions du compteur — pas de variable design system correspondante
-$tab-underline-count-min-width: 18px
-$tab-underline-count-height: 16px
+// Dimensions du compteur
+$tab-underline-count-min-width: 20px
+$tab-underline-count-height: 18px
 
 
 .tab-underline
   display: flex
   gap: 0
-  border-bottom: 1px solid colors.$main-border
+  border-bottom: 1px solid colors.$grey-blue
   margin-bottom: variables.$spacing-big
 
   @include media_queries.lte-tablet
@@ -29,7 +29,7 @@ $tab-underline-count-height: 16px
       display: none
 
   &__item
-    padding: variables.$spacing-medium variables.$spacing-big
+    padding: 10px 20px
     @include fonts.font-size-normal
     @include fonts.font-weight-medium
     color: colors.$main-color-lighter
@@ -55,15 +55,15 @@ $tab-underline-count-height: 16px
     display: inline-flex
     align-items: center
     justify-content: center
-    background: colors.$grey
-    color: colors.$main-color-lighter
+    background: colors.$grey-blue
+    color: colors.$grey-blue-very-dark
     @include fonts.font-size-very-small
     @include fonts.font-weight-bold
     min-width: $tab-underline-count-min-width
     height: $tab-underline-count-height
     border-radius: variables.$border-radius-medium
-    padding: 0 variables.$spacing-small
-    margin-left: variables.$spacing-small
+    padding: 0 5px
+    margin-left: 6px
 
     .tab-underline__item--active &
       background: colors.$blue
@@ -73,6 +73,15 @@ $tab-underline-count-height: 16px
 // ── Panel — conteneur de contenu lié aux onglets ──
 .panel
   display: none
+  animation: fade-in 0.25s ease
 
   &--active
     display: block
+
+@keyframes fade-in
+  from
+    opacity: 0
+    transform: translateY(6px)
+  to
+    opacity: 1
+    transform: translateY(0)

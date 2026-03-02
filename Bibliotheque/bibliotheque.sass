@@ -1,0 +1,243 @@
+// ══════════════════════════════════════════════════════════════════════════════
+// Maquette Blaise — Page Bibliothèque : styles spécifiques à cette page
+// Design system Blaise : DM Sans, palette neutral, shadow-card
+// Les composants réutilisables sont dans components/
+// Les utilitaires globaux sont dans styles/
+// ══════════════════════════════════════════════════════════════════════════════
+
+@use '../styles/utils/colors'
+@use '../styles/utils/variables'
+@use '../styles/utils/fonts'
+@use '../styles/utils/media_queries'
+
+
+// ── Page header — extensions spécifiques bibliothèque ────────────────────
+
+.page-header__title
+  font-size: 22px
+  font-weight: 700
+  color: colors.$black
+  letter-spacing: -0.02em
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+
+.page-header__subtitle
+  @include fonts.font-size-normal
+  color: colors.$main-color-lighter
+  margin-top: variables.$spacing-very-small
+
+.page-header__badge
+  display: inline-flex
+  align-items: center
+  background-color: colors.$blue-very-light
+  color: colors.$blue
+  @include fonts.font-size-small
+  @include fonts.font-weight-bold
+  padding: 3px 10px
+  border-radius: variables.$border-radius-very-big
+
+.page-header__actions
+  display: flex
+  gap: variables.$spacing-medium
+  align-items: center
+  flex-shrink: 0
+
+  @include media_queries.lte-tablet
+    flex-direction: column
+    align-items: stretch
+
+
+// ── Barre de partage bibliothèque ────────────────────────────────────────
+.library-share-bar
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+  background: colors.$blue-very-light
+  border: 1px solid colors.$grey-blue
+  border-radius: variables.$border-radius-medium
+  padding: variables.$spacing-medium variables.$spacing-big
+  margin-bottom: variables.$spacing-big
+
+  @include media_queries.lte-tablet
+    flex-wrap: wrap
+
+  &__text
+    @include fonts.font-size-normal
+    color: colors.$main-color-light
+    flex: 1
+
+  &__link
+    @include fonts.font-size-small
+    color: colors.$blue
+    @include fonts.font-weight-medium
+    background: colors.$white
+    border: 1px solid colors.$grey-blue
+    border-radius: variables.$border-radius-small
+    padding: variables.$spacing-very-small variables.$spacing-medium
+    display: flex
+    align-items: center
+    gap: variables.$spacing-small
+    max-width: 300px
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+
+// ── Zone d'upload par glisser-déposer ────────────────────────────────────
+.upload-zone
+  border: 2px dashed colors.$grey-blue
+  border-radius: variables.$border-radius-medium
+  padding: variables.$spacing-very-big variables.$spacing-big
+  text-align: center
+  background: colors.$white
+  margin-bottom: variables.$spacing-big
+  transition: border-color 0.2s, background-color 0.2s
+  cursor: pointer
+
+  &:hover,
+  &--dragover
+    border-color: colors.$blue
+    background: colors.$blue-very-light
+
+  &__icon
+    width: 36px
+    height: 36px
+    margin: 0 auto variables.$spacing-medium
+    color: colors.$grey-dark
+
+  &__text
+    @include fonts.font-size-normal
+    color: colors.$main-color-light
+
+    strong
+      color: colors.$blue
+      @include fonts.font-weight-bold
+
+  &__hint
+    @include fonts.font-size-small
+    color: colors.$grey-dark
+    margin-top: variables.$spacing-small
+
+
+// ── Filtre actif — style visuel pour select avec valeur sélectionnée ─────
+.filter-bar__select--active
+  border-color: colors.$blue
+  background-color: colors.$blue-very-light
+  color: colors.$blue
+  @include fonts.font-weight-medium
+
+
+// ── Table des documents ──────────────────────────────────────────────────
+.document-table-wrapper
+  overflow-x: auto
+
+.document-table
+  width: 100%
+  border-collapse: collapse
+  font-size: 13px
+
+  thead th
+    padding: 10px 16px
+    text-align: left
+    @include fonts.font-weight-bold
+    font-size: 11px
+    text-transform: uppercase
+    letter-spacing: 0.06em
+    color: colors.$main-color-lighter
+    background: colors.$grey-light
+    border-bottom: 1px solid colors.$grey-blue
+    white-space: nowrap
+    user-select: none
+
+  .th--center
+    text-align: center
+
+  .td--center
+    text-align: center
+
+  tbody tr
+    transition: background-color variables.$transition-default
+
+  tbody tr:hover
+    background-color: colors.$grey-light
+
+  tbody td
+    padding: 14px 16px
+    border-bottom: 1px solid colors.$grey-light
+    vertical-align: middle
+    color: colors.$main-color-light
+
+  tbody tr:last-child td
+    border-bottom: none
+
+
+// ── Cellules spécifiques ─────────────────────────────────────────────────
+.document-table__name
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+
+.document-table__name-icon
+  width: 32px
+  height: 32px
+  border-radius: variables.$border-radius-small
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+
+  &--pdf
+    background: colors.$red-light
+    color: colors.$red
+
+  &--image
+    background: colors.$orange-light
+    color: colors.$orange
+
+  &--doc
+    background: colors.$blue-very-light
+    color: colors.$blue
+
+.document-table__name-text
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-very-small
+  min-width: 0
+
+.document-table__filename
+  @include fonts.font-weight-bold
+  color: colors.$main-color
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+  max-width: 280px
+
+.document-table__filesize
+  @include fonts.font-size-small
+  color: colors.$grey-dark
+
+.document-table__tags
+  display: flex
+  flex-wrap: wrap
+  gap: variables.$spacing-small
+
+.document-table__actions
+  display: flex
+  align-items: center
+  gap: variables.$spacing-small
+
+.document-table__toggle-cell
+  display: flex
+  justify-content: center
+
+
+// ── Ligne archivée ───────────────────────────────────────────────────────
+.document-row--archived
+  opacity: 0.6
+
+
+// ── Compteur filtres ─────────────────────────────────────────────────────
+.filter-bar__count
+  @include fonts.font-size-small
+  color: colors.$grey-dark

@@ -1,39 +1,45 @@
 // ══════════════════════════════════════════════════════════════════
 // Composant : card — conteneur générique
-// Basé sur list_card du design actuel ($list-card-bg-color)
+// Design system Blaise : shadow-card au lieu de border,
+// radius-lg (14px), séparateurs légers (neutral-100)
 // ══════════════════════════════════════════════════════════════════
 
-@use 'common_m2bpo/css/utils/colors'
-@use 'common_m2bpo/css/utils/variables'
-@use 'common_m2bpo/css/utils/fonts'
+@use '../../styles/utils/colors'
+@use '../../styles/utils/variables'
+@use '../../styles/utils/fonts'
 
 
 .card
-  background: colors.$list-card-bg-color
-  border: 1px solid colors.$main-border
-  border-radius: variables.$border-radius-medium
+  background: colors.$white
+  border-radius: variables.$border-radius-big
+  box-shadow: colors.$shadow-card
   overflow: hidden
 
   & + &
-    margin-top: variables.$spacing-big
+    margin-top: 20px
 
   &__header
     display: flex
     align-items: center
     justify-content: space-between
-    padding: variables.$spacing-big
-    border-bottom: 1px solid colors.$main-border
+    padding: 18px 22px
+    border-bottom: 1px solid colors.$grey-light
 
   &__title
-    @include fonts.font-size-normal
+    font-size: 15px
     @include fonts.font-weight-bold
     color: colors.$main-color
     display: flex
     align-items: center
-    gap: variables.$spacing-medium
+    gap: variables.$spacing-small
+
+    svg
+      width: 18px
+      height: 18px
+      color: colors.$grey-dark
 
   &__body
-    padding: variables.$spacing-big
+    padding: 22px
 
     &--flush
       padding: 0

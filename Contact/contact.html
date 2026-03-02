@@ -1,0 +1,630 @@
+{% extends "base.html" %}
+{% load component_tags %}
+
+{# ══════════════════════════════════════════════════════════════════════════════
+   Maquette Blaise — Page Contacts (Réseau)
+   Template Django — zone contenu uniquement (layout géré par base.html)
+   Sidebar : active_section = 'contacts' (lien direct, pas d'accordéon)
+   Topbar : breadcrumb_current = 'Contacts'
+   6 onglets : Mes contacts, Réseau M2BPO, Invitations envoyées/reçues, Listes, Recherche
+   Structure carte : logo + nom + CP/ville + email/tel + compétences + certifications + tags + actions
+   ══════════════════════════════════════════════════════════════════════════════ #}
+
+{% block page_content %}
+
+  {# ── Page header ── #}
+  <div class="page-header">
+    <h1 class="page-header__title">
+      Réseau
+      <span class="page-header__badge">{{ contacts_count }} contact{{ contacts_count|pluralize }}</span>
+    </h1>
+    <p class="page-header__subtitle">
+      Gérez vos contacts professionnels et développez votre réseau — {{ agence.raison_sociale }}
+    </p>
+  </div>
+
+
+  {# ── Onglets ── #}
+  {% component "tab_underline" tab_wrapper_id="reseau-tabs" active_tab="contacts" %}
+    {% fill "tabs" %}
+      {% component "tab_underline_button" tab_id="contacts" label="Mes contacts" counter=contacts_count %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="reseau" label="Réseau M2BPO" counter=network_count %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="envoyees" label="Invitations envoyées" counter=sent_count %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="recues" label="Invitations reçues" counter=received_count %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="listes" label="Listes" %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="recherche" label="Recherche" %}{% endcomponent %}
+    {% endfill %}
+  {% endcomponent %}
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : MES CONTACTS
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel panel--active" id="panel-contacts" role="tabpanel" aria-labelledby="tab-contacts">
+
+    {% component "filter_bar" %}
+      {% fill "filters" %}
+        <label for="filter-contacts-search" class="screen-reader-only">Rechercher un contact</label>
+        <input type="search"
+               class="filter-bar__search"
+               id="filter-contacts-search"
+               name="q"
+               placeholder="Rechercher un contact…"
+               hx-get="{% url 'reseau:contacts-grid' %}"
+               hx-target="#contacts-grid"
+               hx-trigger="input changed delay:300ms"
+               hx-include="#filter-contacts-activity, #filter-contacts-city"
+               hx-swap="innerHTML"
+               hx-indicator="#contacts-loader">
+
+        <label for="filter-contacts-activity" class="screen-reader-only">Filtrer par activité</label>
+        <select class="filter-bar__select"
+                id="filter-contacts-activity"
+                name="activity"
+                hx-get="{% url 'reseau:contacts-grid' %}"
+                hx-target="#contacts-grid"
+                hx-include="#filter-contacts-search, #filter-contacts-city"
+                hx-swap="innerHTML"
+                hx-indicator="#contacts-loader">
+          <option value="">Toutes les activités</option>
+          {% for activity in available_activities %}
+            <option value="{{ activity.slug }}">{{ activity.name }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="filter-contacts-city" class="screen-reader-only">Filtrer par ville</label>
+        <select class="filter-bar__select"
+                id="filter-contacts-city"
+                name="city"
+                hx-get="{% url 'reseau:contacts-grid' %}"
+                hx-target="#contacts-grid"
+                hx-include="#filter-contacts-search, #filter-contacts-activity"
+                hx-swap="innerHTML"
+                hx-indicator="#contacts-loader">
+          <option value="">Toutes les villes</option>
+          {% for city in available_cities %}
+            <option value="{{ city }}">{{ city }}</option>
+          {% endfor %}
+        </select>
+      {% endfill %}
+      {% fill "actions" %}
+        <span class="filter-bar__count">{{ contacts_count }} contact{{ contacts_count|pluralize }}</span>
+        {# Toggle grille / liste / tableau #}
+        <div class="view-toggle" id="view-toggle-contacts">
+          {% component "button" modifier="view-toggle" variant="icon-only" icon="grid" %}
+            {% fill "button_extra_attrs" %}
+              class="view-toggle__button view-toggle__button--active"
+              data-view="grid"
+              aria-label="Vue grille"
+              hx-get="{% url 'reseau:contacts-grid' %}?view=grid"
+              hx-target="#contacts-grid"
+              hx-swap="innerHTML"
+            {% endfill %}
+          {% endcomponent %}
+          {% component "button" modifier="view-toggle" variant="icon-only" icon="list" %}
+            {% fill "button_extra_attrs" %}
+              class="view-toggle__button"
+              data-view="list"
+              aria-label="Vue liste"
+              hx-get="{% url 'reseau:contacts-grid' %}?view=list"
+              hx-target="#contacts-grid"
+              hx-swap="innerHTML"
+            {% endfill %}
+          {% endcomponent %}
+          {% component "button" modifier="view-toggle" variant="icon-only" icon="table" %}
+            {% fill "button_extra_attrs" %}
+              class="view-toggle__button"
+              data-view="table"
+              aria-label="Vue tableau"
+              hx-get="{% url 'reseau:contacts-grid' %}?view=table"
+              hx-target="#contacts-grid"
+              hx-swap="innerHTML"
+            {% endfill %}
+          {% endcomponent %}
+        </div>
+      {% endfill %}
+    {% endcomponent %}
+
+    {# État : chargement #}
+    <div class="loader htmx-indicator" id="contacts-loader">
+      {% component "loader" %}{% endcomponent %}
+    </div>
+
+    <div id="contacts-grid"
+         hx-get="{% url 'reseau:contacts-grid' %}"
+         hx-trigger="load"
+         hx-swap="innerHTML"
+         hx-indicator="#contacts-loader">
+
+      {% for company in contacts %}
+        {# ── Carte contact ── #}
+        <div class="company-card">
+          <div class="company-card__header">
+            <div class="company-card__logo">
+              {% if company.logo %}
+                <img src="{{ company.logo.url }}" alt="{{ company.raison_sociale }}">
+              {% else %}
+                {% component "icon" name="building" %}{% endcomponent %}
+              {% endif %}
+            </div>
+            <div class="company-card__identity">
+              <div class="company-card__name">{{ company.raison_sociale }}</div>
+              <div class="company-card__location">
+                {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
+                {{ company.code_postal }} {{ company.ville }}
+              </div>
+            </div>
+          </div>
+          <div class="company-card__contact-info">
+            <span class="company-card__contact-item">
+              {% component "icon" name="mail" size="12" %}{% endcomponent %}
+              {{ company.email }}
+            </span>
+            <span class="company-card__contact-item">
+              {% component "icon" name="phone" size="12" %}{% endcomponent %}
+              {{ company.telephone }}
+            </span>
+          </div>
+          {% if company.competences.all %}
+            <div class="company-card__competences">
+              {% for comp in company.competences.all %}
+                {% component "chip" %}{{ comp.name }}{% endcomponent %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if company.certifications.all %}
+            <div class="company-card__certifications">
+              {% for cert in company.certifications.all %}
+                {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if company.contact_tags.all %}
+            <div class="company-card__tags">
+              {% for tag in company.contact_tags.all %}
+                {% component "chip" modifier="tag" %}{{ tag.name }}{% endcomponent %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          <div class="company-card__footer">
+            {% component "button" modifier="quaternary" variant="icon-only" icon="mail" %}
+              {% fill "button_htmx_attrs" %}
+                hx-get="{% url 'reseau:message-modal' pk=company.pk %}"
+                hx-target="#modal-container"
+                hx-swap="innerHTML"
+              {% endfill %}
+              {% fill "button_extra_attrs" %}aria-label="Envoyer un message à {{ company.raison_sociale }}"{% endfill %}
+            {% endcomponent %}
+            {% component "button" modifier="red" variant="icon-only" icon="slash" %}
+              {% fill "button_htmx_attrs" %}
+                hx-post="{% url 'reseau:block-contact' pk=company.pk %}"
+                hx-confirm="Bloquer {{ company.raison_sociale }} ? Cette entreprise ne pourra plus vous contacter."
+                hx-target="closest .company-card"
+                hx-swap="outerHTML"
+              {% endfill %}
+              {% fill "button_extra_attrs" %}aria-label="Bloquer {{ company.raison_sociale }}"{% endfill %}
+            {% endcomponent %}
+          </div>
+        </div>
+      {% empty %}
+        {% component "empty_state" icon="users" message="Aucun contact pour le moment. Explorez le réseau M2BPO pour trouver des partenaires." %}{% endcomponent %}
+      {% endfor %}
+
+    </div>
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : RÉSEAU M2BPO
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-reseau" role="tabpanel" aria-labelledby="tab-reseau">
+
+    {% component "filter_bar" %}
+      {% fill "filters" %}
+        <label for="filter-reseau-search" class="screen-reader-only">Rechercher une entreprise</label>
+        <input type="search"
+               class="filter-bar__search"
+               id="filter-reseau-search"
+               name="q"
+               placeholder="Rechercher une entreprise…"
+               hx-get="{% url 'reseau:network-grid' %}"
+               hx-target="#network-grid"
+               hx-trigger="input changed delay:300ms"
+               hx-include="#filter-reseau-activity, #filter-reseau-city"
+               hx-swap="innerHTML"
+               hx-indicator="#network-loader">
+
+        <label for="filter-reseau-activity" class="screen-reader-only">Filtrer par activité</label>
+        <select class="filter-bar__select"
+                id="filter-reseau-activity"
+                name="activity"
+                hx-get="{% url 'reseau:network-grid' %}"
+                hx-target="#network-grid"
+                hx-include="#filter-reseau-search, #filter-reseau-city"
+                hx-swap="innerHTML"
+                hx-indicator="#network-loader">
+          <option value="">Toutes les activités</option>
+          {% for activity in available_activities %}
+            <option value="{{ activity.slug }}">{{ activity.name }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="filter-reseau-city" class="screen-reader-only">Filtrer par ville</label>
+        <select class="filter-bar__select"
+                id="filter-reseau-city"
+                name="city"
+                hx-get="{% url 'reseau:network-grid' %}"
+                hx-target="#network-grid"
+                hx-include="#filter-reseau-search, #filter-reseau-activity"
+                hx-swap="innerHTML"
+                hx-indicator="#network-loader">
+          <option value="">Toutes les villes</option>
+          {% for city in available_cities %}
+            <option value="{{ city }}">{{ city }}</option>
+          {% endfor %}
+        </select>
+      {% endfill %}
+      {% fill "actions" %}
+        <span class="filter-bar__count">{{ network_count }} entreprise{{ network_count|pluralize }}</span>
+        {# Toggle grille / liste / tableau #}
+        <div class="view-toggle" id="view-toggle-reseau">
+          {% component "button" modifier="view-toggle" variant="icon-only" icon="grid" %}
+            {% fill "button_extra_attrs" %}
+              class="view-toggle__button view-toggle__button--active"
+              data-view="grid"
+              aria-label="Vue grille"
+              hx-get="{% url 'reseau:network-grid' %}?view=grid"
+              hx-target="#network-grid"
+              hx-swap="innerHTML"
+            {% endfill %}
+          {% endcomponent %}
+          {% component "button" modifier="view-toggle" variant="icon-only" icon="list" %}
+            {% fill "button_extra_attrs" %}
+              class="view-toggle__button"
+              data-view="list"
+              aria-label="Vue liste"
+              hx-get="{% url 'reseau:network-grid' %}?view=list"
+              hx-target="#network-grid"
+              hx-swap="innerHTML"
+            {% endfill %}
+          {% endcomponent %}
+          {% component "button" modifier="view-toggle" variant="icon-only" icon="table" %}
+            {% fill "button_extra_attrs" %}
+              class="view-toggle__button"
+              data-view="table"
+              aria-label="Vue tableau"
+              hx-get="{% url 'reseau:network-grid' %}?view=table"
+              hx-target="#network-grid"
+              hx-swap="innerHTML"
+            {% endfill %}
+          {% endcomponent %}
+        </div>
+      {% endfill %}
+    {% endcomponent %}
+
+    <div class="loader htmx-indicator" id="network-loader">
+      {% component "loader" %}{% endcomponent %}
+    </div>
+
+    <div id="network-grid"
+         hx-get="{% url 'reseau:network-grid' %}"
+         hx-trigger="load"
+         hx-swap="innerHTML"
+         hx-indicator="#network-loader">
+
+      {% for company in network_companies %}
+        {# ── Carte réseau (inviter) ── #}
+        <div class="company-card">
+          <div class="company-card__header">
+            <div class="company-card__logo">
+              {% if company.logo %}
+                <img src="{{ company.logo.url }}" alt="{{ company.raison_sociale }}">
+              {% else %}
+                {% component "icon" name="building" %}{% endcomponent %}
+              {% endif %}
+            </div>
+            <div class="company-card__identity">
+              <div class="company-card__name">{{ company.raison_sociale }}</div>
+              <div class="company-card__location">
+                {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
+                {{ company.code_postal }} {{ company.ville }}
+              </div>
+            </div>
+          </div>
+          <div class="company-card__contact-info">
+            <span class="company-card__contact-item">
+              {% component "icon" name="mail" size="12" %}{% endcomponent %}
+              {{ company.email }}
+            </span>
+            <span class="company-card__contact-item">
+              {% component "icon" name="phone" size="12" %}{% endcomponent %}
+              {{ company.telephone }}
+            </span>
+          </div>
+          {% if company.competences.all %}
+            <div class="company-card__competences">
+              {% for comp in company.competences.all %}
+                {% component "chip" %}{{ comp.name }}{% endcomponent %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if company.certifications.all %}
+            <div class="company-card__certifications">
+              {% for cert in company.certifications.all %}
+                {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          <div class="company-card__footer">
+            {% component "button" modifier="primary" icon="user-plus" %}
+              {% fill "label" %}Inviter{% endfill %}
+              {% fill "button_htmx_attrs" %}
+                hx-post="{% url 'reseau:invite' pk=company.pk %}"
+                hx-target="closest .company-card"
+                hx-swap="outerHTML"
+              {% endfill %}
+            {% endcomponent %}
+            {% component "button" modifier="red" variant="icon-only" icon="slash" %}
+              {% fill "button_htmx_attrs" %}
+                hx-post="{% url 'reseau:block-contact' pk=company.pk %}"
+                hx-confirm="Bloquer {{ company.raison_sociale }} ?"
+                hx-target="closest .company-card"
+                hx-swap="outerHTML"
+              {% endfill %}
+              {% fill "button_extra_attrs" %}aria-label="Bloquer {{ company.raison_sociale }}"{% endfill %}
+            {% endcomponent %}
+          </div>
+        </div>
+      {% empty %}
+        {% component "empty_state" icon="globe" message="Aucune entreprise trouvée pour ces critères." %}{% endcomponent %}
+      {% endfor %}
+
+    </div>
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : INVITATIONS ENVOYÉES
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-envoyees" role="tabpanel" aria-labelledby="tab-envoyees">
+
+    <div class="company-grid" id="sent-grid">
+      {% for invitation in sent_invitations %}
+        {# ── Carte invitation envoyée ── #}
+        <div class="company-card">
+          <div class="company-card__header">
+            <div class="company-card__logo">
+              {% if invitation.target.logo %}
+                <img src="{{ invitation.target.logo.url }}" alt="{{ invitation.target.raison_sociale }}">
+              {% else %}
+                {% component "icon" name="building" %}{% endcomponent %}
+              {% endif %}
+            </div>
+            <div class="company-card__identity">
+              <div class="company-card__name">{{ invitation.target.raison_sociale }}</div>
+              <div class="company-card__location">
+                {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
+                {{ invitation.target.code_postal }} {{ invitation.target.ville }}
+              </div>
+            </div>
+          </div>
+          <div class="company-card__contact-info">
+            <span class="company-card__contact-item">
+              {% component "icon" name="mail" size="12" %}{% endcomponent %}
+              {{ invitation.target.email }}
+            </span>
+            <span class="company-card__contact-item">
+              {% component "icon" name="phone" size="12" %}{% endcomponent %}
+              {{ invitation.target.telephone }}
+            </span>
+          </div>
+          {% if invitation.target.competences.all %}
+            <div class="company-card__competences">
+              {% for comp in invitation.target.competences.all %}
+                {% component "chip" %}{{ comp.name }}{% endcomponent %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if invitation.target.certifications.all %}
+            <div class="company-card__certifications">
+              {% for cert in invitation.target.certifications.all %}
+                {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          <div class="company-card__footer">
+            <span class="company-card__footer-left">
+              <span class="company-card__date">
+                {% component "icon" name="clock" size="12" %}{% endcomponent %}
+                Envoyée le {{ invitation.sent_at|date:"j M Y" }}
+              </span>
+            </span>
+            {% component "button" modifier="fifth" icon="user-minus" %}
+              {% fill "label" %}Annuler{% endfill %}
+              {% fill "button_htmx_attrs" %}
+                hx-delete="{% url 'reseau:cancel-invitation' pk=invitation.pk %}"
+                hx-confirm="Annuler l'invitation envoyée à {{ invitation.target.raison_sociale }} ?"
+                hx-target="closest .company-card"
+                hx-swap="outerHTML"
+              {% endfill %}
+            {% endcomponent %}
+          </div>
+        </div>
+      {% empty %}
+        {% component "empty_state" icon="send" message="Aucune invitation en attente de réponse." %}{% endcomponent %}
+      {% endfor %}
+    </div>
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : INVITATIONS REÇUES
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-recues" role="tabpanel" aria-labelledby="tab-recues">
+
+    <div class="company-grid" id="received-grid">
+      {% for invitation in received_invitations %}
+        {# ── Carte invitation reçue ── #}
+        <div class="company-card">
+          <div class="company-card__header">
+            <div class="company-card__logo">
+              {% if invitation.sender.logo %}
+                <img src="{{ invitation.sender.logo.url }}" alt="{{ invitation.sender.raison_sociale }}">
+              {% else %}
+                {% component "icon" name="building" %}{% endcomponent %}
+              {% endif %}
+            </div>
+            <div class="company-card__identity">
+              <div class="company-card__name">{{ invitation.sender.raison_sociale }}</div>
+              <div class="company-card__location">
+                {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
+                {{ invitation.sender.code_postal }} {{ invitation.sender.ville }}
+              </div>
+            </div>
+          </div>
+          <div class="company-card__contact-info">
+            <span class="company-card__contact-item">
+              {% component "icon" name="mail" size="12" %}{% endcomponent %}
+              {{ invitation.sender.email }}
+            </span>
+            <span class="company-card__contact-item">
+              {% component "icon" name="phone" size="12" %}{% endcomponent %}
+              {{ invitation.sender.telephone }}
+            </span>
+          </div>
+          {% if invitation.sender.competences.all %}
+            <div class="company-card__competences">
+              {% for comp in invitation.sender.competences.all %}
+                {% component "chip" %}{{ comp.name }}{% endcomponent %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if invitation.sender.certifications.all %}
+            <div class="company-card__certifications">
+              {% for cert in invitation.sender.certifications.all %}
+                {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          <div class="company-card__footer">
+            <span class="company-card__footer-left">
+              <span class="company-card__date">
+                {% component "icon" name="clock" size="12" %}{% endcomponent %}
+                Reçue le {{ invitation.sent_at|date:"j M Y" }}
+              </span>
+            </span>
+            {% component "button" modifier="green" icon="check" %}
+              {% fill "label" %}Accepter{% endfill %}
+              {% fill "button_htmx_attrs" %}
+                hx-post="{% url 'reseau:accept-invitation' pk=invitation.pk %}"
+                hx-target="closest .company-card"
+                hx-swap="outerHTML"
+              {% endfill %}
+            {% endcomponent %}
+            {% component "button" modifier="red" icon="x" %}
+              {% fill "label" %}Refuser{% endfill %}
+              {% fill "button_htmx_attrs" %}
+                hx-post="{% url 'reseau:refuse-invitation' pk=invitation.pk %}"
+                hx-confirm="Refuser l'invitation de {{ invitation.sender.raison_sociale }} ?"
+                hx-target="closest .company-card"
+                hx-swap="outerHTML"
+              {% endfill %}
+            {% endcomponent %}
+          </div>
+        </div>
+      {% empty %}
+        {% component "empty_state" icon="mail" message="Aucune invitation reçue." %}{% endcomponent %}
+      {% endfor %}
+    </div>
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : LISTES (tags sur les contacts)
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-listes" role="tabpanel" aria-labelledby="tab-listes">
+
+    <div class="tags-section">
+
+      {# -- Sidebar : liste des tags -- #}
+      <nav class="tags-sidebar" aria-label="Tags de contacts">
+        <div class="tags-sidebar__header">
+          <span class="tags-sidebar__title">Tags</span>
+          {% component "button" modifier="quaternary" variant="very-small" icon="plus" %}
+            {% fill "button_htmx_attrs" %}
+              hx-get="{% url 'reseau:create-tag-modal' %}"
+              hx-target="#modal-container"
+              hx-swap="innerHTML"
+            {% endfill %}
+            {% fill "button_extra_attrs" %}
+              aria-label="Créer un tag"
+            {% endfill %}
+          {% endcomponent %}
+        </div>
+        <ul class="tags-sidebar__list" id="tags-list">
+          {% for tag in tags %}
+            <li class="tags-sidebar__item{% if tag.slug == selected_tag %} tags-sidebar__item--active{% endif %}"
+                hx-get="{% url 'reseau:tag-contacts' slug=tag.slug %}"
+                hx-target="#tag-content"
+                hx-swap="innerHTML"
+                hx-indicator="#tag-loader">
+              {{ tag.name }}
+              <span class="tags-sidebar__count">{{ tag.contacts_count }}</span>
+            </li>
+          {% empty %}
+            <li style="padding: var(--spacing-big); text-align: center; color: var(--grey-blue-dark); font-size: var(--font-size-small);">
+              Aucun tag créé
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+      {# -- Contenu : contacts du tag sélectionné -- #}
+      <div class="tags-content">
+        <div class="loader htmx-indicator" id="tag-loader">
+          {% component "loader" %}{% endcomponent %}
+        </div>
+        <div id="tag-content">
+          {# Rendu par htmx au clic sur un tag #}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : RECHERCHE
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-recherche" role="tabpanel" aria-labelledby="tab-recherche">
+
+    <div class="search-panel__input-wrapper">
+      <label for="global-search" class="screen-reader-only">Recherche globale</label>
+      <input type="search"
+             class="search-panel__input"
+             id="global-search"
+             name="q"
+             placeholder="Rechercher dans les contacts, le réseau, les invitations…"
+             hx-get="{% url 'reseau:search' %}"
+             hx-target="#search-results"
+             hx-trigger="input changed delay:300ms"
+             hx-swap="innerHTML"
+             hx-indicator="#search-loader">
+    </div>
+
+    <div class="loader htmx-indicator" id="search-loader">
+      {% component "loader" %}{% endcomponent %}
+    </div>
+
+    <div id="search-results">
+      {# Résultats groupés rendus par htmx #}
+      {% component "empty_state" icon="search" message="Saisissez un terme pour rechercher dans l'ensemble de votre réseau." %}{% endcomponent %}
+    </div>
+
+  </div>
+
+
+  {# Conteneur pour les modales (htmx target) #}
+  <div id="modal-container"></div>
+
+{% endblock page_content %}

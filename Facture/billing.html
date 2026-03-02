@@ -2,10 +2,12 @@
 {% load component_tags %}
 
 {# ══════════════════════════════════════════════════════════════════════════════
-   M2BPO — Maquette v2 : Page Facturation
+   Maquette Blaise — Page Facturation
    Template Django — zone contenu uniquement (layout géré par base.html)
-   Composants réutilisables : tab_underline, indicator_card, status_tag, filter_bar, empty_state, card, information_row, toggle_row, chip
-   Design system strict : variables, couleurs et typographie du design actuel
+   Sidebar : active_section = 'factures' (dans Paramètres de compte)
+   Topbar : breadcrumb_current = 'Facturation'
+   Composants : tab_underline, indicator_card, status_tag, filter_bar,
+                empty_state, card, information_row, toggle_row, chip
    ══════════════════════════════════════════════════════════════════════════════ #}
 
 {% block page_content %}

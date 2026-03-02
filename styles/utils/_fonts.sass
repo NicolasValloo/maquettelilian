@@ -1,0 +1,74 @@
+// ══════════════════════════════════════════════════════════════════
+// Design System Blaise — Mixins typographiques
+// Polices : DM Sans (texte) + JetBrains Mono (code/montants)
+// Conserve les mêmes noms de mixins que common_m2bpo
+// ══════════════════════════════════════════════════════════════════
+
+@use 'variables'
+@use 'colors'
+
+
+// ── Famille de polices ──────────────────────────────────────────
+$font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif
+$font-mono: 'JetBrains Mono', 'Fira Code', monospace
+
+
+// ── Mixins taille ───────────────────────────────────────────────
+
+@mixin font-size-very-small
+  font-size: variables.$font-size-very-small
+
+@mixin font-size-small
+  font-size: variables.$font-size-small
+
+@mixin font-size-normal
+  font-size: variables.$font-size-normal
+
+@mixin font-size-medium
+  font-size: variables.$font-size-medium
+
+@mixin font-size-big
+  font-size: variables.$font-size-big
+
+
+// ── Mixins graisse ──────────────────────────────────────────────
+
+@mixin font-weight-normal
+  font-weight: variables.$font-weight-normal
+
+@mixin font-weight-medium
+  font-weight: variables.$font-weight-medium
+
+@mixin font-weight-bold
+  font-weight: variables.$font-weight-bold
+
+
+// ── Mixins composites (repris de common_m2bpo) ─────────────────
+
+@mixin font-label
+  font-size: variables.$font-size-small
+  font-weight: variables.$font-weight-medium
+  color: colors.$main-color-lighter
+
+@mixin font-label-bold
+  font-size: variables.$font-size-small
+  font-weight: variables.$font-weight-bold
+  color: colors.$main-color
+
+@mixin font-info-label
+  font-size: variables.$font-size-very-small
+  font-weight: variables.$font-weight-medium
+  color: colors.$main-color-lighter
+  text-transform: uppercase
+  letter-spacing: 0.04em
+
+@mixin font-main
+  font-family: $font-sans
+  font-size: variables.$font-size-normal
+  font-weight: variables.$font-weight-normal
+  color: colors.$main-color
+  line-height: variables.$line-height-normal
+
+@mixin helptext
+  font-size: variables.$font-size-small
+  color: colors.$grey-blue-dark

@@ -1,35 +1,38 @@
 // ══════════════════════════════════════════════════════════════════
-// Composant : indicator_card — carte indicateur chiffré
+// Composant : indicator_card — carte indicateur chiffré (KPI)
+// Design system Blaise : shadow-card, valeur en font-mono,
+// taille 22px pour les montants
 // ══════════════════════════════════════════════════════════════════
 
-@use 'common_m2bpo/css/utils/colors'
-@use 'common_m2bpo/css/utils/variables'
-@use 'common_m2bpo/css/utils/fonts'
+@use '../../styles/utils/colors'
+@use '../../styles/utils/variables'
+@use '../../styles/utils/fonts'
 
 
 .indicator-card
   background: colors.$white
   border-radius: variables.$border-radius-medium
-  border: 1px solid colors.$main-border
-  padding: variables.$spacing-big
+  box-shadow: colors.$shadow-card
+  padding: 16px 20px
   flex: 1
   min-width: 0
 
   &__label
-    @include fonts.font-size-very-small
+    @include fonts.font-size-small
     color: colors.$main-color-lighter
     @include fonts.font-weight-medium
-    margin-bottom: variables.$spacing-small
+    margin-bottom: 6px
     text-transform: uppercase
     letter-spacing: 0.04em
 
   &__value
-    @include fonts.font-size-medium
-    @include fonts.font-weight-bold
-    color: colors.$main-color
+    font-size: 22px
+    font-weight: 700
+    color: colors.$black
+    font-family: fonts.$font-mono
     letter-spacing: -0.02em
 
   &__subtitle
-    @include fonts.font-size-very-small
-    color: colors.$main-color-lighter
-    margin-top: variables.$spacing-small
+    @include fonts.font-size-small
+    color: colors.$grey-dark
+    margin-top: variables.$spacing-very-small

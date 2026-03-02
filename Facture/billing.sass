@@ -1,26 +1,23 @@
 // ══════════════════════════════════════════════════════════════════════════════
-// M2BPO — Page Facturation : styles spécifiques à cette page
+// Maquette Blaise — Page Facturation : styles spécifiques à cette page
+// Design system Blaise : DM Sans, palette neutral, shadow-card
 // Les composants réutilisables sont dans components/
 // Les utilitaires globaux sont dans styles/
 // ══════════════════════════════════════════════════════════════════════════════
 
-@use 'common_m2bpo/css/utils/colors'
-@use 'common_m2bpo/css/utils/variables'
-@use 'common_m2bpo/css/utils/fonts'
-@use 'common_m2bpo/css/utils/media_queries'
-
-// Taille du dot du badge — pas de variable design system correspondante
-$page-header-badge-dot-size: 6px
+@use '../styles/utils/colors'
+@use '../styles/utils/variables'
+@use '../styles/utils/fonts'
+@use '../styles/utils/media_queries'
 
 
 // ── Page header — extensions spécifiques facturation ────────────────────
-// Le bloc .page-header de base vient de _page_header.sass du design actuel.
-// Ici on ne définit que les sous-éléments spécifiques à cette page.
 
 .page-header__title
-  @include fonts.font-size-medium
-  @include fonts.font-weight-bold
-  color: colors.$main-color
+  font-size: 22px
+  font-weight: 700
+  color: colors.$black
+  letter-spacing: -0.02em
   display: flex
   align-items: center
   gap: variables.$spacing-medium
@@ -28,23 +25,24 @@ $page-header-badge-dot-size: 6px
 .page-header__subtitle
   @include fonts.font-size-normal
   color: colors.$main-color-lighter
-  margin-top: variables.$spacing-small
+  margin-top: variables.$spacing-very-small
 
 .page-header__badge
   display: inline-flex
   align-items: center
-  gap: $page-header-badge-dot-size
+  gap: 6px
   background-color: colors.$green-light
   color: colors.$green
   @include fonts.font-size-small
   @include fonts.font-weight-bold
-  padding: variables.$spacing-very-small variables.$spacing-medium
-  border-radius: variables.$border-radius-big
+  padding: 3px 10px
+  border-radius: variables.$border-radius-very-big
+  margin-left: variables.$spacing-medium
 
   &::before
     content: ""
-    width: $page-header-badge-dot-size
-    height: $page-header-badge-dot-size
+    width: 6px
+    height: 6px
     border-radius: 50%
     background: currentColor
 
@@ -52,8 +50,8 @@ $page-header-badge-dot-size: 6px
 // ── Indicator card bar — ligne d'indicateurs chiffrés ────────────────────
 .indicator-card-bar
   display: flex
-  gap: variables.$spacing-big
-  margin-bottom: variables.$spacing-big
+  gap: 16px
+  margin-bottom: 20px
 
   @include media_queries.lte-tablet
     flex-direction: column
@@ -63,7 +61,7 @@ $page-header-badge-dot-size: 6px
 .preferences-grid
   display: grid
   grid-template-columns: 1fr 1fr
-  gap: variables.$spacing-big
+  gap: 20px
 
   @include media_queries.lte-laptop
     grid-template-columns: 1fr
@@ -73,16 +71,16 @@ $page-header-badge-dot-size: 6px
 .date-pair
   display: flex
   flex-direction: column
-  gap: variables.$spacing-very-small
+  gap: 2px
 
   &__item
     @include fonts.font-size-small
     display: flex
     align-items: center
-    gap: variables.$spacing-small
+    gap: variables.$spacing-very-small
 
     &--secondary
-      color: colors.$main-color-lighter
+      color: colors.$grey-dark
 
 
 // ── Overlay du drawer — fond semi-transparent ─────────────────────────

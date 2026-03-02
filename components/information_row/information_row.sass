@@ -1,13 +1,15 @@
 // ══════════════════════════════════════════════════════════════════
 // Composant : information_row — paire label/valeur
+// Design system Blaise : label en 13px, séparateur neutral-100,
+// padding 12px 0
 // ══════════════════════════════════════════════════════════════════
 
-@use 'common_m2bpo/css/utils/colors'
-@use 'common_m2bpo/css/utils/variables'
-@use 'common_m2bpo/css/utils/fonts'
-@use 'common_m2bpo/css/utils/media_queries'
+@use '../../styles/utils/colors'
+@use '../../styles/utils/variables'
+@use '../../styles/utils/fonts'
+@use '../../styles/utils/media_queries'
 
-// Largeur fixe du label — pas de variable design system correspondante
+// Largeur fixe du label
 $information-row-label-width: 180px
 
 
@@ -17,11 +19,11 @@ $information-row-label-width: 180px
   padding: variables.$spacing-medium 0
 
   & + &
-    border-top: 1px solid colors.$main-border
+    border-top: 1px solid colors.$grey-light
 
   &__label
     flex: 0 0 $information-row-label-width
-    @include fonts.font-size-small
+    font-size: 13px
     color: colors.$main-color-lighter
     @include fonts.font-weight-medium
 
@@ -36,6 +38,11 @@ $information-row-label-width: 180px
       @include fonts.font-size-very-small
       color: colors.$main-color-lighter
       margin-top: variables.$spacing-very-small
+
+    &--mono
+      font-family: fonts.$font-mono
+      font-size: 13px
+      letter-spacing: 0.02em
 
   @include media_queries.lte-tablet
     flex-direction: column

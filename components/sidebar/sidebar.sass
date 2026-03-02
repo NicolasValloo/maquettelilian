@@ -1,0 +1,426 @@
+// ══════════════════════════════════════════════════════════════════
+// Composant : sidebar — menu latéral collapse/expand
+// Design system Blaise : fond primary (#1a3a5c), accent (#0073e6)
+// Collapsée : 58px — Étendue : 272px
+// ══════════════════════════════════════════════════════════════════
+
+@use '../../styles/utils/colors'
+@use '../../styles/utils/variables'
+@use '../../styles/utils/fonts'
+
+// ── Variables locales sidebar ──
+$sidebar-collapsed-width: 58px
+$sidebar-expanded-width: 272px
+$sidebar-background: colors.$navigation-background
+$sidebar-hover: rgba(255, 255, 255, 0.06)
+$sidebar-active-background: rgba(0, 115, 230, 0.14)
+$sidebar-accent: colors.$blue
+$sidebar-text: colors.$navigation-color
+$sidebar-text-active: colors.$navigation-color-active
+$sidebar-text-hover: colors.$navigation-color-hover
+$sidebar-divider: rgba(255, 255, 255, 0.07)
+$sidebar-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1)
+
+
+// ── Overlay ──
+.sidebar-overlay
+  position: fixed
+  inset: 0
+  background: rgba(10, 14, 28, 0.35)
+  backdrop-filter: blur(3px)
+  z-index: 90
+  opacity: 0
+  pointer-events: none
+  transition: opacity $sidebar-transition
+
+  &--active
+    opacity: 1
+    pointer-events: auto
+
+
+// ── Sidebar principale ──
+.sidebar
+  position: fixed
+  top: 0
+  left: 0
+  width: $sidebar-collapsed-width
+  height: 100vh
+  background: $sidebar-background
+  z-index: 100
+  display: flex
+  flex-direction: column
+  transition: width $sidebar-transition
+  overflow: hidden
+
+  &--expanded
+    width: $sidebar-expanded-width
+
+
+  // ── Header ──
+  &__header
+    height: 52px
+    display: flex
+    align-items: center
+    padding: 0 8px
+    border-bottom: 1px solid $sidebar-divider
+    flex-shrink: 0
+    gap: 10px
+    overflow: hidden
+
+  &__hamburger
+    width: 42px
+    height: 42px
+    border: none
+    background: transparent
+    color: $sidebar-text
+    border-radius: variables.$border-radius-medium
+    display: grid
+    place-items: center
+    cursor: pointer
+    flex-shrink: 0
+    transition: color $sidebar-transition, background $sidebar-transition
+
+    &:hover
+      color: $sidebar-text-active
+      background: $sidebar-hover
+
+    svg
+      width: 20px
+      height: 20px
+
+  &__brand
+    display: flex
+    align-items: center
+    gap: 9px
+    opacity: 0
+    transition: opacity 0.18s
+    white-space: nowrap
+    pointer-events: none
+
+    .sidebar--expanded &
+      opacity: 1
+      pointer-events: auto
+
+  &__logo-box
+    width: 32px
+    height: 32px
+    background: linear-gradient(135deg, $sidebar-accent, #6c5ce7)
+    border-radius: 9px
+    display: grid
+    place-items: center
+    color: colors.$white
+    font-weight: 800
+    font-size: 11px
+    letter-spacing: -0.5px
+    flex-shrink: 0
+
+  &__brand-name
+    font-weight: 700
+    font-size: 1.05rem
+    color: colors.$white
+    letter-spacing: -0.3px
+
+  &__close
+    width: 30px
+    height: 30px
+    border: none
+    background: transparent
+    color: $sidebar-text
+    border-radius: variables.$border-radius-small
+    display: grid
+    place-items: center
+    cursor: pointer
+    margin-left: auto
+    flex-shrink: 0
+    opacity: 0
+    pointer-events: none
+    transition: opacity 0.18s, color $sidebar-transition, background $sidebar-transition
+
+    .sidebar--expanded &
+      opacity: 1
+      pointer-events: auto
+
+    &:hover
+      color: $sidebar-text-active
+      background: $sidebar-hover
+
+    svg
+      width: 16px
+      height: 16px
+
+
+  // ── Zone de navigation scrollable ──
+  &__nav
+    flex: 1
+    overflow-y: auto
+    overflow-x: hidden
+    padding: 8px 0
+    scrollbar-width: none
+
+    &::-webkit-scrollbar
+      display: none
+
+
+  // ── Label de section ──
+  &__section-label
+    padding: 14px 18px 5px
+    font-size: 0.65rem
+    font-weight: 700
+    color: $sidebar-text
+    letter-spacing: 0.08em
+    text-transform: uppercase
+    white-space: nowrap
+    opacity: 0
+    transition: opacity 0.18s
+
+    .sidebar--expanded &
+      opacity: 1
+
+
+  // ── Item de navigation ──
+  &__item
+    position: relative
+
+
+  // ── Lien de navigation ──
+  &__link
+    display: flex
+    align-items: center
+    gap: 12px
+    height: 42px
+    padding: 0 8px
+    color: $sidebar-text
+    text-decoration: none
+    font-weight: 500
+    font-size: 0.88rem
+    cursor: pointer
+    border: none
+    background: none
+    width: 100%
+    text-align: left
+    font-family: inherit
+    transition: color $sidebar-transition, background $sidebar-transition
+    white-space: nowrap
+    overflow: hidden
+
+    &:hover
+      color: $sidebar-text-hover
+      background: $sidebar-hover
+
+    &--active
+      color: $sidebar-accent
+      background: $sidebar-active-background
+
+      &::before
+        content: ""
+        position: absolute
+        left: 0
+        top: 50%
+        transform: translateY(-50%)
+        width: 3px
+        height: 22px
+        background: $sidebar-accent
+        border-radius: 0 3px 3px 0
+
+
+  // ── Icône dans un lien ──
+  &__icon
+    width: 42px
+    height: 42px
+    display: grid
+    place-items: center
+    flex-shrink: 0
+
+    svg
+      width: 20px
+      height: 20px
+
+    // Dot de notification (état collapsé)
+    &--dot
+      position: relative
+
+      &::after
+        content: ""
+        position: absolute
+        top: 8px
+        right: 8px
+        width: 7px
+        height: 7px
+        background: colors.$red
+        border: 2px solid $sidebar-background
+        border-radius: 50%
+
+
+  // ── Label texte ──
+  &__label
+    flex: 1
+    min-width: 0
+    opacity: 0
+    transition: opacity 0.18s
+
+    .sidebar--expanded &
+      opacity: 1
+
+
+  // ── Badge compteur ──
+  &__badge
+    background: $sidebar-accent
+    color: colors.$white
+    font-size: 0.68rem
+    font-weight: 700
+    padding: 1px 7px
+    border-radius: 9px
+    min-width: 26px
+    text-align: center
+    opacity: 0
+    transition: opacity 0.18s
+    flex-shrink: 0
+
+    .sidebar--expanded &
+      opacity: 1
+
+
+  // ── Chevron accordéon ──
+  &__chevron
+    width: 14px
+    height: 14px
+    flex-shrink: 0
+    transition: transform $sidebar-transition, opacity 0.18s
+    opacity: 0
+
+    .sidebar--expanded &
+      opacity: 1
+
+    .sidebar__item--expanded > .sidebar__link &
+      transform: rotate(90deg)
+
+
+  // ── Sous-menu ──
+  &__sub
+    overflow: hidden
+    max-height: 0
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+
+    .sidebar__item--expanded > &
+      max-height: 400px
+
+  &__sub-link
+    display: flex
+    align-items: center
+    gap: 8px
+    padding: 7px 18px 7px 62px
+    color: $sidebar-text
+    text-decoration: none
+    font-size: 0.82rem
+    white-space: nowrap
+    opacity: 0
+    transition: color $sidebar-transition, background $sidebar-transition, opacity 0.18s
+
+    .sidebar--expanded &
+      opacity: 1
+
+    &::before
+      content: ""
+      width: 5px
+      height: 5px
+      border-radius: 50%
+      background: $sidebar-text
+      opacity: 0.3
+      flex-shrink: 0
+      transition: opacity $sidebar-transition, background $sidebar-transition
+
+    &:hover
+      color: $sidebar-text-active
+      background: $sidebar-hover
+
+      &::before
+        opacity: 0.7
+
+    &--active
+      color: $sidebar-accent
+
+      &::before
+        background: $sidebar-accent
+        opacity: 1
+
+  &__sub-badge
+    margin-left: auto
+    background: rgba(0, 115, 230, 0.12)
+    color: $sidebar-accent
+    font-size: 0.68rem
+    font-weight: 600
+    padding: 1px 7px
+    border-radius: 7px
+    min-width: 30px
+    text-align: center
+
+
+  // ── Séparateur ──
+  &__divider
+    height: 1px
+    background: $sidebar-divider
+    margin: 6px 16px
+
+
+  // ── Footer utilisateur ──
+  &__footer
+    padding: 12px 8px
+    border-top: 1px solid $sidebar-divider
+    flex-shrink: 0
+    display: flex
+    align-items: center
+    gap: 10px
+    overflow: hidden
+
+  &__avatar
+    width: 36px
+    height: 36px
+    border-radius: variables.$border-radius-medium
+    background: linear-gradient(135deg, #6c5ce7, $sidebar-accent)
+    display: grid
+    place-items: center
+    color: colors.$white
+    font-weight: 700
+    font-size: 0.78rem
+    flex-shrink: 0
+    margin-left: 3px
+
+  &__user-info
+    opacity: 0
+    transition: opacity 0.18s
+    white-space: nowrap
+
+    .sidebar--expanded &
+      opacity: 1
+
+  &__user-name
+    color: $sidebar-text-active
+    font-weight: 600
+    font-size: 0.85rem
+
+  &__user-role
+    color: $sidebar-text
+    font-size: 0.72rem
+
+
+// ── Tooltip (état collapsé uniquement) ──
+.sidebar__link[data-tip]::after
+  content: attr(data-tip)
+  position: absolute
+  left: calc($sidebar-collapsed-width + 6px)
+  top: 50%
+  transform: translateY(-50%)
+  background: colors.$black
+  color: colors.$white
+  font-size: 0.75rem
+  font-weight: 500
+  padding: 5px 10px
+  border-radius: variables.$border-radius-small
+  white-space: nowrap
+  pointer-events: none
+  opacity: 0
+  transition: opacity 0.12s
+  z-index: 300
+
+.sidebar:not(.sidebar--expanded) .sidebar__link[data-tip]:hover::after
+  opacity: 1

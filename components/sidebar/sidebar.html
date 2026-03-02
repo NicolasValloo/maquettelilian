@@ -1,0 +1,207 @@
+{# ══════════════════════════════════════════════════════════════════
+   Composant : sidebar
+   Menu latéral collapse/expand — navigation principale M2BPO
+   Design system Blaise — DM Sans, palette primary #1a3a5c
+   ══════════════════════════════════════════════════════════════════ #}
+
+{# -- Overlay (fond sombre quand sidebar étendue) -- #}
+<div class="sidebar-overlay" id="sidebar-overlay" role="presentation"></div>
+
+{# -- Sidebar -- #}
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Navigation principale">
+
+  {# ── Header : hamburger + brand + close ── #}
+  <div class="sidebar__header">
+    <button class="sidebar__hamburger" id="sidebar-toggle"
+            type="button"
+            aria-label="Ouvrir le menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="15" y2="12"/>
+        <line x1="3" y1="18" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <div class="sidebar__brand">
+      <div class="sidebar__logo-box">M2</div>
+      <span class="sidebar__brand-name">M2BPO</span>
+    </div>
+    <button class="sidebar__close" id="sidebar-close"
+            type="button"
+            aria-label="Fermer le menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  {# ── Navigation scrollable ── #}
+  <nav class="sidebar__nav">
+
+    {# -- Section : Navigation -- #}
+    <div class="sidebar__section-label">Navigation</div>
+
+    {# -- Multi comptes -- #}
+    <div class="sidebar__item sidebar__item--accordion">
+      <button class="sidebar__link" data-sidebar-accordion data-tip="Multi comptes" type="button">
+        <span class="sidebar__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+            <path d="M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </span>
+        <span class="sidebar__label">Multi comptes</span>
+        <svg class="sidebar__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+      <div class="sidebar__sub">
+        <a href="#" class="sidebar__sub-link">Nouveaux <span class="sidebar__sub-badge">13</span></a>
+        <a href="#" class="sidebar__sub-link">Propositions</a>
+        <a href="#" class="sidebar__sub-link">Pré-Sélection</a>
+        <a href="#" class="sidebar__sub-link">En cours <span class="sidebar__sub-badge">1</span></a>
+      </div>
+    </div>
+
+    {# -- Appels d'offres -- #}
+    <div class="sidebar__item sidebar__item--accordion{% if is_appels_active %} sidebar__item--expanded{% endif %}">
+      <button class="sidebar__link{% if is_appels_active %} sidebar__link--active{% endif %}"
+              data-sidebar-accordion data-tip="Appels d'offres" type="button">
+        <span class="sidebar__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </span>
+        <span class="sidebar__label">Appels d'offres</span>
+        <span class="sidebar__badge">2 231</span>
+        <svg class="sidebar__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+      <div class="sidebar__sub">
+        <a href="#" class="sidebar__sub-link{% if active_section == 'appels_nouveaux' %} sidebar__sub-link--active{% endif %}">
+          Nouveaux <span class="sidebar__sub-badge">2 231</span>
+        </a>
+        <a href="#" class="sidebar__sub-link{% if active_section == 'appels_propositions' %} sidebar__sub-link--active{% endif %}">Propositions</a>
+        <a href="#" class="sidebar__sub-link{% if active_section == 'appels_preselection' %} sidebar__sub-link--active{% endif %}">Pré-Sélection</a>
+        <a href="#" class="sidebar__sub-link{% if active_section == 'appels_encours' %} sidebar__sub-link--active{% endif %}">
+          En cours <span class="sidebar__sub-badge">1</span>
+        </a>
+        <a href="#" class="sidebar__sub-link{% if active_section == 'appels_archive' %} sidebar__sub-link--active{% endif %}">Archive</a>
+        <a href="#" class="sidebar__sub-link{% if active_section == 'appels_corbeille' %} sidebar__sub-link--active{% endif %}">Corbeille</a>
+      </div>
+    </div>
+
+    {# -- Messagerie -- #}
+    <div class="sidebar__item">
+      <a href="{% url 'messagerie:index' %}"
+         class="sidebar__link{% if active_section == 'messagerie' %} sidebar__link--active{% endif %}"
+         data-tip="Messagerie">
+        <span class="sidebar__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </span>
+        <span class="sidebar__label">Messagerie</span>
+      </a>
+    </div>
+
+    {# -- Notifications -- #}
+    <div class="sidebar__item sidebar__item--accordion">
+      <button class="sidebar__link" data-sidebar-accordion data-tip="Notifications" type="button">
+        <span class="sidebar__icon sidebar__icon--dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0"/>
+          </svg>
+        </span>
+        <span class="sidebar__label">Notifications</span>
+        <svg class="sidebar__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+      <div class="sidebar__sub">
+        <a href="#" class="sidebar__sub-link">Alertes</a>
+        <a href="#" class="sidebar__sub-link">Historique</a>
+        <a href="#" class="sidebar__sub-link">Préférences</a>
+      </div>
+    </div>
+
+    <div class="sidebar__divider"></div>
+    <div class="sidebar__section-label">Gestion</div>
+
+    {# -- Contacts → lien direct vers Réseau (pas de sous-onglets) -- #}
+    <div class="sidebar__item">
+      <a href="{% url 'reseau:index' %}"
+         class="sidebar__link{% if active_section == 'contacts' %} sidebar__link--active{% endif %}"
+         data-tip="Contacts">
+        <span class="sidebar__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M16 21v-2a4 4 0 00-8 0v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        <span class="sidebar__label">Contacts</span>
+      </a>
+    </div>
+
+    {# -- Paramètres de compte (avec Bibliothèque ajoutée) -- #}
+    <div class="sidebar__item sidebar__item--accordion{% if is_settings_active %} sidebar__item--expanded{% endif %}">
+      <button class="sidebar__link{% if is_settings_active %} sidebar__link--active{% endif %}"
+              data-sidebar-accordion data-tip="Paramètres" type="button">
+        <span class="sidebar__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+          </svg>
+        </span>
+        <span class="sidebar__label">Paramètres de compte</span>
+        <svg class="sidebar__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+      <div class="sidebar__sub">
+        <a href="{% url 'settings:coordonnees' %}"
+           class="sidebar__sub-link{% if active_section == 'coordonnees' %} sidebar__sub-link--active{% endif %}">Coordonnées</a>
+        <a href="{% url 'settings:preferences' %}"
+           class="sidebar__sub-link{% if active_section == 'preferences' %} sidebar__sub-link--active{% endif %}">Préférences</a>
+        <a href="{% url 'settings:utilisateurs' %}"
+           class="sidebar__sub-link{% if active_section == 'utilisateurs' %} sidebar__sub-link--active{% endif %}">Utilisateurs</a>
+        <a href="{% url 'bibliotheque:index' %}"
+           class="sidebar__sub-link{% if active_section == 'bibliotheque' %} sidebar__sub-link--active{% endif %}">Bibliothèque</a>
+        <a href="{% url 'billing:index' %}"
+           class="sidebar__sub-link{% if active_section == 'factures' %} sidebar__sub-link--active{% endif %}">Factures</a>
+      </div>
+    </div>
+
+    <div class="sidebar__divider"></div>
+
+    {# -- Nous contacter -- #}
+    <div class="sidebar__item">
+      <a href="#" class="sidebar__link" data-tip="Nous contacter">
+        <span class="sidebar__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </span>
+        <span class="sidebar__label">Nous contacter</span>
+      </a>
+    </div>
+  </nav>
+
+  {# ── Footer : avatar utilisateur ── #}
+  <div class="sidebar__footer">
+    <div class="sidebar__avatar">{{ user_initials }}</div>
+    <div class="sidebar__user-info">
+      <div class="sidebar__user-name">{{ user_name }}</div>
+      <div class="sidebar__user-role">{{ user_role }}</div>
+    </div>
+  </div>
+</aside>

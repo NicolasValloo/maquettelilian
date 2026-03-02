@@ -1,20 +1,22 @@
 // ══════════════════════════════════════════════════════════════════
 // Composant : toggle_row — ligne paramètre avec switch
+// Design system Blaise : padding 14px 0, séparateur neutral-100,
+// description en neutral-500
 // ══════════════════════════════════════════════════════════════════
 
-@use 'common_m2bpo/css/utils/colors'
-@use 'common_m2bpo/css/utils/variables'
-@use 'common_m2bpo/css/utils/fonts'
+@use '../../styles/utils/colors'
+@use '../../styles/utils/variables'
+@use '../../styles/utils/fonts'
 
 
 .toggle-row
   display: flex
   align-items: center
   justify-content: space-between
-  padding: variables.$spacing-medium 0
+  padding: 14px 0
 
   & + &
-    border-top: 1px solid colors.$main-border
+    border-top: 1px solid colors.$grey-light
 
   &__label
     @include fonts.font-size-normal
@@ -24,4 +26,33 @@
   &__description
     @include fonts.font-size-small
     color: colors.$main-color-lighter
-    margin-top: variables.$spacing-very-small
+    margin-top: 2px
+
+
+// ── Toggle switch ──
+.toggle
+  width: 40px
+  height: 22px
+  background: colors.$grey-blue
+  border-radius: 11px
+  position: relative
+  cursor: pointer
+  transition: variables.$transition-default
+  flex-shrink: 0
+
+  &--on
+    background: colors.$blue
+
+  &__thumb
+    width: 18px
+    height: 18px
+    background: colors.$white
+    border-radius: 50%
+    position: absolute
+    top: 2px
+    left: 2px
+    transition: variables.$transition-default
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15)
+
+  &--on &__thumb
+    left: 20px

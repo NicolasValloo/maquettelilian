@@ -1,16 +1,17 @@
 // ══════════════════════════════════════════════════════════════════
 // Composant : empty_state — message d'état vide ou d'erreur
+// Design system Blaise : couleur neutral-400, padding 48/24
 // ══════════════════════════════════════════════════════════════════
 
-@use 'common_m2bpo/css/utils/colors'
-@use 'common_m2bpo/css/utils/variables'
-@use 'common_m2bpo/css/utils/fonts'
+@use '../../styles/utils/colors'
+@use '../../styles/utils/variables'
+@use '../../styles/utils/fonts'
 
 
 .empty-state
   text-align: center
   padding: variables.$spacing-very-big variables.$spacing-big
-  color: colors.$main-color-lighter
+  color: colors.$grey-dark
 
   &__icon
     width: 40px
@@ -33,7 +34,6 @@
 
 
 // ── Error state — conteneur pour l'état erreur htmx ──
-// Utilisé comme wrapper autour d'un empty_state--error
 // Masqué par défaut, affiché par les événements htmx
 .error-state
   display: none

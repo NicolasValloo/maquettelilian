@@ -1,19 +1,20 @@
 // ══════════════════════════════════════════════════════════════════
 // Composant : filter_bar — barre de filtres
-// Selects basés sur select.css du design actuel
+// Design system Blaise : fond blanc pour les selects,
+// bordure neutral-200, gap 10px
 // ══════════════════════════════════════════════════════════════════
 
-@use 'common_m2bpo/css/utils/colors'
-@use 'common_m2bpo/css/utils/variables'
-@use 'common_m2bpo/css/utils/fonts'
-@use 'common_m2bpo/css/utils/media_queries'
+@use '../../styles/utils/colors'
+@use '../../styles/utils/variables'
+@use '../../styles/utils/fonts'
+@use '../../styles/utils/media_queries'
 
 
 .filter-bar
   display: flex
   align-items: center
-  gap: variables.$spacing-medium
-  margin-bottom: variables.$spacing-big
+  gap: 10px
+  margin-bottom: 16px
 
   @include media_queries.lte-mobile
     flex-wrap: wrap
@@ -22,24 +23,23 @@
     flex: 1
 
   &__select
-    @include fonts.font-size-normal
-    padding: variables.$spacing-small 28px variables.$spacing-small variables.$spacing-medium
-    border: 1px solid colors.$grey-blue-dark
+    font-size: 13px
+    padding: 6px 30px 6px 10px
+    border: 1px solid colors.$grey-blue
     border-radius: variables.$border-radius-small
-    background: colors.$blue-very-light
+    background: colors.$white
     color: colors.$main-color-light
     cursor: pointer
     appearance: none
-    // Chevron SVG inline — même couleur que $grey-blue-dark
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239A9DB7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    // Chevron SVG inline — couleur neutral-500
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
     background-repeat: no-repeat
-    background-position: right variables.$spacing-medium center
+    background-position: right 10px center
     outline: none
     transition: border-color 0.2s
 
     &:hover
-      background-color: colors.$grey-blue
-      border-color: colors.$grey-blue
+      border-color: colors.$grey-blue-dark
 
     &:focus
       border-color: colors.$blue

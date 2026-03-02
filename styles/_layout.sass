@@ -1,0 +1,53 @@
+// ══════════════════════════════════════════════════════════════════
+// Style : layout — structure globale de page
+// Design system Blaise : sidebar 58px, topbar 56px, fond #f5f7fa
+// ══════════════════════════════════════════════════════════════════
+
+@use 'utils/colors'
+@use 'utils/variables'
+@use 'utils/fonts'
+
+
+// ── Reset et base typographique ──
+*,
+*::before,
+*::after
+  box-sizing: border-box
+  margin: 0
+  padding: 0
+
+body
+  font-family: fonts.$font-sans
+  background: colors.$main-background
+  color: colors.$main-color
+  line-height: variables.$line-height-normal
+  -webkit-font-smoothing: antialiased
+  min-height: 100vh
+  overflow-x: hidden
+
+
+// ── Zone de contenu principal ──
+// Décalée à droite de la sidebar (58px) et en bas de la topbar (56px)
+.layout-main
+  margin-left: 58px
+  margin-top: variables.$header-height
+  min-height: calc(100vh - #{variables.$header-height})
+
+
+// ── Page — conteneur de contenu avec max-width ──
+.page
+  padding: 28px 32px 48px
+  max-width: 1280px
+  width: 100%
+
+
+// ── Page header — bloc commun à toutes les pages ──
+.page-header
+  display: flex
+  align-items: flex-start
+  justify-content: space-between
+  margin-bottom: 28px
+
+.page-header__content-container
+  flex: 1
+  min-width: 0

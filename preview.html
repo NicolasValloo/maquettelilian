@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maquette Blaise — Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ══════════════════════════════════════════════════════════════════
+       PREVIEW — Compilation manuelle des styles Sass en CSS
+       Design System Blaise : DM Sans, palette neutral, shadow-card
+       ══════════════════════════════════════════════════════════════════ */
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      color: #1f2937;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .screen-reader-only {
+      position: absolute; width: 1px; height: 1px; padding: 0;
+      margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    button { font-family: inherit; }
+    input, select { font-family: inherit; }
+    table { border-collapse: collapse; }
+
+    /* ── Layout ── */
+    .layout-main { margin-left: 58px; margin-top: 56px; min-height: calc(100vh - 56px); }
+    .page { padding: 28px 32px 48px; max-width: 1280px; width: 100%; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       SIDEBAR
+       ══════════════════════════════════════════════════════════════════ */
+    .sidebar-overlay {
+      position: fixed; inset: 0; background: rgba(10,14,28,0.35);
+      backdrop-filter: blur(3px); z-index: 90; opacity: 0;
+      pointer-events: none; transition: opacity 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+    .sidebar-overlay--active { opacity: 1; pointer-events: auto; }
+
+    .sidebar {
+      position: fixed; top: 0; left: 0; width: 58px; height: 100vh;
+      background: #1a3a5c; z-index: 100; display: flex; flex-direction: column;
+      transition: width 0.28s cubic-bezier(0.4,0,0.2,1); overflow: hidden;
+    }
+    .sidebar--expanded { width: 272px; }
+
+    .sidebar__header {
+      height: 52px; display: flex; align-items: center; padding: 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+      gap: 10px; overflow: hidden;
+    }
+    .sidebar__hamburger {
+      width: 42px; height: 42px; border: none; background: transparent;
+      color: rgba(255,255,255,0.5); border-radius: 10px; display: grid;
+      place-items: center; cursor: pointer; flex-shrink: 0;
+      transition: color 0.28s, background 0.28s;
+    }
+    .sidebar__hamburger:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .sidebar__hamburger svg { width: 20px; height: 20px; }
+
+    .sidebar__brand {
+      display: flex; align-items: center; gap: 9px; opacity: 0;
+      transition: opacity 0.18s; white-space: nowrap; pointer-events: none;
+    }
+    .sidebar--expanded .sidebar__brand { opacity: 1; pointer-events: auto; }
+
+    .sidebar__logo-box {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #0073e6, #6c5ce7);
+      border-radius: 9px; display: grid; place-items: center;
+      color: #fff; font-weight: 800; font-size: 11px;
+      letter-spacing: -0.5px; flex-shrink: 0;
+    }
+    .sidebar__brand-name {
+      font-weight: 700; font-size: 1.05rem; color: #fff; letter-spacing: -0.3px;
+    }
+    .sidebar__close {
+      width: 30px; height: 30px; border: none; background: transparent;
+      color: rgba(255,255,255,0.5); border-radius: 6px; display: grid;
+      place-items: center; cursor: pointer; margin-left: auto; flex-shrink: 0;
+      opacity: 0; pointer-events: none; transition: opacity 0.18s, color 0.28s, background 0.28s;
+    }
+    .sidebar--expanded .sidebar__close { opacity: 1; pointer-events: auto; }
+    .sidebar__close:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .sidebar__close svg { width: 16px; height: 16px; }
+
+    .sidebar__nav {
+      flex: 1; overflow-y: auto; overflow-x: hidden; padding: 8px 0;
+      scrollbar-width: none;
+    }
+    .sidebar__nav::-webkit-scrollbar { display: none; }
+
+    .sidebar__section-label {
+      padding: 14px 18px 5px; font-size: 0.65rem; font-weight: 700;
+      color: rgba(255,255,255,0.5); letter-spacing: 0.08em;
+      text-transform: uppercase; white-space: nowrap; opacity: 0; transition: opacity 0.18s;
+    }
+    .sidebar--expanded .sidebar__section-label { opacity: 1; }
+
+    .sidebar__item { position: relative; }
+
+    .sidebar__link {
+      display: flex; align-items: center; gap: 12px; height: 42px;
+      padding: 0 8px; color: rgba(255,255,255,0.5); text-decoration: none;
+      font-weight: 500; font-size: 0.88rem; cursor: pointer; border: none;
+      background: none; width: 100%; text-align: left; font-family: inherit;
+      transition: color 0.28s, background 0.28s; white-space: nowrap; overflow: hidden;
+    }
+    .sidebar__link:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); }
+    .sidebar__link--active {
+      color: #0073e6; background: rgba(0,115,230,0.14);
+    }
+    .sidebar__link--active::before {
+      content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+      width: 3px; height: 22px; background: #0073e6; border-radius: 0 3px 3px 0;
+    }
+
+    .sidebar__icon {
+      width: 42px; height: 42px; display: grid; place-items: center; flex-shrink: 0;
+    }
+    .sidebar__icon svg { width: 20px; height: 20px; }
+    .sidebar__icon--dot { position: relative; }
+    .sidebar__icon--dot::after {
+      content: ""; position: absolute; top: 8px; right: 8px;
+      width: 7px; height: 7px; background: #dc2626;
+      border: 2px solid #1a3a5c; border-radius: 50%;
+    }
+
+    .sidebar__label {
+      flex: 1; min-width: 0; opacity: 0; transition: opacity 0.18s;
+    }
+    .sidebar--expanded .sidebar__label { opacity: 1; }
+
+    .sidebar__badge {
+      background: #0073e6; color: #fff; font-size: 0.68rem; font-weight: 700;
+      padding: 1px 7px; border-radius: 9px; min-width: 26px; text-align: center;
+      opacity: 0; transition: opacity 0.18s; flex-shrink: 0;
+    }
+    .sidebar--expanded .sidebar__badge { opacity: 1; }
+
+    .sidebar__chevron {
+      width: 14px; height: 14px; flex-shrink: 0;
+      transition: transform 0.28s, opacity 0.18s; opacity: 0;
+    }
+    .sidebar--expanded .sidebar__chevron { opacity: 1; }
+    .sidebar__item--expanded > .sidebar__link .sidebar__chevron { transform: rotate(90deg); }
+
+    .sidebar__sub {
+      overflow: hidden; max-height: 0;
+      transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .sidebar__item--expanded > .sidebar__sub { max-height: 400px; }
+
+    .sidebar__sub-link {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 18px 7px 62px; color: rgba(255,255,255,0.5);
+      text-decoration: none; font-size: 0.82rem; white-space: nowrap;
+      opacity: 0; transition: color 0.28s, background 0.28s, opacity 0.18s;
+    }
+    .sidebar--expanded .sidebar__sub-link { opacity: 1; }
+    .sidebar__sub-link::before {
+      content: ""; width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,0.5); opacity: 0.3; flex-shrink: 0;
+      transition: opacity 0.28s, background 0.28s;
+    }
+    .sidebar__sub-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .sidebar__sub-link:hover::before { opacity: 0.7; }
+    .sidebar__sub-link--active { color: #0073e6; }
+    .sidebar__sub-link--active::before { background: #0073e6; opacity: 1; }
+
+    .sidebar__sub-badge {
+      margin-left: auto; background: rgba(0,115,230,0.12); color: #0073e6;
+      font-size: 0.68rem; font-weight: 600; padding: 1px 7px;
+      border-radius: 7px; min-width: 30px; text-align: center;
+    }
+
+    .sidebar__divider { height: 1px; background: rgba(255,255,255,0.07); margin: 6px 16px; }
+
+    .sidebar__footer {
+      padding: 12px 8px; border-top: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0; display: flex; align-items: center; gap: 10px; overflow: hidden;
+    }
+    .sidebar__avatar {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, #6c5ce7, #0073e6);
+      display: grid; place-items: center; color: #fff;
+      font-weight: 700; font-size: 0.78rem; flex-shrink: 0; margin-left: 3px;
+    }
+    .sidebar__user-info { opacity: 0; transition: opacity 0.18s; white-space: nowrap; }
+    .sidebar--expanded .sidebar__user-info { opacity: 1; }
+    .sidebar__user-name { color: #fff; font-weight: 600; font-size: 0.85rem; }
+    .sidebar__user-role { color: rgba(255,255,255,0.5); font-size: 0.72rem; }
+
+    /* Tooltips */
+    .sidebar__link[data-tip]::after {
+      content: attr(data-tip); position: absolute; left: 64px; top: 50%;
+      transform: translateY(-50%); background: #111827; color: #fff;
+      font-size: 0.75rem; font-weight: 500; padding: 5px 10px;
+      border-radius: 6px; white-space: nowrap; pointer-events: none;
+      opacity: 0; transition: opacity 0.12s; z-index: 300;
+    }
+    .sidebar:not(.sidebar--expanded) .sidebar__link[data-tip]:hover::after { opacity: 1; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       TOPBAR
+       ══════════════════════════════════════════════════════════════════ */
+    .topbar {
+      position: fixed; top: 0; left: 58px; right: 0; height: 56px;
+      background: #fff; border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; padding: 0 24px; gap: 16px; z-index: 50;
+    }
+    .topbar__breadcrumb {
+      display: flex; align-items: center; gap: 8px; font-size: 14px; color: #6b7280;
+    }
+    .topbar__breadcrumb span { color: #1f2937; font-weight: 500; }
+    .topbar__breadcrumb svg { width: 14px; height: 14px; opacity: 0.4; }
+    .topbar__spacer { flex: 1; }
+    .topbar__search {
+      display: flex; align-items: center; gap: 8px; background: #f3f4f6;
+      border: 1px solid transparent; border-radius: 10px;
+      padding: 0 12px; height: 36px; min-width: 200px; flex: 0 1 340px;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .topbar__search:focus-within {
+      border-color: #0073e6; box-shadow: 0 0 0 3px rgba(0,115,230,0.15); background: #fff;
+    }
+    .topbar__search svg { width: 15px; height: 15px; color: #9ca3af; flex-shrink: 0; }
+    .topbar__search-input {
+      border: none; background: transparent; font-family: inherit;
+      font-size: 0.85rem; color: #1f2937; width: 100%; outline: none;
+    }
+    .topbar__search-input::placeholder { color: #9ca3af; }
+    .topbar__avatar {
+      width: 34px; height: 34px; border-radius: 10px; background: #e8f0f8;
+      color: #1a3a5c; display: grid; place-items: center;
+      font-size: 0.75rem; font-weight: 600; flex-shrink: 0; cursor: pointer;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       PAGE HEADER
+       ══════════════════════════════════════════════════════════════════ */
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .page-header__content-container { flex: 1; min-width: 0; }
+    .page-header__title {
+      font-size: 22px; font-weight: 700; color: #111827;
+      letter-spacing: -0.02em; display: flex; align-items: center; gap: 12px;
+    }
+    .page-header__subtitle { font-size: 14px; color: #6b7280; margin-top: 4px; }
+    .page-header__badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; padding: 3px 10px;
+      border-radius: 20px; margin-left: 12px;
+    }
+    .page-header__badge::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+    }
+    .page-header__badge--green { background: #f0fdf4; color: #16a34a; }
+    .page-header__badge--blue { background: #e8f0f8; color: #0073e6; }
+    .page-header__actions { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       CARD
+       ══════════════════════════════════════════════════════════════════ */
+    .card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+    .card + .card { margin-top: 20px; }
+    .card__header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px; border-bottom: 1px solid #f9fafb;
+    }
+    .card__title {
+      font-size: 15px; font-weight: 600; color: #1f2937;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card__title svg { width: 18px; height: 18px; color: #9ca3af; }
+    .card__body { padding: 22px; }
+    .card__body--flush { padding: 0; }
+    .card--full { grid-column: 1 / -1; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       TAB UNDERLINE
+       ══════════════════════════════════════════════════════════════════ */
+    .tab-underline {
+      display: flex; gap: 0; border-bottom: 1px solid #e5e7eb; margin-bottom: 24px;
+    }
+    .tab-underline__item {
+      padding: 10px 20px; font-size: 14px; font-weight: 500;
+      color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s; user-select: none;
+      background: none; border-top: none; border-left: none; border-right: none;
+      white-space: nowrap;
+    }
+    .tab-underline__item:hover { color: #374151; }
+    .tab-underline__item--active { color: #0073e6; border-bottom-color: #0073e6; font-weight: 600; }
+    .tab-underline__count {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #e5e7eb; color: #4b5563; font-size: 11px; font-weight: 600;
+      min-width: 20px; height: 18px; border-radius: 10px; padding: 0 5px; margin-left: 6px;
+    }
+    .tab-underline__item--active .tab-underline__count { background: #0073e6; color: #fff; }
+
+    .panel { display: none; animation: fade-in 0.25s ease; }
+    .panel--active { display: block; }
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       INDICATOR CARD
+       ══════════════════════════════════════════════════════════════════ */
+    .indicator-card-bar { display: flex; gap: 16px; margin-bottom: 20px; }
+    .indicator-card {
+      background: #fff; border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+      padding: 16px 20px; flex: 1; min-width: 0;
+    }
+    .indicator-card__label {
+      font-size: 12px; color: #6b7280; font-weight: 500;
+      margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .indicator-card__value {
+      font-size: 22px; font-weight: 700; color: #111827;
+      font-family: 'JetBrains Mono', monospace; letter-spacing: -0.02em;
+    }
+    .indicator-card__subtitle { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       FILTER BAR
+       ══════════════════════════════════════════════════════════════════ */
+    .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .filter-bar__spacer { flex: 1; }
+    .filter-bar__select {
+      font-size: 13px; padding: 6px 30px 6px 10px; border: 1px solid #e5e7eb;
+      border-radius: 6px; background: #fff; color: #374151;
+      cursor: pointer; appearance: none; outline: none; transition: border-color 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+    }
+    .filter-bar__select:hover { border-color: #9ca3af; }
+    .filter-bar__select:focus { border-color: #0073e6; }
+    .filter-bar__search {
+      font-size: 13px; padding: 6px 10px; border: 1px solid #e5e7eb;
+      border-radius: 6px; background: #fff; color: #374151; outline: none;
+      min-width: 180px; transition: border-color 0.2s;
+    }
+    .filter-bar__search:focus { border-color: #0073e6; }
+    .filter-bar__search::placeholder { color: #9ca3af; }
+    .filter-bar__count { font-size: 12px; color: #9ca3af; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       STATUS TAG
+       ══════════════════════════════════════════════════════════════════ */
+    .status-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; padding: 3px 10px;
+      border-radius: 20px; white-space: nowrap;
+    }
+    .status-tag::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor; flex-shrink: 0;
+    }
+    .status-tag--paid { background: #f0fdf4; color: #16a34a; }
+    .status-tag--pending { background: #fffbeb; color: #f59e0b; }
+    .status-tag--overdue { background: #fef2f2; color: #dc2626; }
+    .status-tag--active { background: #f0fdf4; color: #16a34a; }
+    .status-tag--archived { background: #f3f4f6; color: #6b7280; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       CHIP
+       ══════════════════════════════════════════════════════════════════ */
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 500; padding: 2px 8px;
+      border-radius: 4px; background: #f3f4f6; color: #4b5563;
+    }
+    .chip--certification { background: #f0fdf4; color: #16a34a; }
+    .chip--tag { background: #fffbeb; color: #f59e0b; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       INFORMATION ROW
+       ══════════════════════════════════════════════════════════════════ */
+    .information-row { display: flex; align-items: flex-start; padding: 12px 0; }
+    .information-row + .information-row { border-top: 1px solid #f9fafb; }
+    .information-row__label { flex: 0 0 180px; font-size: 13px; color: #6b7280; font-weight: 500; }
+    .information-row__value { font-size: 14px; color: #1f2937; font-weight: 500; line-height: 1.5; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       TOGGLE ROW + SWITCH
+       ══════════════════════════════════════════════════════════════════ */
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between; padding: 14px 0;
+    }
+    .toggle-row + .toggle-row { border-top: 1px solid #f9fafb; }
+    .toggle-row__label { font-size: 14px; font-weight: 500; color: #1f2937; }
+    .toggle-row__description { font-size: 12px; color: #6b7280; margin-top: 2px; }
+    .toggle {
+      width: 40px; height: 22px; border-radius: 11px; position: relative;
+      cursor: pointer; transition: 0.2s; flex-shrink: 0;
+    }
+    .toggle--off { background: #e5e7eb; }
+    .toggle--on { background: #0073e6; }
+    .toggle__thumb {
+      width: 18px; height: 18px; background: #fff; border-radius: 50%;
+      position: absolute; top: 2px; transition: 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+    .toggle--off .toggle__thumb { left: 2px; }
+    .toggle--on .toggle__thumb { left: 20px; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       EMPTY STATE
+       ══════════════════════════════════════════════════════════════════ */
+    .empty-state { text-align: center; padding: 48px 24px; color: #9ca3af; }
+    .empty-state__icon {
+      width: 40px; height: 40px; margin: 0 auto 12px; opacity: 0.3;
+    }
+    .empty-state__text { font-size: 14px; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       BILLING TABLE
+       ══════════════════════════════════════════════════════════════════ */
+    .billing-table-wrapper { overflow-x: auto; }
+    .billing-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .billing-table thead th {
+      padding: 10px 16px; text-align: left; font-weight: 600; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.06em; color: #6b7280;
+      background: #f9fafb; border-bottom: 1px solid #e5e7eb;
+      white-space: nowrap; user-select: none;
+    }
+    .th--right { text-align: right; }
+    .billing-table tbody tr { transition: background-color 0.2s; }
+    .billing-table tbody tr:hover { background-color: #f9fafb; }
+    .billing-table tbody td {
+      padding: 14px 16px; border-bottom: 1px solid #f9fafb;
+      vertical-align: middle; color: #374151; word-break: break-word;
+    }
+    .billing-table tbody tr:last-child td { border-bottom: none; }
+    .td--right { text-align: right; }
+    .billing-table__link {
+      color: #0073e6; font-weight: 600; text-decoration: none; cursor: pointer;
+    }
+    .billing-table__link:hover { text-decoration: underline; }
+    .billing-table__amount {
+      font-weight: 600; font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; color: #1f2937;
+    }
+    .date-pair { display: flex; flex-direction: column; gap: 2px; }
+    .date-pair__item { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+    .date-pair__item--secondary { color: #9ca3af; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       BILLING PAGE SPECIFICS
+       ══════════════════════════════════════════════════════════════════ */
+    .preferences-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       BIBLIOTHEQUE PAGE SPECIFICS
+       ══════════════════════════════════════════════════════════════════ */
+    .library-share-bar {
+      display: flex; align-items: center; gap: 12px;
+      background: #e8f0f8; border: 1px solid #e5e7eb; border-radius: 10px;
+      padding: 12px 24px; margin-bottom: 24px;
+    }
+    .library-share-bar__text { font-size: 14px; color: #374151; flex: 1; }
+    .library-share-bar__link {
+      font-size: 12px; color: #0073e6; font-weight: 500;
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 6px;
+      padding: 4px 12px; display: flex; align-items: center; gap: 8px;
+      max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .library-share-bar svg { width: 16px; height: 16px; color: #0073e6; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+
+    .upload-zone {
+      border: 2px dashed #e5e7eb; border-radius: 10px;
+      padding: 48px 24px; text-align: center; background: #fff;
+      margin-bottom: 24px; transition: border-color 0.2s, background-color 0.2s; cursor: pointer;
+    }
+    .upload-zone:hover { border-color: #0073e6; background: #e8f0f8; }
+    .upload-zone svg { width: 36px; height: 36px; margin: 0 auto 12px; color: #9ca3af; stroke: currentColor; fill: none; stroke-width: 1.5; display: block; }
+    .upload-zone__text { font-size: 14px; color: #374151; }
+    .upload-zone__text strong { color: #0073e6; font-weight: 600; }
+    .upload-zone__hint { font-size: 12px; color: #9ca3af; margin-top: 8px; }
+
+    .document-table-wrapper { overflow-x: auto; }
+    .document-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .document-table thead th {
+      padding: 10px 16px; text-align: left; font-weight: 600; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.06em; color: #6b7280;
+      background: #f9fafb; border-bottom: 1px solid #e5e7eb;
+      white-space: nowrap; user-select: none;
+    }
+    .th--center { text-align: center; }
+    .td--center { text-align: center; }
+    .document-table tbody tr { transition: background-color 0.2s; }
+    .document-table tbody tr:hover { background-color: #f9fafb; }
+    .document-table tbody td {
+      padding: 14px 16px; border-bottom: 1px solid #f9fafb;
+      vertical-align: middle; color: #374151;
+    }
+    .document-table tbody tr:last-child td { border-bottom: none; }
+
+    .document-table__name { display: flex; align-items: center; gap: 12px; }
+    .document-table__name-icon {
+      width: 32px; height: 32px; border-radius: 6px; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .document-table__name-icon svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .document-table__name-icon--pdf { background: #fef2f2; color: #dc2626; }
+    .document-table__name-icon--image { background: #fffbeb; color: #f59e0b; }
+    .document-table__name-icon--doc { background: #e8f0f8; color: #0073e6; }
+    .document-table__name-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .document-table__filename { font-weight: 600; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px; }
+    .document-table__filesize { font-size: 12px; color: #9ca3af; }
+    .document-table__tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .document-table__actions { display: flex; align-items: center; gap: 8px; }
+    .document-table__toggle-cell { display: flex; justify-content: center; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       RESEAU PAGE SPECIFICS
+       ══════════════════════════════════════════════════════════════════ */
+    .company-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;
+    }
+    .company-card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+      padding: 24px; display: flex; flex-direction: column; gap: 12px;
+      transition: box-shadow 0.15s;
+    }
+    .company-card:hover { box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.06); }
+    .company-card__header { display: flex; align-items: flex-start; gap: 12px; }
+    .company-card__logo {
+      width: 48px; height: 48px; border-radius: 10px; background: #e8f0f8;
+      color: #0073e6; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .company-card__logo svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .company-card__identity { flex: 1; min-width: 0; }
+    .company-card__name { font-size: 14px; font-weight: 600; color: #1f2937; }
+    .company-card__location {
+      font-size: 12px; color: #9ca3af; display: flex; align-items: center; gap: 8px; margin-top: 4px;
+    }
+    .company-card__location svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+    .company-card__contact-info { display: flex; flex-direction: column; gap: 4px; }
+    .company-card__contact-item {
+      font-size: 12px; color: #374151; display: flex; align-items: center; gap: 8px;
+    }
+    .company-card__contact-item svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+    .company-card__competences,
+    .company-card__certifications,
+    .company-card__tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .company-card__footer {
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+      padding-top: 12px; border-top: 1px solid #f9fafb; margin-top: auto;
+    }
+    .company-card__footer-left { margin-right: auto; }
+    .company-card__date {
+      font-size: 11px; color: #9ca3af; display: flex; align-items: center; gap: 8px;
+    }
+    .company-card__date svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .view-toggle {
+      display: inline-flex; gap: 0; border: 1px solid #e5e7eb;
+      border-radius: 6px; overflow: hidden;
+    }
+    .view-toggle__button {
+      display: flex; align-items: center; justify-content: center;
+      width: 30px; height: 28px; background: #fff; border: none;
+      cursor: pointer; color: #9ca3af; transition: background-color 0.15s, color 0.15s;
+    }
+    .view-toggle__button:hover { background: #f9fafb; color: #374151; }
+    .view-toggle__button--active { background: #0073e6; color: #fff; }
+    .view-toggle__button + .view-toggle__button { border-left: 1px solid #e5e7eb; }
+    .view-toggle__button svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .tags-section { display: flex; gap: 24px; align-items: flex-start; }
+    .tags-sidebar {
+      width: 240px; flex-shrink: 0; background: #fff; border-radius: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04); overflow: hidden;
+    }
+    .tags-sidebar__header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px; border-bottom: 1px solid #f9fafb;
+    }
+    .tags-sidebar__title { font-size: 12px; font-weight: 600; color: #1f2937; }
+    .tags-sidebar__list { list-style: none; }
+    .tags-sidebar__item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px; font-size: 14px; color: #374151; cursor: pointer;
+      transition: background-color 0.15s; border-left: 3px solid transparent;
+    }
+    .tags-sidebar__item:hover { background: #f9fafb; }
+    .tags-sidebar__item--active {
+      background: #e8f0f8; color: #0073e6; font-weight: 600;
+      border-left-color: #0073e6;
+    }
+    .tags-sidebar__item + .tags-sidebar__item { border-top: 1px solid #f9fafb; }
+    .tags-sidebar__count {
+      font-size: 11px; color: #9ca3af; background: #f3f4f6;
+      padding: 4px 8px; border-radius: 6px; font-weight: 600;
+    }
+    .tags-sidebar__item--active .tags-sidebar__count { background: #0073e6; color: #fff; }
+    .tags-content { flex: 1; min-width: 0; }
+
+    .search-panel__input-wrapper { display: flex; gap: 12px; margin-bottom: 24px; }
+    .search-panel__input {
+      flex: 1; font-size: 14px; padding: 12px 24px 12px 36px;
+      border: 1px solid #e5e7eb; border-radius: 10px; background: #fff;
+      color: #1f2937; outline: none; transition: border-color 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: 12px center;
+    }
+    .search-panel__input:focus { border-color: #0073e6; }
+    .search-panel__input::placeholder { color: #9ca3af; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       BUTTONS (simplified for preview)
+       ══════════════════════════════════════════════════════════════════ */
+    .button {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: inherit; font-size: 13px; font-weight: 500;
+      padding: 7px 14px; border-radius: 8px; cursor: pointer;
+      border: 1px solid transparent; transition: all 0.15s; white-space: nowrap;
+    }
+    .button svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+    .button--primary { background: #0073e6; color: #fff; border-color: #0073e6; }
+    .button--primary:hover { background: #005bb5; }
+    .button--secondary { background: #fff; color: #374151; border-color: #e5e7eb; }
+    .button--secondary:hover { background: #f9fafb; }
+    .button--ghost { background: transparent; color: #6b7280; }
+    .button--ghost:hover { background: #f3f4f6; color: #374151; }
+    .button--danger { background: transparent; color: #dc2626; }
+    .button--danger:hover { background: #fef2f2; }
+    .button--success { background: #16a34a; color: #fff; }
+    .button--success:hover { background: #15803d; }
+    .button--small { padding: 4px 10px; font-size: 12px; }
+    .button--icon-only { padding: 6px; }
+    .button--icon-only svg { width: 16px; height: 16px; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       DRAWER (panels d'édition latéraux)
+       ══════════════════════════════════════════════════════════════════ */
+    .drawer-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.4); z-index: 150;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+    }
+    .drawer-overlay--active { opacity: 1; pointer-events: auto; }
+    .drawer {
+      position: fixed; top: 0; right: -650px; z-index: 200;
+      display: flex; flex-direction: column; height: 100vh;
+      max-width: 650px; width: 100%; background: #fff;
+      box-shadow: -4px 0 20px rgba(0,0,0,0.12); transition: right 0.3s ease;
+    }
+    .drawer--open { right: 0; }
+    .drawer__header {
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 56px; padding: 0 24px; border-bottom: 1px solid #e5e7eb;
+    }
+    .drawer__header-title-wrapper {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 600; color: #1f2937;
+    }
+    .drawer__header-title-wrapper svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .drawer__close {
+      background: none; border: none; cursor: pointer; padding: 6px;
+      color: #9ca3af; display: flex; align-items: center;
+      border-radius: 6px; transition: background-color 0.15s;
+    }
+    .drawer__close:hover { background: #f3f4f6; }
+    .drawer__close svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .drawer__content { flex: 1; padding: 24px; overflow-y: auto; }
+    .drawer__footer {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 8px; min-height: 56px; padding: 0 24px; border-top: 1px solid #e5e7eb;
+    }
+
+    /* ── Form fields ── */
+    .form-field { display: flex; flex-direction: column; gap: 4px; }
+    .form-field + .form-field { margin-top: 16px; }
+    .form-field__label { font-size: 12px; font-weight: 600; color: #1f2937; }
+    .form-field__input {
+      font-family: inherit; font-size: 14px; padding: 8px 12px;
+      border: 1px solid #e5e7eb; border-radius: 6px; color: #1f2937;
+      background: #fff; outline: none; transition: border-color 0.2s;
+    }
+    .form-field__input:focus { border-color: #0073e6; box-shadow: 0 0 0 3px rgba(0,115,230,0.1); }
+    .form-field__input--readonly { background: #f9fafb; color: #6b7280; cursor: not-allowed; }
+    .form-field__hint { font-size: 11px; color: #6b7280; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       PREVIEW NAV — navigation between pages
+       ══════════════════════════════════════════════════════════════════ */
+    .preview-nav {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: #1a3a5c; color: #fff; border-radius: 14px;
+      padding: 6px; display: flex; gap: 4px; z-index: 200;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .preview-nav__btn {
+      padding: 8px 18px; border: none; background: transparent;
+      color: rgba(255,255,255,0.6); font-family: inherit; font-size: 13px;
+      font-weight: 500; border-radius: 10px; cursor: pointer; transition: all 0.15s;
+    }
+    .preview-nav__btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+    .preview-nav__btn--active { background: #0073e6; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SIDEBAR
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__header">
+      <button class="sidebar__hamburger" id="sidebar-toggle" type="button" aria-label="Ouvrir le menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <div class="sidebar__brand">
+        <div class="sidebar__logo-box">M2</div>
+        <span class="sidebar__brand-name">M2BPO</span>
+      </div>
+      <button class="sidebar__close" id="sidebar-close" type="button" aria-label="Fermer le menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="sidebar__nav">
+      <div class="sidebar__section-label">Navigation</div>
+
+      <!-- Multi comptes -->
+      <div class="sidebar__item sidebar__item--accordion">
+        <button class="sidebar__link" data-sidebar-accordion data-tip="Multi comptes" type="button">
+          <span class="sidebar__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </span>
+          <span class="sidebar__label">Multi comptes</span>
+          <svg class="sidebar__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="sidebar__sub">
+          <a href="#" class="sidebar__sub-link">Nouveaux <span class="sidebar__sub-badge">13</span></a>
+          <a href="#" class="sidebar__sub-link">Propositions</a>
+          <a href="#" class="sidebar__sub-link">Pré-Sélection</a>
+          <a href="#" class="sidebar__sub-link">En cours <span class="sidebar__sub-badge">1</span></a>
+        </div>
+      </div>
+
+      <!-- Appels d'offres -->
+      <div class="sidebar__item sidebar__item--accordion">
+        <button class="sidebar__link" data-sidebar-accordion data-tip="Appels d'offres" type="button">
+          <span class="sidebar__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </span>
+          <span class="sidebar__label">Appels d'offres</span>
+          <span class="sidebar__badge">2 231</span>
+          <svg class="sidebar__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="sidebar__sub">
+          <a href="#" class="sidebar__sub-link">Nouveaux <span class="sidebar__sub-badge">2 231</span></a>
+          <a href="#" class="sidebar__sub-link">Propositions</a>
+          <a href="#" class="sidebar__sub-link">Pré-Sélection</a>
+          <a href="#" class="sidebar__sub-link">En cours <span class="sidebar__sub-badge">1</span></a>
+          <a href="#" class="sidebar__sub-link">Archive</a>
+          <a href="#" class="sidebar__sub-link">Corbeille</a>
+        </div>
+      </div>
+
+      <!-- Messagerie -->
+      <div class="sidebar__item">
+        <a href="#" class="sidebar__link" data-tip="Messagerie">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+          <span class="sidebar__label">Messagerie</span>
+        </a>
+      </div>
+
+      <!-- Notifications -->
+      <div class="sidebar__item sidebar__item--accordion">
+        <button class="sidebar__link" data-sidebar-accordion data-tip="Notifications" type="button">
+          <span class="sidebar__icon sidebar__icon--dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>
+          <span class="sidebar__label">Notifications</span>
+          <svg class="sidebar__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="sidebar__sub">
+          <a href="#" class="sidebar__sub-link">Alertes</a>
+          <a href="#" class="sidebar__sub-link">Historique</a>
+          <a href="#" class="sidebar__sub-link">Préférences</a>
+        </div>
+      </div>
+
+      <div class="sidebar__divider"></div>
+      <div class="sidebar__section-label">Gestion</div>
+
+      <!-- Contacts -->
+      <div class="sidebar__item" id="nav-contacts">
+        <a href="#" class="sidebar__link" data-tip="Contacts" data-page="reseau">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M16 21v-2a4 4 0 00-8 0v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+          <span class="sidebar__label">Contacts</span>
+        </a>
+      </div>
+
+      <!-- Paramètres de compte -->
+      <div class="sidebar__item sidebar__item--accordion" id="nav-settings">
+        <button class="sidebar__link" data-sidebar-accordion data-tip="Paramètres" type="button">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>
+          <span class="sidebar__label">Paramètres de compte</span>
+          <svg class="sidebar__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="sidebar__sub">
+          <a href="#" class="sidebar__sub-link">Coordonnées</a>
+          <a href="#" class="sidebar__sub-link">Préférences</a>
+          <a href="#" class="sidebar__sub-link">Utilisateurs</a>
+          <a href="#" class="sidebar__sub-link" data-page="bibliotheque" id="nav-bibliotheque">Bibliothèque</a>
+          <a href="#" class="sidebar__sub-link" data-page="billing" id="nav-factures">Factures</a>
+        </div>
+      </div>
+
+      <div class="sidebar__divider"></div>
+
+      <!-- Nous contacter -->
+      <div class="sidebar__item">
+        <a href="#" class="sidebar__link" data-tip="Nous contacter">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+          <span class="sidebar__label">Nous contacter</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__avatar">NV</div>
+      <div class="sidebar__user-info">
+        <div class="sidebar__user-name">N. Vidal</div>
+        <div class="sidebar__user-role">Administrateur</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       TOPBAR
+       ══════════════════════════════════════════════════════════════════ -->
+  <header class="topbar">
+    <nav class="topbar__breadcrumb" aria-label="Fil d'Ariane">
+      M2BPO
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span id="breadcrumb-current">Facturation</span>
+    </nav>
+    <div class="topbar__spacer"></div>
+    <div class="topbar__search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" class="topbar__search-input" placeholder="Rechercher…" autocomplete="off">
+    </div>
+    <div class="topbar__avatar">NV</div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ══════════════════════════════════════════════════════════════════ -->
+  <main class="layout-main">
+
+    <!-- ════════════════════════════════════════════════════════════════
+         PAGE : FACTURATION
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-billing">
+      <div class="page-header">
+        <div class="page-header__content-container">
+          <h1 class="page-header__title">
+            Facturation
+            <span class="page-header__badge page-header__badge--green">Actif</span>
+          </h1>
+          <p class="page-header__subtitle">Gestion de l'abonnement, factures et paiements — Durand & Associés SARL</p>
+        </div>
+      </div>
+
+      <!-- Onglets -->
+      <div class="tab-underline" id="billing-tabs">
+        <button class="tab-underline__item tab-underline__item--active" data-tab="prefs" data-wrapper="billing-tabs">Préférences</button>
+        <button class="tab-underline__item" data-tab="factures" data-wrapper="billing-tabs">Factures <span class="tab-underline__count">12</span></button>
+        <button class="tab-underline__item" data-tab="encaissements" data-wrapper="billing-tabs">Encaissements <span class="tab-underline__count">8</span></button>
+        <button class="tab-underline__item" data-tab="remboursements" data-wrapper="billing-tabs">Remboursements <span class="tab-underline__count">0</span></button>
+        <button class="tab-underline__item" data-tab="avoirs" data-wrapper="billing-tabs">Avoirs</button>
+      </div>
+
+      <!-- Panel : Préférences -->
+      <div class="panel panel--active" id="panel-prefs" data-wrapper="billing-tabs">
+        <div class="preferences-grid">
+          <!-- Card : Infos facturation -->
+          <div class="card" id="card-info">
+            <div class="card__header">
+              <div class="card__title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-8 0v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Informations de facturation
+              </div>
+              <button class="button button--secondary button--small" data-drawer-target="drawer-edit-info">Modifier</button>
+            </div>
+            <div class="card__body">
+              <div class="information-row">
+                <div class="information-row__label">Raison sociale</div>
+                <div class="information-row__value">Durand & Associés SARL</div>
+              </div>
+              <div class="information-row">
+                <div class="information-row__label">Adresse</div>
+                <div class="information-row__value">15 rue de la Paix<br>75002 Paris</div>
+              </div>
+              <div class="information-row">
+                <div class="information-row__label">TVA intracommunautaire</div>
+                <div class="information-row__value">FR 82 123456789</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card : Destinataires -->
+          <div class="card" id="card-recipients">
+            <div class="card__header">
+              <div class="card__title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Destinataires des factures
+              </div>
+              <button class="button button--secondary button--small" data-drawer-target="drawer-edit-recipients">Modifier</button>
+            </div>
+            <div class="card__body">
+              <div class="information-row">
+                <div class="information-row__label">Utilisateur principal</div>
+                <div class="information-row__value">Nicolas Vidal<br><span style="font-size: 11px; color: #6b7280;">n.vidal@durand-associes.fr</span></div>
+              </div>
+              <div class="information-row">
+                <div class="information-row__label">Email supplémentaire</div>
+                <div class="information-row__value">compta@durand-associes.fr</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card : Abonnement (pleine largeur) -->
+          <div class="card card--full">
+            <div class="card__header">
+              <div class="card__title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Abonnement
+              </div>
+            </div>
+            <div class="card__body">
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-row__label">Renouvellement automatique</div>
+                  <div class="toggle-row__description">Votre abonnement sera reconduit automatiquement à échéance.</div>
+                </div>
+                <div class="toggle toggle--on"><div class="toggle__thumb"></div></div>
+              </div>
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-row__label">Notification avant échéance</div>
+                  <div class="toggle-row__description">Recevoir un rappel 30 jours avant la date de renouvellement.</div>
+                </div>
+                <div class="toggle toggle--on"><div class="toggle__thumb"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel : Factures -->
+      <div class="panel" id="panel-factures" data-wrapper="billing-tabs">
+        <div class="indicator-card-bar">
+          <div class="indicator-card">
+            <div class="indicator-card__label">Total facturé</div>
+            <div class="indicator-card__value">47 280,00 €</div>
+            <div class="indicator-card__subtitle">12 factures émises</div>
+          </div>
+          <div class="indicator-card">
+            <div class="indicator-card__label">En attente</div>
+            <div class="indicator-card__value">3 940,00 €</div>
+            <div class="indicator-card__subtitle">1 facture en attente</div>
+          </div>
+          <div class="indicator-card">
+            <div class="indicator-card__label">Dernière facture</div>
+            <div class="indicator-card__value">15/01/2026</div>
+            <div class="indicator-card__subtitle">Réf. FA-2026-001</div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <select class="filter-bar__select">
+            <option>Toutes les périodes</option><option>2026</option><option selected>2025</option><option>2024</option>
+          </select>
+          <select class="filter-bar__select">
+            <option>Tous les statuts</option><option>Payée</option><option>En attente</option><option>En retard</option>
+          </select>
+          <div class="filter-bar__spacer"></div>
+          <button class="button button--ghost button--small">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Tout exporter
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card__body card__body--flush">
+            <div class="billing-table-wrapper">
+              <table class="billing-table">
+                <thead>
+                  <tr>
+                    <th>N° Facture</th><th>Émise le</th><th>Période</th><th>TVA</th>
+                    <th class="th--right">Montant HT</th><th class="th--right">Montant TTC</th>
+                    <th>Échéances</th><th>Statut</th><th><span class="screen-reader-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="billing-table__link">FA-2026-001</a></td>
+                    <td>15/01/2026</td><td>01/01/2026 → 31/01/2026</td><td>20 %</td>
+                    <td class="td--right billing-table__amount">3 940,00 €</td>
+                    <td class="td--right billing-table__amount">4 728,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">15/02/2026</div></div></td>
+                    <td><span class="status-tag status-tag--pending">En attente</span></td>
+                    <td><button class="button button--ghost button--small">PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">FA-2025-012</a></td>
+                    <td>15/12/2025</td><td>01/12/2025 → 31/12/2025</td><td>20 %</td>
+                    <td class="td--right billing-table__amount">3 940,00 €</td>
+                    <td class="td--right billing-table__amount">4 728,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">15/01/2026</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost button--small">PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">FA-2025-011</a></td>
+                    <td>15/11/2025</td><td>01/11/2025 → 30/11/2025</td><td>20 %</td>
+                    <td class="td--right billing-table__amount">3 940,00 €</td>
+                    <td class="td--right billing-table__amount">4 728,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">15/12/2025</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost button--small">PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">FA-2025-010</a></td>
+                    <td>15/10/2025</td><td>01/10/2025 → 31/10/2025</td><td>20 %</td>
+                    <td class="td--right billing-table__amount">3 940,00 €</td>
+                    <td class="td--right billing-table__amount">4 728,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">15/11/2025</div><div class="date-pair__item date-pair__item--secondary">30/11/2025</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost button--small">PDF</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel : Encaissements -->
+      <div class="panel" id="panel-encaissements" data-wrapper="billing-tabs">
+        <div class="card">
+          <div class="card__body card__body--flush">
+            <div class="billing-table-wrapper">
+              <table class="billing-table">
+                <thead>
+                  <tr><th>Date de réception</th><th>Date de dépôt</th><th>TVA</th><th class="th--right">Montant TTC</th><th>Moyen de paiement</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>18 janvier 2026</td><td>20 janvier 2026</td><td>20 %</td><td class="td--right billing-table__amount">4 728,00 €</td><td><span class="chip">Virement</span></td></tr>
+                  <tr><td>20 décembre 2025</td><td>22 décembre 2025</td><td>20 %</td><td class="td--right billing-table__amount">4 728,00 €</td><td><span class="chip">Virement</span></td></tr>
+                  <tr><td>18 novembre 2025</td><td>20 novembre 2025</td><td>20 %</td><td class="td--right billing-table__amount">4 728,00 €</td><td><span class="chip">Prélèvement</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel : Remboursements -->
+      <div class="panel" id="panel-remboursements" data-wrapper="billing-tabs">
+        <div class="empty-state">
+          <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          <div class="empty-state__text">Aucun remboursement enregistré.</div>
+        </div>
+      </div>
+
+      <!-- Panel : Avoirs -->
+      <div class="panel" id="panel-avoirs" data-wrapper="billing-tabs">
+        <div class="empty-state">
+          <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <div class="empty-state__text">Aucun avoir pour le moment.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         PAGE : BIBLIOTHÈQUE
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-bibliotheque" style="display: none;">
+      <div class="page-header">
+        <div class="page-header__content-container">
+          <div>
+            <h1 class="page-header__title">
+              Bibliothèque
+              <span class="page-header__badge page-header__badge--blue">14 documents</span>
+            </h1>
+            <p class="page-header__subtitle">Documents administratifs de votre agence — Durand & Associés SARL</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="button button--secondary button--small">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-8 0v2"/><circle cx="12" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              Partager aux contacts
+            </button>
+            <button class="button button--primary button--small">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Ajouter un document
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barre de partage -->
+      <div class="library-share-bar">
+        <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        <span class="library-share-bar__text">Lien de partage de la bibliothèque</span>
+        <span class="library-share-bar__link">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          m2bpo.fr/biblio/durand-associes
+        </span>
+        <button class="button button--ghost button--small">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copier
+        </button>
+      </div>
+
+      <!-- Zone d'upload -->
+      <div class="upload-zone">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p class="upload-zone__text">Glissez vos fichiers ici ou <strong>parcourez</strong></p>
+        <p class="upload-zone__hint">PDF, images, documents Word — 20 Mo maximum par fichier</p>
+      </div>
+
+      <!-- Filtres -->
+      <div class="filter-bar">
+        <input type="search" class="filter-bar__search" placeholder="Rechercher un document…">
+        <select class="filter-bar__select"><option>Tous les tags</option><option>Administratif</option><option>Technique</option><option>Juridique</option></select>
+        <select class="filter-bar__select"><option>Tous les statuts</option><option>Actif</option><option>Archivé</option></select>
+        <div class="filter-bar__spacer"></div>
+        <span class="filter-bar__count">14 documents</span>
+      </div>
+
+      <!-- Table documents -->
+      <div class="card">
+        <div class="card__body card__body--flush">
+          <div class="document-table-wrapper">
+            <table class="document-table">
+              <thead>
+                <tr>
+                  <th>Document</th><th>Tags</th><th>Ajouté le</th>
+                  <th class="th--center">Dossier AO</th><th class="th--center">Lien</th>
+                  <th class="th--center">Réseau</th><th>Statut</th><th><span class="screen-reader-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="document-table__name"><div class="document-table__name-icon document-table__name-icon--pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="document-table__name-text"><span class="document-table__filename">Kbis_2025.pdf</span><span class="document-table__filesize">1.2 Mo</span></div></div></td>
+                  <td><div class="document-table__tags"><span class="chip">Administratif</span></div></td>
+                  <td>12/01/2026</td>
+                  <td class="td--center"><div class="document-table__toggle-cell"><div class="toggle toggle--on"><div class="toggle__thumb"></div></div></div></td>
+                  <td class="td--center"><div class="document-table__toggle-cell"><div class="toggle toggle--on"><div class="toggle__thumb"></div></div></div></td>
+                  <td class="td--center"><div class="document-table__toggle-cell"><div class="toggle toggle--off"><div class="toggle__thumb"></div></div></div></td>
+                  <td><span class="status-tag status-tag--active">Actif</span></td>
+                  <td><div class="document-table__actions"><button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button><button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8M1 3h22v5H1z"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td><div class="document-table__name"><div class="document-table__name-icon document-table__name-icon--pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="document-table__name-text"><span class="document-table__filename">Attestation_RC_Pro.pdf</span><span class="document-table__filesize">856 Ko</span></div></div></td>
+                  <td><div class="document-table__tags"><span class="chip">Juridique</span><span class="chip">Assurance</span></div></td>
+                  <td>08/01/2026</td>
+                  <td class="td--center"><div class="document-table__toggle-cell"><div class="toggle toggle--on"><div class="toggle__thumb"></div></div></div></td>
+                  <td class="td--center"><div class="document-table__toggle-cell"><div class="toggle toggle--off"><div class="toggle__thumb"></div></div></div></td>
+                  <td class="td--center"><div class="document-table__toggle-cell"><div class="toggle toggle--on"><div class="toggle__thumb"></div></div></div></td>
+                  <td><span class="status-tag status-tag--active">Actif</span></td>
+                  <td><div class="document-table__actions"><button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button><button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8M1 3h22v5H1z"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td><div class="document-table__name"><div class="document-table__name-icon document-table__name-icon--doc"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="document-table__name-text"><span class="document-table__filename">Organigramme_2025.docx</span><span class="document-table__filesize">342 Ko</span></div></div></td>
+                  <td><div class="document-table__tags"><span class="chip">Administratif</span></div></td>
+                  <td>03/12/2025</td>
+                  <td class="td--center"><div class="document-table__toggle-cell"><div class="toggle toggle--off"><div class="toggle__thumb"></div></div></div></td>
+                  <td class="td--center"><div class="document-table__toggle-cell"><div class="toggle toggle--on"><div class="toggle__thumb"></div></div></div></td>
+                  <td class="td--center"><div class="document-table__toggle-cell"><div class="toggle toggle--off"><div class="toggle__thumb"></div></div></div></td>
+                  <td><span class="status-tag status-tag--active">Actif</span></td>
+                  <td><div class="document-table__actions"><button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button><button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8M1 3h22v5H1z"/></svg></button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         PAGE : CONTACTS (RÉSEAU)
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-reseau" style="display: none;">
+      <div class="page-header">
+        <h1 class="page-header__title">
+          Réseau
+          <span class="page-header__badge page-header__badge--blue">24 contacts</span>
+        </h1>
+        <p class="page-header__subtitle">Gérez vos contacts professionnels et développez votre réseau — Durand & Associés SARL</p>
+      </div>
+
+      <!-- Onglets -->
+      <div class="tab-underline" id="reseau-tabs">
+        <button class="tab-underline__item tab-underline__item--active" data-tab="contacts" data-wrapper="reseau-tabs">Mes contacts <span class="tab-underline__count">24</span></button>
+        <button class="tab-underline__item" data-tab="network" data-wrapper="reseau-tabs">Réseau M2BPO <span class="tab-underline__count">148</span></button>
+        <button class="tab-underline__item" data-tab="envoyees" data-wrapper="reseau-tabs">Invitations envoyées <span class="tab-underline__count">3</span></button>
+        <button class="tab-underline__item" data-tab="recues" data-wrapper="reseau-tabs">Invitations reçues <span class="tab-underline__count">2</span></button>
+        <button class="tab-underline__item" data-tab="listes" data-wrapper="reseau-tabs">Listes</button>
+        <button class="tab-underline__item" data-tab="recherche" data-wrapper="reseau-tabs">Recherche</button>
+      </div>
+
+      <!-- Panel : Mes contacts -->
+      <div class="panel panel--active" id="panel-contacts" data-wrapper="reseau-tabs">
+        <div class="filter-bar">
+          <input type="search" class="filter-bar__search" placeholder="Rechercher un contact…">
+          <select class="filter-bar__select"><option>Toutes les activités</option><option>BTP</option><option>Ingénierie</option><option>Architecture</option></select>
+          <select class="filter-bar__select"><option>Toutes les villes</option><option>Paris</option><option>Lyon</option><option>Marseille</option></select>
+          <div class="filter-bar__spacer"></div>
+          <span class="filter-bar__count">24 contacts</span>
+          <div class="view-toggle">
+            <button class="view-toggle__button view-toggle__button--active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+            <button class="view-toggle__button"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+            <button class="view-toggle__button"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg></button>
+          </div>
+        </div>
+
+        <div class="company-grid">
+          <div class="company-card">
+            <div class="company-card__header">
+              <div class="company-card__logo"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+              <div class="company-card__identity">
+                <div class="company-card__name">Martin BTP</div>
+                <div class="company-card__location"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 75011 Paris</div>
+              </div>
+            </div>
+            <div class="company-card__contact-info">
+              <span class="company-card__contact-item"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> contact@martin-btp.fr</span>
+              <span class="company-card__contact-item"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg> 01 42 56 78 90</span>
+            </div>
+            <div class="company-card__competences">
+              <span class="chip">Gros œuvre</span><span class="chip">Fondations</span><span class="chip">Démolition</span>
+            </div>
+            <div class="company-card__certifications">
+              <span class="chip chip--certification">Qualibat RGE</span>
+            </div>
+            <div class="company-card__footer">
+              <button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></button>
+              <button class="button button--danger button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></button>
+            </div>
+          </div>
+
+          <div class="company-card">
+            <div class="company-card__header">
+              <div class="company-card__logo"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+              <div class="company-card__identity">
+                <div class="company-card__name">Atelier Leroy Architecture</div>
+                <div class="company-card__location"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 69003 Lyon</div>
+              </div>
+            </div>
+            <div class="company-card__contact-info">
+              <span class="company-card__contact-item"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> p.leroy@atelier-leroy.com</span>
+              <span class="company-card__contact-item"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg> 04 78 12 34 56</span>
+            </div>
+            <div class="company-card__competences">
+              <span class="chip">Architecture</span><span class="chip">Urbanisme</span>
+            </div>
+            <div class="company-card__certifications">
+              <span class="chip chip--certification">DPLG</span><span class="chip chip--certification">HQE</span>
+            </div>
+            <div class="company-card__tags">
+              <span class="chip chip--tag">Partenaire</span>
+            </div>
+            <div class="company-card__footer">
+              <button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></button>
+              <button class="button button--danger button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></button>
+            </div>
+          </div>
+
+          <div class="company-card">
+            <div class="company-card__header">
+              <div class="company-card__logo"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+              <div class="company-card__identity">
+                <div class="company-card__name">Sodex Ingénierie</div>
+                <div class="company-card__location"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 13008 Marseille</div>
+              </div>
+            </div>
+            <div class="company-card__contact-info">
+              <span class="company-card__contact-item"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> info@sodex-ing.com</span>
+              <span class="company-card__contact-item"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg> 04 91 23 45 67</span>
+            </div>
+            <div class="company-card__competences">
+              <span class="chip">Études techniques</span><span class="chip">Béton armé</span>
+            </div>
+            <div class="company-card__footer">
+              <button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></button>
+              <button class="button button--danger button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel : Réseau M2BPO (vide pour la preview) -->
+      <div class="panel" id="panel-network" data-wrapper="reseau-tabs">
+        <div class="empty-state">
+          <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <div class="empty-state__text">Aucune entreprise trouvée pour ces critères.</div>
+        </div>
+      </div>
+
+      <!-- Panel : Invitations envoyées -->
+      <div class="panel" id="panel-envoyees" data-wrapper="reseau-tabs">
+        <div class="empty-state">
+          <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <div class="empty-state__text">Aucune invitation en attente de réponse.</div>
+        </div>
+      </div>
+
+      <!-- Panel : Invitations reçues -->
+      <div class="panel" id="panel-recues" data-wrapper="reseau-tabs">
+        <div class="empty-state">
+          <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div class="empty-state__text">Aucune invitation reçue.</div>
+        </div>
+      </div>
+
+      <!-- Panel : Listes -->
+      <div class="panel" id="panel-listes" data-wrapper="reseau-tabs">
+        <div class="tags-section">
+          <nav class="tags-sidebar">
+            <div class="tags-sidebar__header">
+              <span class="tags-sidebar__title">Tags</span>
+              <button class="button button--ghost button--icon-only button--small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </div>
+            <ul class="tags-sidebar__list">
+              <li class="tags-sidebar__item tags-sidebar__item--active">Partenaire <span class="tags-sidebar__count">8</span></li>
+              <li class="tags-sidebar__item">Sous-traitant <span class="tags-sidebar__count">12</span></li>
+              <li class="tags-sidebar__item">Fournisseur <span class="tags-sidebar__count">4</span></li>
+            </ul>
+          </nav>
+          <div class="tags-content">
+            <div class="company-grid">
+              <div class="company-card">
+                <div class="company-card__header">
+                  <div class="company-card__logo"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+                  <div class="company-card__identity">
+                    <div class="company-card__name">Atelier Leroy Architecture</div>
+                    <div class="company-card__location"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 69003 Lyon</div>
+                  </div>
+                </div>
+                <div class="company-card__footer">
+                  <span class="company-card__footer-left"><span class="chip chip--tag">Partenaire</span></span>
+                  <button class="button button--ghost button--icon-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel : Recherche -->
+      <div class="panel" id="panel-recherche" data-wrapper="reseau-tabs">
+        <div class="search-panel__input-wrapper">
+          <input type="search" class="search-panel__input" placeholder="Rechercher dans les contacts, le réseau, les invitations…">
+        </div>
+        <div class="empty-state">
+          <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div class="empty-state__text">Saisissez un terme pour rechercher dans l'ensemble de votre réseau.</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       DRAWERS : panels d'édition latéraux (Facturation)
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="drawer" id="drawer-edit-info" aria-label="Modifier les informations de facturation">
+    <div class="drawer__header">
+      <div class="drawer__header-title-wrapper">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Modifier les informations
+      </div>
+      <button class="drawer__close js-close-drawer" aria-label="Fermer">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer__content">
+      <form id="form-edit-info">
+        <div class="form-field">
+          <label class="form-field__label" for="field-raison-sociale">Raison sociale</label>
+          <input class="form-field__input" type="text" id="field-raison-sociale" name="raison_sociale" value="Durand &amp; Associés SARL" required>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-adresse">Adresse</label>
+          <input class="form-field__input" type="text" id="field-adresse" name="adresse" value="15 rue de la Paix" required>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-code-postal">Code postal</label>
+          <input class="form-field__input" type="text" id="field-code-postal" name="code_postal" value="75002" pattern="[0-9]{5}" maxlength="5" required>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-ville">Ville</label>
+          <input class="form-field__input" type="text" id="field-ville" name="ville" value="Paris" required>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-tva-intra">TVA intracommunautaire</label>
+          <input class="form-field__input" type="text" id="field-tva-intra" name="tva_intra" value="FR 82 123456789" placeholder="FR XX XXXXXXXXX">
+        </div>
+      </form>
+    </div>
+    <div class="drawer__footer">
+      <button class="button button--secondary button--small js-close-drawer">Annuler</button>
+      <button class="button button--primary button--small" type="submit" form="form-edit-info">Enregistrer</button>
+    </div>
+  </section>
+
+  <section class="drawer" id="drawer-edit-recipients" aria-label="Modifier les destinataires">
+    <div class="drawer__header">
+      <div class="drawer__header-title-wrapper">
+        <svg viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Modifier les destinataires
+      </div>
+      <button class="drawer__close js-close-drawer" aria-label="Fermer">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer__content">
+      <form id="form-edit-recipients">
+        <div class="form-field">
+          <label class="form-field__label" for="field-user-principal">Utilisateur principal</label>
+          <input class="form-field__input form-field__input--readonly" type="text" id="field-user-principal" value="Nicolas Vidal" readonly aria-describedby="field-user-principal-hint">
+          <span class="form-field__hint" id="field-user-principal-hint">n.vidal@durand-associes.fr — Non modifiable</span>
+        </div>
+        <div class="form-field">
+          <label class="form-field__label" for="field-extra-email">Email supplémentaire</label>
+          <input class="form-field__input" type="email" id="field-extra-email" name="extra_email" value="compta@durand-associes.fr" placeholder="comptabilite@entreprise.fr">
+          <span class="form-field__hint">Recevra une copie de chaque facture émise.</span>
+        </div>
+      </form>
+    </div>
+    <div class="drawer__footer">
+      <button class="button button--secondary button--small js-close-drawer">Annuler</button>
+      <button class="button button--primary button--small" type="submit" form="form-edit-recipients">Enregistrer</button>
+    </div>
+  </section>
+
+  <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       NAVIGATION PREVIEW (barre flottante bas)
+       ══════════════════════════════════════════════════════════════════ -->
+  <nav class="preview-nav">
+    <button class="preview-nav__btn preview-nav__btn--active" data-page="billing">Facturation</button>
+    <button class="preview-nav__btn" data-page="bibliotheque">Bibliothèque</button>
+    <button class="preview-nav__btn" data-page="reseau">Contacts</button>
+  </nav>
+
+  <script>
+    // ══════════════════════════════════════════════════════════════════
+    // Preview — navigation entre pages + sidebar + tabs
+    // ══════════════════════════════════════════════════════════════════
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      const toggleBtn = document.getElementById('sidebar-toggle');
+      const closeBtn = document.getElementById('sidebar-close');
+
+      // ── Sidebar expand/collapse ──
+      function expand() {
+        sidebar.classList.add('sidebar--expanded');
+        overlay.classList.add('sidebar-overlay--active');
+      }
+      function collapse() {
+        sidebar.classList.remove('sidebar--expanded');
+        overlay.classList.remove('sidebar-overlay--active');
+        sidebar.querySelectorAll('.sidebar__item--expanded').forEach(i => i.classList.remove('sidebar__item--expanded'));
+      }
+
+      toggleBtn.addEventListener('click', () => sidebar.classList.contains('sidebar--expanded') ? collapse() : expand());
+      closeBtn.addEventListener('click', collapse);
+      overlay.addEventListener('click', collapse);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') collapse(); });
+
+      // Clic sur lien en mode collapsé → expand
+      sidebar.querySelectorAll('.sidebar__link').forEach(link => {
+        link.addEventListener('click', () => {
+          if (!sidebar.classList.contains('sidebar--expanded')) expand();
+        });
+      });
+
+      // ── Accordéon ──
+      sidebar.querySelectorAll('[data-sidebar-accordion]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!sidebar.classList.contains('sidebar--expanded')) return;
+          const parent = btn.closest('.sidebar__item');
+          const wasExpanded = parent.classList.contains('sidebar__item--expanded');
+          sidebar.querySelectorAll('.sidebar__item--accordion.sidebar__item--expanded').forEach(i => i.classList.remove('sidebar__item--expanded'));
+          if (!wasExpanded) parent.classList.add('sidebar__item--expanded');
+        });
+      });
+
+      // ── Toggles (on/off) ──
+      document.querySelectorAll('.toggle').forEach(toggle => {
+        toggle.addEventListener('click', () => {
+          toggle.classList.toggle('toggle--on');
+          toggle.classList.toggle('toggle--off');
+        });
+      });
+
+      // ── Tab underline ──
+      document.querySelectorAll('.tab-underline__item').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const wrapper = tab.dataset.wrapper;
+          const tabId = tab.dataset.tab;
+          // Désactiver tous les tabs du même wrapper
+          document.querySelectorAll(`.tab-underline__item[data-wrapper="${wrapper}"]`).forEach(t => t.classList.remove('tab-underline__item--active'));
+          tab.classList.add('tab-underline__item--active');
+          // Afficher le bon panel
+          document.querySelectorAll(`.panel[data-wrapper="${wrapper}"]`).forEach(p => p.classList.remove('panel--active'));
+          const panel = document.getElementById('panel-' + tabId);
+          if (panel) panel.classList.add('panel--active');
+        });
+      });
+
+      // ── Navigation entre pages ──
+      const pages = { billing: 'Facturation', bibliotheque: 'Bibliothèque', reseau: 'Contacts' };
+      const breadcrumb = document.getElementById('breadcrumb-current');
+
+      function showPage(pageName) {
+        // Cacher toutes les pages
+        Object.keys(pages).forEach(p => {
+          document.getElementById('page-' + p).style.display = 'none';
+        });
+        // Montrer la page active
+        document.getElementById('page-' + pageName).style.display = 'block';
+        breadcrumb.textContent = pages[pageName];
+
+        // Preview nav
+        document.querySelectorAll('.preview-nav__btn').forEach(b => b.classList.remove('preview-nav__btn--active'));
+        document.querySelector(`.preview-nav__btn[data-page="${pageName}"]`).classList.add('preview-nav__btn--active');
+
+        // Sidebar active states
+        sidebar.querySelectorAll('.sidebar__link--active, .sidebar__sub-link--active').forEach(el => {
+          el.classList.remove('sidebar__link--active');
+          el.classList.remove('sidebar__sub-link--active');
+        });
+        sidebar.querySelectorAll('.sidebar__item--expanded').forEach(i => i.classList.remove('sidebar__item--expanded'));
+
+        if (pageName === 'reseau') {
+          document.querySelector('#nav-contacts .sidebar__link').classList.add('sidebar__link--active');
+        } else if (pageName === 'billing') {
+          document.getElementById('nav-factures').classList.add('sidebar__sub-link--active');
+          document.getElementById('nav-settings').classList.add('sidebar__item--expanded');
+          document.querySelector('#nav-settings > .sidebar__link').classList.add('sidebar__link--active');
+        } else if (pageName === 'bibliotheque') {
+          document.getElementById('nav-bibliotheque').classList.add('sidebar__sub-link--active');
+          document.getElementById('nav-settings').classList.add('sidebar__item--expanded');
+          document.querySelector('#nav-settings > .sidebar__link').classList.add('sidebar__link--active');
+        }
+      }
+
+      // Preview nav buttons
+      document.querySelectorAll('.preview-nav__btn').forEach(btn => {
+        btn.addEventListener('click', () => showPage(btn.dataset.page));
+      });
+
+      // Sidebar navigation clicks
+      document.querySelectorAll('[data-page]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          showPage(link.dataset.page);
+          collapse();
+        });
+      });
+
+      // ── Drawers (panneaux latéraux d'édition) ──
+      const drawerOverlay = document.getElementById('drawer-overlay');
+
+      function openDrawer(drawerId) {
+        closeAllDrawers();
+        const drawer = document.getElementById(drawerId);
+        if (!drawer) return;
+        drawer.classList.add('drawer--open');
+        drawerOverlay.classList.add('drawer-overlay--active');
+        drawerOverlay.setAttribute('aria-hidden', 'false');
+        // Focus le premier input du drawer
+        const firstInput = drawer.querySelector('input:not([readonly]), select, textarea');
+        if (firstInput) setTimeout(() => firstInput.focus(), 200);
+      }
+
+      function closeAllDrawers() {
+        document.querySelectorAll('.drawer--open').forEach(d => d.classList.remove('drawer--open'));
+        drawerOverlay.classList.remove('drawer-overlay--active');
+        drawerOverlay.setAttribute('aria-hidden', 'true');
+      }
+
+      // Boutons "Modifier" → ouvrent le drawer ciblé
+      document.querySelectorAll('[data-drawer-target]').forEach(btn => {
+        btn.addEventListener('click', () => openDrawer(btn.dataset.drawerTarget));
+      });
+
+      // Boutons "Annuler" / croix dans les drawers
+      document.querySelectorAll('.js-close-drawer').forEach(btn => {
+        btn.addEventListener('click', closeAllDrawers);
+      });
+
+      // Overlay drawer → fermer
+      drawerOverlay.addEventListener('click', closeAllDrawers);
+
+      // Escape ferme aussi les drawers
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeAllDrawers();
+      });
+
+      // ── Soumission formulaire édition infos ──
+      const formInfo = document.getElementById('form-edit-info');
+      if (formInfo) {
+        formInfo.addEventListener('submit', e => {
+          e.preventDefault();
+          const raison = document.getElementById('field-raison-sociale').value;
+          const adresse = document.getElementById('field-adresse').value;
+          const cp = document.getElementById('field-code-postal').value;
+          const ville = document.getElementById('field-ville').value;
+          const tva = document.getElementById('field-tva-intra').value;
+          // Mettre à jour les information_row dans la card infos
+          const infoValues = document.querySelectorAll('#card-info .information-row__value');
+          if (infoValues[0]) infoValues[0].textContent = raison;
+          if (infoValues[1]) infoValues[1].innerHTML = adresse + '<br>' + cp + ' ' + ville;
+          if (infoValues[2]) infoValues[2].textContent = tva;
+          closeAllDrawers();
+        });
+      }
+
+      // ── Soumission formulaire édition destinataires ──
+      const formRecipients = document.getElementById('form-edit-recipients');
+      if (formRecipients) {
+        formRecipients.addEventListener('submit', e => {
+          e.preventDefault();
+          const extraEmail = document.getElementById('field-extra-email').value;
+          // Mettre à jour la valeur du destinataire secondaire
+          const recipientValues = document.querySelectorAll('#card-recipients .information-row__value');
+          if (recipientValues[1]) recipientValues[1].textContent = extraEmail || '—';
+          closeAllDrawers();
+        });
+      }
+
+      // Init avec page billing active
+      showPage('billing');
+    });
+  </script>
+</body>
+</html>
