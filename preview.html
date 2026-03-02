@@ -457,8 +457,7 @@
     }
     .billing-table__link:hover { text-decoration: underline; }
     .billing-table__amount {
-      font-weight: 600; font-family: 'JetBrains Mono', monospace;
-      font-size: 13px; color: #1f2937;
+      font-size: 14px; color: #1f2937;
     }
     .date-pair { display: flex; flex-direction: column; gap: 2px; }
     .date-pair__item { font-size: 12px; display: flex; align-items: center; gap: 4px; }
@@ -645,6 +644,9 @@
     .button--secondary:hover { background: #f9fafb; }
     .button--ghost { background: transparent; color: #6b7280; }
     .button--ghost:hover { background: #f3f4f6; color: #374151; }
+    .button--ghost-accent { background: #eef4fc; color: #0073e6; }
+    .button--ghost-accent:hover { background: #ddeaf8; color: #005bb5; }
+    .button--ghost-accent svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
     .button--danger { background: transparent; color: #dc2626; }
     .button--danger:hover { background: #fef2f2; }
     .button--success { background: #16a34a; color: #fff; }
@@ -862,7 +864,7 @@
     <nav class="topbar__breadcrumb" aria-label="Fil d'Ariane">
       M2BPO
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-      <span id="breadcrumb-current">Facturation</span>
+      <span id="breadcrumb-current">Factures</span>
     </nav>
     <div class="topbar__spacer"></div>
     <div class="topbar__search">
@@ -884,7 +886,7 @@
       <div class="page-header">
         <div class="page-header__content-container">
           <h1 class="page-header__title">
-            Facturation
+            Factures
             <span class="page-header__badge page-header__badge--green">Actif</span>
           </h1>
           <p class="page-header__subtitle">Gestion de l'abonnement, factures et paiements — Durand & Associés SARL</p>
@@ -979,30 +981,9 @@
 
       <!-- Panel : Factures -->
       <div class="panel" id="panel-factures" data-wrapper="billing-tabs">
-        <div class="indicator-card-bar">
-          <div class="indicator-card">
-            <div class="indicator-card__label">Total facturé</div>
-            <div class="indicator-card__value">47 280,00 €</div>
-            <div class="indicator-card__subtitle">12 factures émises</div>
-          </div>
-          <div class="indicator-card">
-            <div class="indicator-card__label">En attente</div>
-            <div class="indicator-card__value">3 940,00 €</div>
-            <div class="indicator-card__subtitle">1 facture en attente</div>
-          </div>
-          <div class="indicator-card">
-            <div class="indicator-card__label">Dernière facture</div>
-            <div class="indicator-card__value">15/01/2026</div>
-            <div class="indicator-card__subtitle">Réf. FA-2026-001</div>
-          </div>
-        </div>
-
         <div class="filter-bar">
           <select class="filter-bar__select">
             <option>Toutes les périodes</option><option>2026</option><option selected>2025</option><option>2024</option>
-          </select>
-          <select class="filter-bar__select">
-            <option>Tous les statuts</option><option>Payée</option><option>En attente</option><option>En retard</option>
           </select>
           <div class="filter-bar__spacer"></div>
           <button class="button button--ghost button--small">
@@ -1019,7 +1000,7 @@
                   <tr>
                     <th>N° Facture</th><th>Émise le</th><th>Période</th><th>TVA</th>
                     <th class="th--right">Montant HT</th><th class="th--right">Montant TTC</th>
-                    <th>Échéances</th><th>Statut</th><th><span class="screen-reader-only">Actions</span></th>
+                    <th>Échéances</th><th><span class="screen-reader-only">Actions</span></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1029,8 +1010,7 @@
                     <td class="td--right billing-table__amount">3 940,00 €</td>
                     <td class="td--right billing-table__amount">4 728,00 €</td>
                     <td><div class="date-pair"><div class="date-pair__item">15/02/2026</div></div></td>
-                    <td><span class="status-tag status-tag--pending">En attente</span></td>
-                    <td><button class="button button--ghost button--small">PDF</button></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
                   </tr>
                   <tr>
                     <td><a class="billing-table__link">FA-2025-012</a></td>
@@ -1038,8 +1018,7 @@
                     <td class="td--right billing-table__amount">3 940,00 €</td>
                     <td class="td--right billing-table__amount">4 728,00 €</td>
                     <td><div class="date-pair"><div class="date-pair__item">15/01/2026</div></div></td>
-                    <td><span class="status-tag status-tag--paid">Payée</span></td>
-                    <td><button class="button button--ghost button--small">PDF</button></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
                   </tr>
                   <tr>
                     <td><a class="billing-table__link">FA-2025-011</a></td>
@@ -1047,8 +1026,7 @@
                     <td class="td--right billing-table__amount">3 940,00 €</td>
                     <td class="td--right billing-table__amount">4 728,00 €</td>
                     <td><div class="date-pair"><div class="date-pair__item">15/12/2025</div></div></td>
-                    <td><span class="status-tag status-tag--paid">Payée</span></td>
-                    <td><button class="button button--ghost button--small">PDF</button></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
                   </tr>
                   <tr>
                     <td><a class="billing-table__link">FA-2025-010</a></td>
@@ -1056,8 +1034,7 @@
                     <td class="td--right billing-table__amount">3 940,00 €</td>
                     <td class="td--right billing-table__amount">4 728,00 €</td>
                     <td><div class="date-pair"><div class="date-pair__item">15/11/2025</div><div class="date-pair__item date-pair__item--secondary">30/11/2025</div></div></td>
-                    <td><span class="status-tag status-tag--paid">Payée</span></td>
-                    <td><button class="button button--ghost button--small">PDF</button></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -1472,7 +1449,7 @@
        NAVIGATION PREVIEW (barre flottante bas)
        ══════════════════════════════════════════════════════════════════ -->
   <nav class="preview-nav">
-    <button class="preview-nav__btn preview-nav__btn--active" data-page="billing">Facturation</button>
+    <button class="preview-nav__btn preview-nav__btn--active" data-page="billing">Factures</button>
     <button class="preview-nav__btn" data-page="bibliotheque">Bibliothèque</button>
     <button class="preview-nav__btn" data-page="reseau">Contacts</button>
   </nav>
@@ -1546,7 +1523,7 @@
       });
 
       // ── Navigation entre pages ──
-      const pages = { billing: 'Facturation', bibliotheque: 'Bibliothèque', reseau: 'Contacts' };
+      const pages = { billing: 'Factures', bibliotheque: 'Bibliothèque', reseau: 'Contacts' };
       const breadcrumb = document.getElementById('breadcrumb-current');
 
       function showPage(pageName) {
