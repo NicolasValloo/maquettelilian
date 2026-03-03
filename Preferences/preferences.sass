@@ -1,0 +1,494 @@
+// ══════════════════════════════════════════════════════════════════════════
+// Styles spécifiques — Page Préférences
+// Onglets, accordéons, configurations, save-bar
+// ══════════════════════════════════════════════════════════════════════════
+
+@use '../styles/utils/colors'
+@use '../styles/utils/variables'
+@use '../styles/utils/fonts'
+
+
+// ── Onglets du contenu ──────────────────────────────────────────────────
+.content-tabs
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-big
+
+
+// ── Accordéon de template de message ────────────────────────────────────
+.template-accordion
+  border: 1px solid colors.$grey-blue
+  border-radius: variables.$border-radius-medium
+  background-color: colors.$white
+  box-shadow: colors.$shadow-card
+  margin-bottom: variables.$spacing-medium
+
+  &__header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: variables.$spacing-medium variables.$spacing-big
+    cursor: pointer
+    transition: background-color variables.$transition-default
+    border-bottom: 1px solid colors.$grey-blue
+
+    &:hover
+      background-color: colors.$grey-blue-light
+
+  &__title
+    font-size: variables.$font-size-normal
+    font-weight: variables.$font-weight-medium
+    color: colors.$main-color
+    margin: 0
+    flex: 1
+
+  &__badge
+    margin-left: variables.$spacing-big
+
+  &__content
+    padding: variables.$spacing-big
+    display: none
+
+    &.open
+      display: block
+
+  &__section
+    margin-bottom: variables.$spacing-big
+
+    &:last-child
+      margin-bottom: 0
+
+  &__label
+    display: block
+    font-size: variables.$font-size-small
+    font-weight: variables.$font-weight-bold
+    color: colors.$main-color-lighter
+    text-transform: uppercase
+    letter-spacing: 0.5px
+    margin-bottom: variables.$spacing-small
+
+  &__text
+    font-size: variables.$font-size-normal
+    color: colors.$main-color-light
+    margin: 0
+    line-height: variables.$line-height-normal
+
+  &__preview
+    background-color: colors.$grey-blue-light
+    border: 1px solid colors.$grey-blue
+    border-radius: variables.$border-radius-small
+    padding: variables.$spacing-big
+    font-size: variables.$font-size-normal
+    color: colors.$main-color
+    line-height: variables.$line-height-normal
+
+    p
+      margin: 0 0 variables.$spacing-medium 0
+
+      &:last-child
+        margin-bottom: 0
+
+  &__button
+    margin-top: variables.$spacing-big
+
+
+// ── Badges de template ──────────────────────────────────────────────────
+.badge
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  padding: 4px variables.$spacing-small
+  border-radius: variables.$border-radius-small
+  font-size: variables.$font-size-small
+  font-weight: variables.$font-weight-medium
+  white-space: nowrap
+
+  &--blue
+    background-color: colors.$blue-light
+    color: colors.$blue-dark
+
+  &--green
+    background-color: colors.$green-light
+    color: colors.$green
+
+  &--purple
+    background-color: #f3e8ff
+    color: #6b21a8
+
+  &--amber
+    background-color: colors.$orange-light
+    color: colors.$orange
+
+
+// ── Tags de variables ──────────────────────────────────────────────────
+.variable-tags
+  display: flex
+  flex-wrap: wrap
+  gap: variables.$spacing-small
+
+.variable-tag
+  display: inline-block
+  background-color: colors.$grey-blue-light
+  border: 1px solid colors.$grey-blue
+  padding: variables.$spacing-small variables.$spacing-medium
+  border-radius: variables.$border-radius-small
+  font-size: variables.$font-size-small
+  font-family: 'JetBrains Mono', monospace
+  color: colors.$main-color
+  white-space: nowrap
+
+
+// ── Sous-section (Équipe, Réseau, Notes, etc.) ──────────────────────────
+.subsection
+  border: 1px solid colors.$grey-blue
+  border-radius: variables.$border-radius-medium
+  background-color: colors.$white
+  box-shadow: colors.$shadow-card
+  overflow: hidden
+
+  &__title
+    font-size: variables.$font-size-medium
+    font-weight: variables.$font-weight-bold
+    color: colors.$main-color
+    margin: 0
+    padding: variables.$spacing-big variables.$spacing-big variables.$spacing-small variables.$spacing-big
+
+  &__description
+    font-size: variables.$font-size-normal
+    color: colors.$main-color-light
+    margin: 0 0 variables.$spacing-big variables.$spacing-big
+    line-height: variables.$line-height-normal
+
+  &__content
+    padding: 0 variables.$spacing-big variables.$spacing-big variables.$spacing-big
+
+  &__divider
+    height: 1px
+    background-color: colors.$grey-blue
+    margin: variables.$spacing-big 0
+
+
+// ── Ligne de membre (Équipe) ────────────────────────────────────────────
+.member-row
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: variables.$spacing-medium 0
+  border-bottom: 1px solid colors.$grey-blue
+
+  &:last-child
+    border-bottom: none
+
+  &__info
+    display: flex
+    flex-direction: column
+
+  &__name
+    font-size: variables.$font-size-normal
+    font-weight: variables.$font-weight-medium
+    color: colors.$main-color
+
+  &__controls
+    display: flex
+    gap: variables.$spacing-small
+
+  &__role-select
+    padding: variables.$spacing-small variables.$spacing-medium
+    border: 1px solid colors.$grey-blue
+    border-radius: variables.$border-radius-small
+    font-size: variables.$font-size-normal
+    color: colors.$main-color
+    background-color: colors.$white
+    cursor: pointer
+    transition: border-color variables.$transition-default
+
+    &:hover
+      border-color: colors.$grey-blue-dark
+
+    &:focus
+      outline: none
+      border-color: colors.$blue
+      box-shadow: 0 0 0 2px colors.$blue-light
+
+
+// ── Ligne de drapeau (Notes) ────────────────────────────────────────────
+.flag-rows
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-medium
+
+.flag-row
+  display: flex
+  align-items: center
+  gap: variables.$spacing-big
+
+  &__badge
+    flex-shrink: 0
+
+  &__input
+    flex: 1
+    padding: variables.$spacing-small variables.$spacing-medium
+    border: 1px solid colors.$grey-blue
+    border-radius: variables.$border-radius-small
+    font-size: variables.$font-size-normal
+    color: colors.$main-color
+    background-color: colors.$white
+    transition: border-color variables.$transition-default
+
+    &::placeholder
+      color: colors.$grey-blue-dark
+
+    &:hover
+      border-color: colors.$grey-blue-dark
+
+    &:focus
+      outline: none
+      border-color: colors.$blue
+      box-shadow: 0 0 0 2px colors.$blue-light
+
+
+// ── Badge de drapeau ────────────────────────────────────────────────────
+.flag-badge
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  padding: 6px variables.$spacing-medium
+  border-radius: variables.$border-radius-small
+  font-size: variables.$font-size-small
+  font-weight: variables.$font-weight-medium
+  white-space: nowrap
+  min-width: 80px
+
+  &--red
+    background-color: colors.$red-light
+    color: colors.$red
+
+  &--amber
+    background-color: colors.$orange-light
+    color: colors.$orange
+
+  &--blue
+    background-color: colors.$blue-light
+    color: colors.$blue-dark
+
+  &--green
+    background-color: colors.$green-light
+    color: colors.$green
+
+  &--purple
+    background-color: #f3e8ff
+    color: #6b21a8
+
+
+// ── Ligne de configuration ──────────────────────────────────────────────
+.config-row
+  display: flex
+  flex-direction: column
+  padding: variables.$spacing-medium 0
+  border-bottom: 1px solid colors.$grey-blue
+
+  &:last-child
+    border-bottom: none
+
+  &__label
+    font-size: variables.$font-size-normal
+    font-weight: variables.$font-weight-medium
+    color: colors.$main-color
+    margin-bottom: variables.$spacing-small
+
+  &__description
+    font-size: variables.$font-size-small
+    color: colors.$main-color-lighter
+    margin-bottom: variables.$spacing-medium
+    line-height: variables.$line-height-normal
+
+  &__control
+    padding-top: variables.$spacing-small
+
+
+// ── Groupe de radios ────────────────────────────────────────────────────
+.radio-group
+  display: flex
+  flex-wrap: wrap
+  gap: variables.$spacing-big
+
+.radio-label
+  display: flex
+  align-items: center
+  gap: variables.$spacing-small
+  cursor: pointer
+  user-select: none
+
+  &__input
+    width: 18px
+    height: 18px
+    cursor: pointer
+    accent-color: colors.$blue
+
+  &__text
+    font-size: variables.$font-size-normal
+    color: colors.$main-color
+
+
+// ── Groupe de checkboxes ───────────────────────────────────────────────
+.checkbox-group
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-medium
+
+
+// ── Ligne de checkbox utilisateur ───────────────────────────────────────
+.user-checkbox-row
+  display: flex
+  align-items: center
+  gap: variables.$spacing-small
+  cursor: pointer
+  user-select: none
+  padding: variables.$spacing-small 0
+
+  &__input
+    width: 18px
+    height: 18px
+    cursor: pointer
+    accent-color: colors.$blue
+
+  &__text
+    font-size: variables.$font-size-normal
+    color: colors.$main-color
+
+
+// ── Select personnalisé ────────────────────────────────────────────────
+.config-select
+  padding: variables.$spacing-small variables.$spacing-medium
+  border: 1px solid colors.$grey-blue
+  border-radius: variables.$border-radius-small
+  font-size: variables.$font-size-normal
+  color: colors.$main-color
+  background-color: colors.$white
+  cursor: pointer
+  max-width: 100%
+  transition: border-color variables.$transition-default
+
+  &:hover
+    border-color: colors.$grey-blue-dark
+
+  &:focus
+    outline: none
+    border-color: colors.$blue
+    box-shadow: 0 0 0 2px colors.$blue-light
+
+
+// ── Save-bar (fixe en bas) ──────────────────────────────────────────────
+.save-bar
+  position: fixed
+  bottom: 0
+  left: 0
+  right: 0
+  background-color: colors.$white
+  border-top: 1px solid colors.$grey-blue
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08)
+  z-index: 100
+  padding: variables.$spacing-big 0
+
+  &__container
+    max-width: 1200px
+    margin: 0 auto
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 0 variables.$spacing-big
+
+  &__message
+    font-size: variables.$font-size-normal
+    color: colors.$main-color-light
+
+  &__actions
+    display: flex
+    gap: variables.$spacing-big
+
+
+// ── Bouton générique ────────────────────────────────────────────────────
+.button
+  padding: variables.$spacing-small variables.$spacing-big
+  border-radius: variables.$border-radius-small
+  font-size: variables.$font-size-normal
+  font-weight: variables.$font-weight-medium
+  border: none
+  cursor: pointer
+  transition: all variables.$transition-default
+  display: inline-flex
+  align-items: center
+  gap: variables.$spacing-small
+
+  &--primary
+    background-color: colors.$blue
+    color: colors.$white
+
+    &:hover
+      background-color: colors.$blue-dark
+
+    &:active
+      opacity: 0.9
+
+  &--secondary
+    background-color: colors.$grey-blue-light
+    color: colors.$main-color
+    border: 1px solid colors.$grey-blue
+
+    &:hover
+      background-color: colors.$grey-blue
+
+  &--ghost
+    background-color: transparent
+    color: colors.$main-color
+    border: 1px solid colors.$grey-blue
+
+    &:hover
+      background-color: colors.$grey-blue-light
+
+
+// ── Toggle switch ──────────────────────────────────────────────────────
+.toggle-switch
+  display: inline-flex
+  align-items: center
+  cursor: pointer
+
+  &__input
+    display: none
+
+  &__slider
+    position: relative
+    display: inline-block
+    width: 44px
+    height: 24px
+    background-color: colors.$grey-blue-dark
+    border-radius: 12px
+    transition: background-color variables.$transition-default
+
+    &::after
+      content: ''
+      position: absolute
+      width: 20px
+      height: 20px
+      border-radius: 50%
+      background-color: colors.$white
+      top: 2px
+      left: 2px
+      transition: left variables.$transition-default
+
+  &__input:checked + &__slider
+    background-color: colors.$green
+
+    &::after
+      left: 22px
+
+  &__input:focus + &__slider
+    box-shadow: 0 0 0 3px colors.$blue-light
+
+
+// ── État de pan avec onglets ───────────────────────────────────────────
+.panel
+  display: none
+
+  &--active
+    display: block

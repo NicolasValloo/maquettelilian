@@ -1,0 +1,366 @@
+@use '../styles/utils/colors'
+@use '../styles/utils/variables'
+@use '../styles/utils/fonts'
+
+// Page utilisateurs - Gestion d'équipe et accès aux utilisateurs
+
+.page-utilisateurs
+  padding: variables.$spacing-24
+  background-color: colors.$neutral-50
+
+// Page header avec titre et bouton d'action
+.page-header
+  display: flex
+  justify-content: space-between
+  align-items: flex-start
+  gap: variables.$spacing-20
+  margin-bottom: variables.$spacing-32
+
+.page-header__content
+  flex: 1
+
+.page-header__title
+  font-size: variables.$font-size-32
+  font-weight: variables.$font-weight-700
+  color: colors.$neutral-900
+  margin: 0 0 variables.$spacing-8 0
+
+.page-header__subtitle
+  font-size: variables.$font-size-14
+  color: colors.$neutral-600
+  margin: 0
+
+// Bouton principal
+.btn
+  padding: variables.$spacing-10 variables.$spacing-16
+  border-radius: variables.$radius-md
+  font-size: variables.$font-size-14
+  font-weight: variables.$font-weight-600
+  border: none
+  cursor: pointer
+  transition: all 0.2s ease-in-out
+  white-space: nowrap
+
+.btn--primary
+  background-color: colors.$primary-600
+  color: white
+
+  &:hover
+    background-color: colors.$primary-700
+    box-shadow: 0 4px 12px rgba(0, 115, 230, 0.3)
+
+  &:active
+    background-color: colors.$primary-800
+    transform: scale(0.98)
+
+// Card container avec ombrage
+.users-card
+  background-color: white
+  border-radius: variables.$radius-lg
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04)
+  overflow: hidden
+
+// Tabs navigation bar
+.tabs-bar
+  display: flex
+  border-bottom: 1px solid colors.$neutral-200
+  background-color: colors.$neutral-50
+  padding: 0
+
+.tab-button
+  flex: 1
+  padding: variables.$spacing-16
+  background: transparent
+  border: none
+  border-bottom: 3px solid transparent
+  font-size: variables.$font-size-14
+  font-weight: variables.$font-weight-600
+  color: colors.$neutral-600
+  cursor: pointer
+  transition: all 0.2s ease-in-out
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: variables.$spacing-8
+
+  &:hover:not(.tab-button--active)
+    color: colors.$neutral-900
+    background-color: colors.$neutral-100
+
+  &.tab-button--active
+    color: colors.$primary-600
+    border-bottom-color: colors.$primary-600
+    background-color: white
+
+.tab-badge
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  min-width: 24px
+  height: 24px
+  background-color: colors.$neutral-200
+  border-radius: 12px
+  font-size: variables.$font-size-12
+  font-weight: variables.$font-weight-600
+  color: colors.$neutral-700
+
+// Search box
+.search-box
+  display: flex
+  align-items: center
+  gap: variables.$spacing-12
+  padding: variables.$spacing-16 variables.$spacing-20
+  border-bottom: 1px solid colors.$neutral-200
+  background-color: white
+
+.search-box__input
+  flex: 1
+  padding: variables.$spacing-8 variables.$spacing-12
+  border: 1px solid colors.$neutral-300
+  border-radius: variables.$radius-md
+  font-size: variables.$font-size-14
+  color: colors.$neutral-900
+
+  &::placeholder
+    color: colors.$neutral-500
+
+  &:focus
+    outline: none
+    border-color: colors.$primary-600
+    box-shadow: 0 0 0 3px rgba(0, 115, 230, 0.1)
+
+.search-box__icon
+  color: colors.$neutral-400
+  flex-shrink: 0
+
+// Tab content container
+.tab-content
+  display: none
+  padding: variables.$spacing-20
+
+  &.tab-content--active
+    display: block
+
+// User table styling
+.user-table
+  width: 100%
+  border-collapse: collapse
+  font-size: variables.$font-size-14
+
+.user-table__header
+  background-color: colors.$neutral-50
+  border-bottom: 1px solid colors.$neutral-200
+
+.user-table__header-cell
+  padding: variables.$spacing-12 variables.$spacing-16
+  text-align: left
+  font-weight: variables.$font-weight-600
+  color: colors.$neutral-700
+  font-size: variables.$font-size-12
+  text-transform: uppercase
+  letter-spacing: 0.5px
+
+.user-table__header-cell--actions
+  text-align: right
+
+.user-table__row
+  border-bottom: 1px solid colors.$neutral-100
+  transition: background-color 0.2s ease-in-out
+
+  &:hover
+    background-color: colors.$neutral-50
+
+  &.user-table__row--inactive .user-table__name
+    color: colors.$neutral-500
+
+  &.user-table__row--inactive .user-table__email
+    color: colors.$neutral-400
+
+.user-table__cell
+  padding: variables.$spacing-16
+  vertical-align: middle
+
+.user-table__cell--member
+  display: flex
+  align-items: center
+  gap: variables.$spacing-12
+
+.user-table__cell--actions
+  text-align: right
+  position: relative
+
+// Avatar styling
+.user-table__avatar-wrapper
+  position: relative
+  display: inline-flex
+
+.user-table__avatar
+  width: 40px
+  height: 40px
+  border-radius: 8px
+  display: block
+  flex-shrink: 0
+
+.user-table__member-info
+  min-width: 0
+  flex: 1
+
+.user-table__name
+  margin: 0
+  font-weight: variables.$font-weight-600
+  color: colors.$neutral-900
+  font-size: variables.$font-size-14
+
+.user-table__email
+  margin: 0
+  color: colors.$neutral-500
+  font-size: variables.$font-size-12
+
+// Inactivity indicator dot
+.dot-inactive
+  position: absolute
+  bottom: -4px
+  right: -4px
+  width: 12px
+  height: 12px
+  background-color: #f59e0b
+  border-radius: 50%
+  border: 2px solid white
+
+// Role badges
+.role-badge
+  display: inline-block
+  padding: variables.$spacing-4 variables.$spacing-8
+  border-radius: variables.$radius-sm
+  font-size: variables.$font-size-12
+  font-weight: variables.$font-weight-600
+  white-space: nowrap
+  margin-right: variables.$spacing-8
+
+  &.role-badge--admin
+    background-color: #dbeafe
+    color: colors.$primary-700
+
+  &.role-badge--user
+    background-color: colors.$neutral-200
+    color: colors.$neutral-700
+
+// Owner badge
+.badge-owner
+  display: inline-block
+  padding: variables.$spacing-4 variables.$spacing-8
+  background-color: #fef3c7
+  color: #b45309
+  border-radius: variables.$radius-sm
+  font-size: variables.$font-size-12
+  font-weight: variables.$font-weight-600
+  white-space: nowrap
+
+// Action dots button
+.button-dots
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  width: 32px
+  height: 32px
+  padding: 0
+  background: transparent
+  border: none
+  border-radius: variables.$radius-md
+  color: colors.$neutral-500
+  cursor: pointer
+  transition: all 0.2s ease-in-out
+
+  &:hover
+    background-color: colors.$neutral-100
+    color: colors.$neutral-700
+
+  &:active
+    background-color: colors.$neutral-200
+
+// Dropdown menu
+.dropdown
+  display: none
+  position: absolute
+  top: 100%
+  right: 0
+  background-color: white
+  border: 1px solid colors.$neutral-200
+  border-radius: variables.$radius-md
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
+  min-width: 160px
+  margin-top: variables.$spacing-8
+  z-index: 10
+
+  .button-dots:hover + &,
+  &:hover
+    display: block
+
+.dropdown__item
+  display: block
+  width: 100%
+  padding: variables.$spacing-8 variables.$spacing-12
+  text-align: left
+  background: transparent
+  border: none
+  cursor: pointer
+  font-size: variables.$font-size-14
+  color: colors.$neutral-700
+  transition: all 0.2s ease-in-out
+
+  &:hover
+    background-color: colors.$neutral-100
+    color: colors.$neutral-900
+
+  &.dropdown__item--danger
+    color: #dc2626
+
+    &:hover
+      background-color: #fee2e2
+      color: #991b1b
+
+// Empty state for no blocked users
+.empty-state
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: variables.$spacing-48 variables.$spacing-20
+  text-align: center
+
+.empty-state__icon
+  color: colors.$neutral-300
+  margin-bottom: variables.$spacing-16
+
+.empty-state__text
+  margin: 0
+  font-size: variables.$font-size-16
+  color: colors.$neutral-500
+  font-weight: variables.$font-weight-500
+
+// Footer legend
+.footer-legend
+  display: flex
+  gap: variables.$spacing-24
+  padding: variables.$spacing-20 variables.$spacing-24
+  background-color: colors.$neutral-50
+  border-top: 1px solid colors.$neutral-200
+  font-size: variables.$font-size-14
+  color: colors.$neutral-700
+
+.footer-legend__item
+  display: flex
+  align-items: center
+  gap: variables.$spacing-8
+
+.footer-legend__badge
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  width: 20px
+  height: 20px
+  background-color: #fef3c7
+  color: #b45309
+  border-radius: 4px
+  font-size: variables.$font-size-12
+  font-weight: variables.$font-weight-700

@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="page-utilisateurs">
+
+  <!-- Header section -->
+  <header class="page-header">
+    <div class="page-header__content">
+      <h1 class="page-header__title">Équipe</h1>
+      <p class="page-header__subtitle">Gérez les accès à votre compte Marchés Publics.</p>
+    </div>
+    <button class="btn btn--primary">Ajouter un utilisateur</button>
+  </header>
+
+  <!-- Main card with tabs and search -->
+  <div class="users-card">
+    <!-- Tabs navigation -->
+    <div class="tabs-bar">
+      <button class="tab-button tab-button--active" data-tab="actifs">
+        Actifs <span class="tab-badge">5</span>
+      </button>
+      <button class="tab-button" data-tab="bloques">
+        Bloqués <span class="tab-badge">0</span>
+      </button>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-box">
+      <input
+        type="text"
+        class="search-box__input"
+        placeholder="Rechercher un utilisateur..."
+        aria-label="Rechercher un utilisateur"
+      >
+      <svg class="search-box__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M8.5 2C11.8137 2 14.5 4.68629 14.5 8C14.5 9.39052 14.0265 10.6647 13.2074 11.6512L17.3536 15.7975C17.7441 16.188 17.7441 16.8211 17.3536 17.2116C16.9631 17.6021 16.33 17.6021 15.9394 17.2116L11.7932 13.0653C10.8067 13.8845 9.53262 14.5 8.5 14.5C5.18629 14.5 2.5 11.8137 2.5 8C2.5 4.68629 5.18629 2 8.5 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Users table - Actifs tab -->
+    <div class="tab-content tab-content--active" id="actifs">
+      <table class="user-table">
+        <thead class="user-table__header">
+          <tr>
+            <th class="user-table__header-cell">Membre</th>
+            <th class="user-table__header-cell">Rôle</th>
+            <th class="user-table__header-cell">Dernière activité</th>
+            <th class="user-table__header-cell user-table__header-cell--actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- User 1: Nicolas Valloo - Propriétaire -->
+          <tr class="user-table__row">
+            <td class="user-table__cell user-table__cell--member">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%230073e6' width='40' height='40' rx='8'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='16' font-weight='bold' font-family='Arial'%3ENV%3C/text%3E%3C/svg%3E" alt="NV" class="user-table__avatar">
+              <div class="user-table__member-info">
+                <p class="user-table__name">Nicolas Valloo</p>
+                <p class="user-table__email">nv@m2bpo.com</p>
+              </div>
+            </td>
+            <td class="user-table__cell">
+              <span class="role-badge role-badge--admin">
+                ★ Administrateur
+              </span>
+              <span class="badge-owner">Propriétaire</span>
+            </td>
+            <td class="user-table__cell">Il y a 10 jours</td>
+            <td class="user-table__cell user-table__cell--actions">
+              <button class="button-dots" aria-label="Menu actions" aria-expanded="false">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <circle cx="10" cy="3" r="1.5"/>
+                  <circle cx="10" cy="10" r="1.5"/>
+                  <circle cx="10" cy="17" r="1.5"/>
+                </svg>
+              </button>
+              <div class="dropdown">
+                <button class="dropdown__item">Modifier</button>
+                <button class="dropdown__item">Voir l'activité</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 2: Pauline Lemarechal -->
+          <tr class="user-table__row">
+            <td class="user-table__cell user-table__cell--member">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%238b5cf6' width='40' height='40' rx='8'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='16' font-weight='bold' font-family='Arial'%3EPL%3C/text%3E%3C/svg%3E" alt="PL" class="user-table__avatar">
+              <div class="user-table__member-info">
+                <p class="user-table__name">Pauline Lemarechal</p>
+                <p class="user-table__email">contact@m2bpo.com</p>
+              </div>
+            </td>
+            <td class="user-table__cell">
+              <span class="role-badge role-badge--user">Utilisateur</span>
+            </td>
+            <td class="user-table__cell">Il y a 4 mois</td>
+            <td class="user-table__cell user-table__cell--actions">
+              <button class="button-dots" aria-label="Menu actions" aria-expanded="false">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <circle cx="10" cy="3" r="1.5"/>
+                  <circle cx="10" cy="10" r="1.5"/>
+                  <circle cx="10" cy="17" r="1.5"/>
+                </svg>
+              </button>
+              <div class="dropdown">
+                <button class="dropdown__item">Modifier</button>
+                <button class="dropdown__item">Voir l'activité</button>
+                <button class="dropdown__item dropdown__item--danger">Bloquer</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 3: Blaise Malta-Bey - Inactif -->
+          <tr class="user-table__row user-table__row--inactive">
+            <td class="user-table__cell user-table__cell--member">
+              <div class="user-table__avatar-wrapper">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%23f59e0b' width='40' height='40' rx='8'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='16' font-weight='bold' font-family='Arial'%3EBM%3C/text%3E%3C/svg%3E" alt="BM" class="user-table__avatar">
+                <span class="dot-inactive" title="Inactif depuis +90 jours"></span>
+              </div>
+              <div class="user-table__member-info">
+                <p class="user-table__name">Blaise Malta-Bey</p>
+                <p class="user-table__email">bmb@m2bpo.com</p>
+              </div>
+            </td>
+            <td class="user-table__cell">
+              <span class="role-badge role-badge--admin">★ Administrateur</span>
+            </td>
+            <td class="user-table__cell">Il y a 11 mois</td>
+            <td class="user-table__cell user-table__cell--actions">
+              <button class="button-dots" aria-label="Menu actions" aria-expanded="false">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <circle cx="10" cy="3" r="1.5"/>
+                  <circle cx="10" cy="10" r="1.5"/>
+                  <circle cx="10" cy="17" r="1.5"/>
+                </svg>
+              </button>
+              <div class="dropdown">
+                <button class="dropdown__item">Modifier</button>
+                <button class="dropdown__item">Voir l'activité</button>
+                <button class="dropdown__item dropdown__item--danger">Bloquer</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 4: Salomé G -->
+          <tr class="user-table__row">
+            <td class="user-table__cell user-table__cell--member">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%2306b6d4' width='40' height='40' rx='8'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='16' font-weight='bold' font-family='Arial'%3ESG%3C/text%3E%3C/svg%3E" alt="SG" class="user-table__avatar">
+              <div class="user-table__member-info">
+                <p class="user-table__name">Salomé G</p>
+                <p class="user-table__email">salomegazeau@gmail.com</p>
+              </div>
+            </td>
+            <td class="user-table__cell">
+              <span class="role-badge role-badge--user">Utilisateur</span>
+            </td>
+            <td class="user-table__cell">Il y a 4 mois</td>
+            <td class="user-table__cell user-table__cell--actions">
+              <button class="button-dots" aria-label="Menu actions" aria-expanded="false">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <circle cx="10" cy="3" r="1.5"/>
+                  <circle cx="10" cy="10" r="1.5"/>
+                  <circle cx="10" cy="17" r="1.5"/>
+                </svg>
+              </button>
+              <div class="dropdown">
+                <button class="dropdown__item">Modifier</button>
+                <button class="dropdown__item">Voir l'activité</button>
+                <button class="dropdown__item dropdown__item--danger">Bloquer</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 5: Marion Gavilan -->
+          <tr class="user-table__row">
+            <td class="user-table__cell user-table__cell--member">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%23ec4899' width='40' height='40' rx='8'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='16' font-weight='bold' font-family='Arial'%3EMG%3C/text%3E%3C/svg%3E" alt="MG" class="user-table__avatar">
+              <div class="user-table__member-info">
+                <p class="user-table__name">Marion Gavilan</p>
+                <p class="user-table__email">marion.gavilan@gmail.com</p>
+              </div>
+            </td>
+            <td class="user-table__cell">
+              <span class="role-badge role-badge--admin">★ Administrateur</span>
+            </td>
+            <td class="user-table__cell">Il y a 4 mois</td>
+            <td class="user-table__cell user-table__cell--actions">
+              <button class="button-dots" aria-label="Menu actions" aria-expanded="false">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <circle cx="10" cy="3" r="1.5"/>
+                  <circle cx="10" cy="10" r="1.5"/>
+                  <circle cx="10" cy="17" r="1.5"/>
+                </svg>
+              </button>
+              <div class="dropdown">
+                <button class="dropdown__item">Modifier</button>
+                <button class="dropdown__item">Voir l'activité</button>
+                <button class="dropdown__item dropdown__item--danger">Bloquer</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Users table - Bloqués tab (empty state) -->
+    <div class="tab-content" id="bloques">
+      <div class="empty-state">
+        <svg class="empty-state__icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+          <path d="M24 16V24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="32" r="1.5" fill="currentColor"/>
+        </svg>
+        <p class="empty-state__text">Aucun utilisateur bloqué</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer legend -->
+  <footer class="footer-legend">
+    <div class="footer-legend__item">
+      <span class="dot-inactive"></span>
+      <span>Inactif depuis +90 jours</span>
+    </div>
+    <div class="footer-legend__item">
+      <span class="footer-legend__badge">P</span>
+      <span>Propriétaire du compte</span>
+    </div>
+  </footer>
+
+</div>
+{% endblock %}

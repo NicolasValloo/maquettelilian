@@ -137,56 +137,72 @@
          hx-indicator="#contacts-loader">
 
       {% for company in contacts %}
-        {# ── Carte contact ── #}
+        {# ── Carte contact (layout horizontal) ── #}
         <div class="company-card">
-          <div class="company-card__header">
-            <div class="company-card__logo">
-              {% if company.logo %}
-                <img src="{{ company.logo.url }}" alt="{{ company.raison_sociale }}">
-              {% else %}
-                {% component "icon" name="building" %}{% endcomponent %}
+          {# -- Colonne gauche : logo -- #}
+          <div class="company-card__logo">
+            {% if company.logo %}
+              <img src="{{ company.logo.url }}" alt="{{ company.raison_sociale }}">
+            {% else %}
+              {% component "icon" name="building" %}{% endcomponent %}
+            {% endif %}
+          </div>
+
+          {# -- Colonne centrale : identité + coordonnées + compétences -- #}
+          <div class="company-card__body">
+            <div class="company-card__name">
+              <a href="{% url 'reseau:contact-detail' pk=company.pk %}">{{ company.raison_sociale }}</a>
+            </div>
+            <div class="company-card__location">
+              {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
+              {{ company.adresse }}, {{ company.code_postal }} {{ company.ville }}
+            </div>
+            <div class="company-card__contact-info">
+              <a href="mailto:{{ company.email }}" class="company-card__contact-item">
+                {% component "icon" name="mail" size="12" %}{% endcomponent %}
+                {{ company.email }}
+              </a>
+              <span class="company-card__contact-item">
+                {% component "icon" name="phone" size="12" %}{% endcomponent %}
+                {{ company.telephone }}
+              </span>
+              {% if company.site_web %}
+                <a href="{{ company.site_web }}" class="company-card__contact-item company-card__contact-item--link" target="_blank" rel="noopener noreferrer">
+                  {% component "icon" name="globe" size="12" %}{% endcomponent %}
+                  {{ company.site_web }}
+                </a>
               {% endif %}
             </div>
-            <div class="company-card__identity">
-              <div class="company-card__name">{{ company.raison_sociale }}</div>
-              <div class="company-card__location">
-                {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
-                {{ company.code_postal }} {{ company.ville }}
+            {% if company.competences.all %}
+              <div class="company-card__competences">
+                {% for comp in company.competences.all %}
+                  {% component "chip" %}{{ comp.name }}{% endcomponent %}
+                {% endfor %}
               </div>
-            </div>
+            {% endif %}
+            {% if company.certifications.all %}
+              <div class="company-card__certifications">
+                {% for cert in company.certifications.all %}
+                  {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
+                {% endfor %}
+              </div>
+            {% endif %}
+            {% if company.contact_tags.all %}
+              <div class="company-card__tags">
+                {% for tag in company.contact_tags.all %}
+                  {% component "chip" modifier="tag" %}{{ tag.name }}{% endcomponent %}
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
-          <div class="company-card__contact-info">
-            <span class="company-card__contact-item">
-              {% component "icon" name="mail" size="12" %}{% endcomponent %}
-              {{ company.email }}
-            </span>
-            <span class="company-card__contact-item">
-              {% component "icon" name="phone" size="12" %}{% endcomponent %}
-              {{ company.telephone }}
-            </span>
+
+          {# -- Colonne droite : carte de France -- #}
+          <div class="company-card__map">
+            {% component "big_france" location=company.departement %}{% endcomponent %}
           </div>
-          {% if company.competences.all %}
-            <div class="company-card__competences">
-              {% for comp in company.competences.all %}
-                {% component "chip" %}{{ comp.name }}{% endcomponent %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          {% if company.certifications.all %}
-            <div class="company-card__certifications">
-              {% for cert in company.certifications.all %}
-                {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          {% if company.contact_tags.all %}
-            <div class="company-card__tags">
-              {% for tag in company.contact_tags.all %}
-                {% component "chip" modifier="tag" %}{{ tag.name }}{% endcomponent %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          <div class="company-card__footer">
+
+          {# -- Actions (bas droite) -- #}
+          <div class="company-card__actions">
             {% component "button" modifier="quaternary" variant="icon-only" icon="mail" %}
               {% fill "button_htmx_attrs" %}
                 hx-get="{% url 'reseau:message-modal' pk=company.pk %}"
@@ -195,14 +211,11 @@
               {% endfill %}
               {% fill "button_extra_attrs" %}aria-label="Envoyer un message à {{ company.raison_sociale }}"{% endfill %}
             {% endcomponent %}
-            {% component "button" modifier="red" variant="icon-only" icon="slash" %}
-              {% fill "button_htmx_attrs" %}
-                hx-post="{% url 'reseau:block-contact' pk=company.pk %}"
-                hx-confirm="Bloquer {{ company.raison_sociale }} ? Cette entreprise ne pourra plus vous contacter."
-                hx-target="closest .company-card"
-                hx-swap="outerHTML"
+            {% component "button" modifier="quaternary" variant="icon-only" icon="user" %}
+              {% fill "button_extra_attrs" %}
+                aria-label="Voir le profil de {{ company.raison_sociale }}"
+                href="{% url 'reseau:contact-detail' pk=company.pk %}"
               {% endfill %}
-              {% fill "button_extra_attrs" %}aria-label="Bloquer {{ company.raison_sociale }}"{% endfill %}
             {% endcomponent %}
           </div>
         </div>
@@ -313,49 +326,59 @@
          hx-indicator="#network-loader">
 
       {% for company in network_companies %}
-        {# ── Carte réseau (inviter) ── #}
+        {# ── Carte réseau (layout horizontal — inviter) ── #}
         <div class="company-card">
-          <div class="company-card__header">
-            <div class="company-card__logo">
-              {% if company.logo %}
-                <img src="{{ company.logo.url }}" alt="{{ company.raison_sociale }}">
-              {% else %}
-                {% component "icon" name="building" %}{% endcomponent %}
+          <div class="company-card__logo">
+            {% if company.logo %}
+              <img src="{{ company.logo.url }}" alt="{{ company.raison_sociale }}">
+            {% else %}
+              {% component "icon" name="building" %}{% endcomponent %}
+            {% endif %}
+          </div>
+
+          <div class="company-card__body">
+            <div class="company-card__name">{{ company.raison_sociale }}</div>
+            <div class="company-card__location">
+              {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
+              {{ company.adresse }}, {{ company.code_postal }} {{ company.ville }}
+            </div>
+            <div class="company-card__contact-info">
+              <a href="mailto:{{ company.email }}" class="company-card__contact-item">
+                {% component "icon" name="mail" size="12" %}{% endcomponent %}
+                {{ company.email }}
+              </a>
+              <span class="company-card__contact-item">
+                {% component "icon" name="phone" size="12" %}{% endcomponent %}
+                {{ company.telephone }}
+              </span>
+              {% if company.site_web %}
+                <a href="{{ company.site_web }}" class="company-card__contact-item company-card__contact-item--link" target="_blank" rel="noopener noreferrer">
+                  {% component "icon" name="globe" size="12" %}{% endcomponent %}
+                  {{ company.site_web }}
+                </a>
               {% endif %}
             </div>
-            <div class="company-card__identity">
-              <div class="company-card__name">{{ company.raison_sociale }}</div>
-              <div class="company-card__location">
-                {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
-                {{ company.code_postal }} {{ company.ville }}
+            {% if company.competences.all %}
+              <div class="company-card__competences">
+                {% for comp in company.competences.all %}
+                  {% component "chip" %}{{ comp.name }}{% endcomponent %}
+                {% endfor %}
               </div>
-            </div>
+            {% endif %}
+            {% if company.certifications.all %}
+              <div class="company-card__certifications">
+                {% for cert in company.certifications.all %}
+                  {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
-          <div class="company-card__contact-info">
-            <span class="company-card__contact-item">
-              {% component "icon" name="mail" size="12" %}{% endcomponent %}
-              {{ company.email }}
-            </span>
-            <span class="company-card__contact-item">
-              {% component "icon" name="phone" size="12" %}{% endcomponent %}
-              {{ company.telephone }}
-            </span>
+
+          <div class="company-card__map">
+            {% component "big_france" location=company.departement %}{% endcomponent %}
           </div>
-          {% if company.competences.all %}
-            <div class="company-card__competences">
-              {% for comp in company.competences.all %}
-                {% component "chip" %}{{ comp.name }}{% endcomponent %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          {% if company.certifications.all %}
-            <div class="company-card__certifications">
-              {% for cert in company.certifications.all %}
-                {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          <div class="company-card__footer">
+
+          <div class="company-card__actions">
             {% component "button" modifier="primary" icon="user-plus" %}
               {% fill "label" %}Inviter{% endfill %}
               {% fill "button_htmx_attrs" %}
@@ -390,54 +413,62 @@
 
     <div class="company-grid" id="sent-grid">
       {% for invitation in sent_invitations %}
-        {# ── Carte invitation envoyée ── #}
+        {# ── Carte invitation envoyée (layout horizontal) ── #}
         <div class="company-card">
-          <div class="company-card__header">
-            <div class="company-card__logo">
-              {% if invitation.target.logo %}
-                <img src="{{ invitation.target.logo.url }}" alt="{{ invitation.target.raison_sociale }}">
-              {% else %}
-                {% component "icon" name="building" %}{% endcomponent %}
+          <div class="company-card__logo">
+            {% if invitation.target.logo %}
+              <img src="{{ invitation.target.logo.url }}" alt="{{ invitation.target.raison_sociale }}">
+            {% else %}
+              {% component "icon" name="building" %}{% endcomponent %}
+            {% endif %}
+          </div>
+
+          <div class="company-card__body">
+            <div class="company-card__name">{{ invitation.target.raison_sociale }}</div>
+            <div class="company-card__location">
+              {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
+              {{ invitation.target.adresse }}, {{ invitation.target.code_postal }} {{ invitation.target.ville }}
+            </div>
+            <div class="company-card__contact-info">
+              <a href="mailto:{{ invitation.target.email }}" class="company-card__contact-item">
+                {% component "icon" name="mail" size="12" %}{% endcomponent %}
+                {{ invitation.target.email }}
+              </a>
+              <span class="company-card__contact-item">
+                {% component "icon" name="phone" size="12" %}{% endcomponent %}
+                {{ invitation.target.telephone }}
+              </span>
+              {% if invitation.target.site_web %}
+                <a href="{{ invitation.target.site_web }}" class="company-card__contact-item company-card__contact-item--link" target="_blank" rel="noopener noreferrer">
+                  {% component "icon" name="globe" size="12" %}{% endcomponent %}
+                  {{ invitation.target.site_web }}
+                </a>
               {% endif %}
             </div>
-            <div class="company-card__identity">
-              <div class="company-card__name">{{ invitation.target.raison_sociale }}</div>
-              <div class="company-card__location">
-                {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
-                {{ invitation.target.code_postal }} {{ invitation.target.ville }}
+            {% if invitation.target.competences.all %}
+              <div class="company-card__competences">
+                {% for comp in invitation.target.competences.all %}
+                  {% component "chip" %}{{ comp.name }}{% endcomponent %}
+                {% endfor %}
               </div>
-            </div>
+            {% endif %}
+            {% if invitation.target.certifications.all %}
+              <div class="company-card__certifications">
+                {% for cert in invitation.target.certifications.all %}
+                  {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
-          <div class="company-card__contact-info">
-            <span class="company-card__contact-item">
-              {% component "icon" name="mail" size="12" %}{% endcomponent %}
-              {{ invitation.target.email }}
-            </span>
-            <span class="company-card__contact-item">
-              {% component "icon" name="phone" size="12" %}{% endcomponent %}
-              {{ invitation.target.telephone }}
-            </span>
+
+          <div class="company-card__map">
+            {% component "big_france" location=invitation.target.departement %}{% endcomponent %}
           </div>
-          {% if invitation.target.competences.all %}
-            <div class="company-card__competences">
-              {% for comp in invitation.target.competences.all %}
-                {% component "chip" %}{{ comp.name }}{% endcomponent %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          {% if invitation.target.certifications.all %}
-            <div class="company-card__certifications">
-              {% for cert in invitation.target.certifications.all %}
-                {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          <div class="company-card__footer">
-            <span class="company-card__footer-left">
-              <span class="company-card__date">
-                {% component "icon" name="clock" size="12" %}{% endcomponent %}
-                Envoyée le {{ invitation.sent_at|date:"j M Y" }}
-              </span>
+
+          <div class="company-card__actions">
+            <span class="company-card__date">
+              {% component "icon" name="clock" size="12" %}{% endcomponent %}
+              Envoyée le {{ invitation.sent_at|date:"j M Y" }}
             </span>
             {% component "button" modifier="fifth" icon="user-minus" %}
               {% fill "label" %}Annuler{% endfill %}
@@ -464,54 +495,62 @@
 
     <div class="company-grid" id="received-grid">
       {% for invitation in received_invitations %}
-        {# ── Carte invitation reçue ── #}
+        {# ── Carte invitation reçue (layout horizontal) ── #}
         <div class="company-card">
-          <div class="company-card__header">
-            <div class="company-card__logo">
-              {% if invitation.sender.logo %}
-                <img src="{{ invitation.sender.logo.url }}" alt="{{ invitation.sender.raison_sociale }}">
-              {% else %}
-                {% component "icon" name="building" %}{% endcomponent %}
+          <div class="company-card__logo">
+            {% if invitation.sender.logo %}
+              <img src="{{ invitation.sender.logo.url }}" alt="{{ invitation.sender.raison_sociale }}">
+            {% else %}
+              {% component "icon" name="building" %}{% endcomponent %}
+            {% endif %}
+          </div>
+
+          <div class="company-card__body">
+            <div class="company-card__name">{{ invitation.sender.raison_sociale }}</div>
+            <div class="company-card__location">
+              {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
+              {{ invitation.sender.adresse }}, {{ invitation.sender.code_postal }} {{ invitation.sender.ville }}
+            </div>
+            <div class="company-card__contact-info">
+              <a href="mailto:{{ invitation.sender.email }}" class="company-card__contact-item">
+                {% component "icon" name="mail" size="12" %}{% endcomponent %}
+                {{ invitation.sender.email }}
+              </a>
+              <span class="company-card__contact-item">
+                {% component "icon" name="phone" size="12" %}{% endcomponent %}
+                {{ invitation.sender.telephone }}
+              </span>
+              {% if invitation.sender.site_web %}
+                <a href="{{ invitation.sender.site_web }}" class="company-card__contact-item company-card__contact-item--link" target="_blank" rel="noopener noreferrer">
+                  {% component "icon" name="globe" size="12" %}{% endcomponent %}
+                  {{ invitation.sender.site_web }}
+                </a>
               {% endif %}
             </div>
-            <div class="company-card__identity">
-              <div class="company-card__name">{{ invitation.sender.raison_sociale }}</div>
-              <div class="company-card__location">
-                {% component "icon" name="map-pin" size="12" %}{% endcomponent %}
-                {{ invitation.sender.code_postal }} {{ invitation.sender.ville }}
+            {% if invitation.sender.competences.all %}
+              <div class="company-card__competences">
+                {% for comp in invitation.sender.competences.all %}
+                  {% component "chip" %}{{ comp.name }}{% endcomponent %}
+                {% endfor %}
               </div>
-            </div>
+            {% endif %}
+            {% if invitation.sender.certifications.all %}
+              <div class="company-card__certifications">
+                {% for cert in invitation.sender.certifications.all %}
+                  {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
-          <div class="company-card__contact-info">
-            <span class="company-card__contact-item">
-              {% component "icon" name="mail" size="12" %}{% endcomponent %}
-              {{ invitation.sender.email }}
-            </span>
-            <span class="company-card__contact-item">
-              {% component "icon" name="phone" size="12" %}{% endcomponent %}
-              {{ invitation.sender.telephone }}
-            </span>
+
+          <div class="company-card__map">
+            {% component "big_france" location=invitation.sender.departement %}{% endcomponent %}
           </div>
-          {% if invitation.sender.competences.all %}
-            <div class="company-card__competences">
-              {% for comp in invitation.sender.competences.all %}
-                {% component "chip" %}{{ comp.name }}{% endcomponent %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          {% if invitation.sender.certifications.all %}
-            <div class="company-card__certifications">
-              {% for cert in invitation.sender.certifications.all %}
-                {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          <div class="company-card__footer">
-            <span class="company-card__footer-left">
-              <span class="company-card__date">
-                {% component "icon" name="clock" size="12" %}{% endcomponent %}
-                Reçue le {{ invitation.sent_at|date:"j M Y" }}
-              </span>
+
+          <div class="company-card__actions">
+            <span class="company-card__date">
+              {% component "icon" name="clock" size="12" %}{% endcomponent %}
+              Reçue le {{ invitation.sent_at|date:"j M Y" }}
             </span>
             {% component "button" modifier="green" icon="check" %}
               {% fill "label" %}Accepter{% endfill %}

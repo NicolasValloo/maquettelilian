@@ -42,34 +42,39 @@
 
 .company-grid
   display: grid
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr))
+  grid-template-columns: repeat(auto-fill, minmax(520px, 1fr))
   gap: 20px
 
+  @include media_queries.lte-tablet
+    grid-template-columns: 1fr
 
-// ── Carte entreprise ───────────────────────────────────────────────────────
+
+// ── Carte entreprise (layout horizontal) ──────────────────────────────────
+// Structure CSS Grid :
+//   logo  |  body  |  map
+//   ------|--------|------
+//         | actions|
 
 .company-card
   background: colors.$white
   border-radius: variables.$border-radius-big
   box-shadow: colors.$shadow-card
   padding: variables.$spacing-big
-  display: flex
-  flex-direction: column
+  display: grid
+  grid-template-columns: 56px 1fr 100px
+  grid-template-rows: 1fr auto
+  grid-template-areas: "logo body map" ". actions actions"
   gap: variables.$spacing-medium
   transition: box-shadow 0.15s
 
   &:hover
     box-shadow: colors.$shadow-medium
 
-  // -- En-tête : logo + identité --
-  &__header
-    display: flex
-    align-items: flex-start
-    gap: variables.$spacing-medium
-
+  // -- Colonne gauche : logo --
   &__logo
-    width: 48px
-    height: 48px
+    grid-area: logo
+    width: 56px
+    height: 56px
     border-radius: variables.$border-radius-medium
     background: colors.$blue-very-light
     color: colors.$blue
@@ -80,8 +85,8 @@
     overflow: hidden
 
     svg
-      width: 24px
-      height: 24px
+      width: 28px
+      height: 28px
       stroke: currentColor
       fill: none
       stroke-width: 1.5
@@ -91,17 +96,25 @@
       height: 100%
       object-fit: cover
 
-  &__identity
-    flex: 1
+  // -- Colonne centrale : identité + coordonnées + compétences --
+  &__body
+    grid-area: body
+    display: flex
+    flex-direction: column
+    gap: variables.$spacing-small
     min-width: 0
 
   &__name
     @include fonts.font-size-normal
     @include fonts.font-weight-bold
     color: colors.$main-color
-    white-space: nowrap
-    overflow: hidden
-    text-overflow: ellipsis
+
+    a
+      color: inherit
+      text-decoration: none
+
+      &:hover
+        color: colors.$blue
 
   &__location
     @include fonts.font-size-small
@@ -109,7 +122,6 @@
     display: flex
     align-items: center
     gap: variables.$spacing-small
-    margin-top: variables.$spacing-very-small
 
     svg
       width: 12px
@@ -119,18 +131,19 @@
       stroke-width: 2
       flex-shrink: 0
 
-  // -- Coordonnées : email + téléphone --
   &__contact-info
     display: flex
     flex-direction: column
     gap: variables.$spacing-very-small
+    margin-top: variables.$spacing-very-small
 
   &__contact-item
     @include fonts.font-size-small
     color: colors.$main-color-light
-    display: flex
+    display: inline-flex
     align-items: center
     gap: variables.$spacing-small
+    text-decoration: none
 
     svg
       width: 12px
@@ -140,11 +153,25 @@
       stroke-width: 2
       flex-shrink: 0
 
-  // -- Compétences (chips bleus) --
+    // -- Lien cliquable (email, site web) --
+    a&
+      color: colors.$blue
+
+      &:hover
+        text-decoration: underline
+
+    &--link
+      color: colors.$blue
+
+      &:hover
+        text-decoration: underline
+
+  // -- Compétences (chips) --
   &__competences
     display: flex
     flex-wrap: wrap
     gap: variables.$spacing-small
+    margin-top: variables.$spacing-very-small
 
   // -- Certifications (chips verts) --
   &__certifications
@@ -158,26 +185,39 @@
     flex-wrap: wrap
     gap: variables.$spacing-small
 
-  // -- Pied de carte : actions --
-  &__footer
+  // -- Colonne droite : carte de France --
+  &__map
+    grid-area: map
+    display: flex
+    align-items: flex-start
+    justify-content: center
+
+    svg
+      width: 100%
+      height: auto
+      max-height: 100px
+
+    @include media_queries.lte-mobile
+      display: none
+
+  // -- Zone actions (bas droite) --
+  &__actions
+    grid-area: actions
     display: flex
     align-items: center
     justify-content: flex-end
     gap: variables.$spacing-small
     padding-top: variables.$spacing-medium
     border-top: 1px solid colors.$grey-light
-    margin-top: auto
 
-  &__footer-left
-    margin-right: auto
-
-  // -- Variante invitation : date d'envoi / réception --
+  // -- Date d'invitation --
   &__date
     @include fonts.font-size-very-small
     color: colors.$grey-dark
     display: flex
     align-items: center
     gap: variables.$spacing-small
+    margin-right: auto
 
     svg
       width: 12px
@@ -185,6 +225,15 @@
       stroke: currentColor
       fill: none
       stroke-width: 2
+
+  // -- Responsive : empilé en mobile --
+  @include media_queries.lte-mobile
+    grid-template-columns: 48px 1fr
+    grid-template-areas: "logo body" ". actions"
+
+    &__logo
+      width: 48px
+      height: 48px
 
 
 // ── Toggle de vues (grille / liste / tableau) ─────────────────────────────

@@ -656,6 +656,179 @@
     .button--icon-only svg { width: 16px; height: 16px; }
 
     /* ══════════════════════════════════════════════════════════════════
+       PAGE : PRÉFÉRENCES
+       ══════════════════════════════════════════════════════════════════ */
+
+    /* Onglets internes (Modèles / Compte) */
+    .content-tabs { display: flex; gap: 4px; background: #f3f4f6; padding: 4px; border-radius: 10px; margin-bottom: 24px; width: fit-content; }
+    .content-tabs__item { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #9ca3af; cursor: pointer; transition: all 0.2s; background: transparent; border: none; font-family: inherit; display: flex; align-items: center; gap: 6px; }
+    .content-tabs__item:hover { color: #6b7280; }
+    .content-tabs__item--active { background: #fff; color: #1f2937; box-shadow: 0 1px 3px rgba(0,0,0,0.08); font-weight: 600; }
+
+    /* Sections animées */
+    .pref-section { display: none; animation: fadeUp 0.25s ease; }
+    .pref-section--active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .section-header { margin-bottom: 20px; }
+    .section-title { font-weight: 700; font-size: 1.15rem; color: #1f2937; letter-spacing: -0.01em; }
+    .section-subtitle { font-size: 13px; color: #9ca3af; margin-top: 2px; }
+    .subsection { margin-top: 28px; }
+    .subsection__title { font-size: 12px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; }
+
+    /* Badges catégories templates */
+    .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid; flex-shrink: 0; }
+    .badge--blue { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .badge--green { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+    .badge--purple { background: #f5f3ff; color: #7c3aed; border-color: #c4b5fd; }
+    .badge--amber { background: #fffbeb; color: #b45309; border-color: #fcd34d; }
+
+    /* Template accordéon */
+    .template-accordion__item { border-bottom: 1px solid #e5e7eb; }
+    .template-accordion__item:last-child { border-bottom: none; }
+    .template-accordion__header { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; cursor: pointer; transition: background 0.15s; background: none; border: none; font-family: inherit; text-align: left; }
+    .template-accordion__header:hover { background: #fafbff; }
+    .template-accordion__header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .template-accordion__header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .template-accordion__name { font-size: 13px; font-weight: 600; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .template-accordion__vars-count { font-size: 11px; color: #9ca3af; }
+    .template-accordion__chevron { width: 16px; height: 16px; color: #9ca3af; transition: transform 0.25s; }
+    .template-accordion__item--open .template-accordion__chevron { transform: rotate(180deg); }
+    .template-accordion__body { display: none; padding: 0 20px 20px; }
+    .template-accordion__item--open .template-accordion__body { display: block; }
+    .template-accordion__description { font-size: 12px; color: #9ca3af; margin-bottom: 12px; }
+    .template-accordion__variables { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .variable-tag { display: inline-flex; align-items: center; gap: 2px; padding: 4px 8px; background: #eff6ff; color: #1d4ed8; border-radius: 6px; font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+    .variable-tag__brace { opacity: 0.4; }
+    .template-accordion__preview { padding: 14px 16px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 14px; font-size: 13px; color: #6b7280; line-height: 1.65; white-space: pre-wrap; }
+    .template-accordion__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+
+    /* Member row */
+    .member-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #f9fafb; border-radius: 14px; }
+    .member-row + .member-row { margin-top: 6px; }
+    .member-row__left { display: flex; align-items: center; gap: 12px; }
+    .member-row__avatar { width: 34px; height: 34px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; font-weight: 700; }
+    .member-row__name { font-size: 13px; font-weight: 500; color: #1f2937; }
+
+    /* Select small */
+    .select-sm { padding: 6px 28px 6px 12px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 13px; background: #fff; outline: none; cursor: pointer; appearance: none; font-family: inherit; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; }
+    .select-sm:focus { border-color: #0073e6; }
+
+    /* Radio group */
+    .radio-group { display: inline-flex; gap: 2px; background: #f3f4f6; padding: 3px; border-radius: 10px; }
+    .radio-group__option { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; color: #9ca3af; cursor: pointer; transition: all 0.2s; background: none; border: none; font-family: inherit; }
+    .radio-group__option:hover { color: #6b7280; }
+    .radio-group__option--active { background: #fff; color: #1f2937; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+
+    /* Flag row */
+    .flag-row { display: flex; align-items: center; gap: 12px; }
+    .flag-row + .flag-row { margin-top: 10px; }
+    .flag-row__dot { width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0; border: 2px solid rgba(0,0,0,0.08); }
+    .flag-row__input { flex: 1; padding: 7px 12px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 13px; color: #1f2937; outline: none; font-family: inherit; }
+    .flag-row__input:focus { border-color: #0073e6; box-shadow: 0 0 0 3px rgba(0,115,230,0.08); }
+
+    /* Config row */
+    .config-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .config-row + .config-row { margin-top: 12px; }
+    .config-row__label { font-size: 13px; color: #6b7280; min-width: 100px; }
+
+    /* Checkbox */
+    .pref-checkbox { width: 18px; height: 18px; border-radius: 5px; border: 2px solid #d1d5db; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0; background: #fff; }
+    .pref-checkbox svg { width: 14px; height: 14px; stroke: #fff; opacity: 0; transition: opacity 0.15s; }
+    .pref-checkbox--checked { background: #0073e6; border-color: #0073e6; }
+    .pref-checkbox--checked svg { opacity: 1; }
+
+    /* User checkbox row */
+    .user-checkbox-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 10px; cursor: pointer; transition: background 0.15s; }
+    .user-checkbox-row:hover { background: #f9fafb; }
+    .user-checkbox-row + .user-checkbox-row { margin-top: 2px; }
+    .user-checkbox-row__name { font-size: 13px; color: #6b7280; }
+
+    /* Card padded */
+    .card--padded { padding: 20px; }
+    .card__description { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+
+    /* Divider */
+    .divider { height: 1px; background: #e5e7eb; margin: 14px 0; }
+    .row-between { display: flex; align-items: center; justify-content: space-between; }
+
+    /* Save bar */
+    .save-bar { position: fixed; bottom: 0; left: 58px; right: 0; height: 56px; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-top: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: flex-end; padding: 0 32px; z-index: 35; transform: translateY(100%); transition: transform 0.3s ease; gap: 8px; }
+    .save-bar--visible { transform: translateY(0); }
+    .save-bar__text { margin-right: auto; font-size: 13px; font-weight: 500; color: #6b7280; }
+
+    /* Test panel */
+    .pref-test-toggle { position: fixed; top: 64px; right: 8px; z-index: 85; padding: 6px 12px; font-size: 11px; font-weight: 600; background: #0f1729; color: #fff; border-radius: 10px; cursor: pointer; border: none; font-family: inherit; }
+    .pref-test-panel { position: fixed; top: 56px; right: 0; width: 340px; max-height: calc(100vh - 56px); overflow-y: auto; background: #fff; border-left: 1px solid #e5e7eb; padding: 16px; z-index: 80; font-size: 12px; box-shadow: -4px 0 12px rgba(0,0,0,0.05); }
+    .pref-test-panel__title { font-weight: 700; font-size: 14px; margin-bottom: 12px; }
+
+    /* Utilities */
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mt-28 { margin-top: 28px; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       PAGE : UTILISATEURS
+       ══════════════════════════════════════════════════════════════════ */
+
+    .users-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .users-header__left p { font-size: 13px; color: #9ca3af; margin-top: 2px; }
+
+    /* Tabs bar */
+    .tabs-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #e5e7eb; }
+    .users-tabs { display: flex; gap: 0; }
+    .users-tabs__button { padding: 6px 16px; font-size: 13px; font-weight: 500; color: #9ca3af; cursor: pointer; border: none; background: none; font-family: inherit; border-bottom: 2px solid transparent; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+    .users-tabs__button:hover { color: #6b7280; }
+    .users-tabs__button--active { color: #0073e6; border-bottom-color: #0073e6; }
+    .users-tabs__count { font-size: 11px; background: #f3f4f6; padding: 1px 6px; border-radius: 10px; font-weight: 600; }
+    .users-tabs__button--active .users-tabs__count { background: #eff6ff; color: #0073e6; }
+
+    /* Search box */
+    .search-box { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; min-width: 200px; }
+    .search-box__icon { display: flex; flex-shrink: 0; }
+    .search-box__icon svg { width: 16px; height: 16px; stroke: #9ca3af; fill: none; stroke-width: 2; }
+    .search-box__input { border: none; outline: none; font-size: 13px; color: #1f2937; width: 100%; background: transparent; font-family: inherit; }
+    .search-box__input::placeholder { color: #d1d5db; }
+
+    /* User table */
+    .user-table__headers { display: grid; grid-template-columns: 1fr 140px 160px 48px; padding: 8px 20px; border-bottom: 1px solid #f3f4f6; }
+    .user-table__col-header { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; }
+    .user-table__row { display: grid; grid-template-columns: 1fr 140px 160px 48px; align-items: center; padding: 12px 20px; border-bottom: 1px solid #f9fafb; transition: background 0.15s; }
+    .user-table__row:hover { background: #f9fafb; }
+    .user-table__row:last-child { border-bottom: none; }
+    .user-table__info { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .user-table__avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 600; flex-shrink: 0; overflow: hidden; }
+    .user-table__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .user-table__details { min-width: 0; }
+    .user-table__name-row { display: flex; align-items: center; gap: 8px; }
+    .user-table__name { font-size: 14px; font-weight: 500; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-table__email { font-size: 12px; color: #9ca3af; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Role badges */
+    .role-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; }
+    .role-badge--admin { background: #eff6ff; color: #1d4ed8; }
+    .role-badge--admin svg { width: 12px; height: 12px; }
+    .role-badge--user { background: #f3f4f6; color: #6b7280; }
+    .badge-owner { font-size: 10px; font-weight: 700; background: #fef3c7; color: #92400e; padding: 1px 6px; border-radius: 4px; }
+    .dot-inactive { width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; flex-shrink: 0; }
+
+    /* Actions */
+    .user-table__actions { position: relative; display: flex; justify-content: center; }
+    .button-dots { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px; color: #9ca3af; transition: all 0.15s; display: flex; }
+    .button-dots:hover { background: #f3f4f6; color: #6b7280; }
+    .user-table__last-login { font-size: 13px; color: #6b7280; }
+    .user-table__last-login--inactive { color: #f59e0b; }
+
+    /* Footer legend */
+    .footer-legend { display: flex; gap: 24px; margin-top: 16px; padding: 0 4px; }
+    .footer-legend__item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #9ca3af; }
+    .footer-legend__dot { width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; }
+    .footer-legend__badge { width: 16px; height: 16px; border-radius: 4px; background: #fef3c7; color: #92400e; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+    /* Users empty state */
+    .users-empty-state { text-align: center; padding: 48px 20px; color: #9ca3af; font-size: 14px; }
+    .users-empty-state__emoji { font-size: 32px; margin-bottom: 8px; }
+
+    /* ══════════════════════════════════════════════════════════════════
        DRAWER (panels d'édition latéraux)
        ══════════════════════════════════════════════════════════════════ */
     .drawer-overlay {
@@ -830,8 +1003,8 @@
         </button>
         <div class="sidebar__sub">
           <a href="#" class="sidebar__sub-link">Coordonnées</a>
-          <a href="#" class="sidebar__sub-link">Préférences</a>
-          <a href="#" class="sidebar__sub-link">Utilisateurs</a>
+          <a href="#" class="sidebar__sub-link" data-page="preferences" id="nav-preferences">Préférences</a>
+          <a href="#" class="sidebar__sub-link" data-page="utilisateurs" id="nav-utilisateurs">Utilisateurs</a>
           <a href="#" class="sidebar__sub-link" data-page="bibliotheque" id="nav-bibliotheque">Bibliothèque</a>
           <a href="#" class="sidebar__sub-link" data-page="billing" id="nav-factures">Factures</a>
         </div>
@@ -885,16 +1058,20 @@
     <div class="page" id="page-billing">
       <div class="page-header">
         <div class="page-header__content-container">
-          <h1 class="page-header__title">Factures</h1>
+          <h1 class="page-header__title">
+            Facturation
+            <span class="page-header__badge page-header__badge--green">Actif</span>
+          </h1>
+          <p class="page-header__subtitle">Gestion de l'abonnement, factures et paiements — Agence LE TRIONNAIRE - LE CHAPELAIN - ALTA</p>
         </div>
       </div>
 
       <!-- Onglets -->
       <div class="tab-underline" id="billing-tabs">
         <button class="tab-underline__item tab-underline__item--active" data-tab="prefs" data-wrapper="billing-tabs">Préférences</button>
-        <button class="tab-underline__item" data-tab="factures" data-wrapper="billing-tabs">Factures <span class="tab-underline__count">12</span></button>
-        <button class="tab-underline__item" data-tab="encaissements" data-wrapper="billing-tabs">Encaissements <span class="tab-underline__count">8</span></button>
-        <button class="tab-underline__item" data-tab="remboursements" data-wrapper="billing-tabs">Remboursements <span class="tab-underline__count">0</span></button>
+        <button class="tab-underline__item" data-tab="factures" data-wrapper="billing-tabs">Factures <span class="tab-underline__count">15</span></button>
+        <button class="tab-underline__item" data-tab="encaissements" data-wrapper="billing-tabs">Encaissements <span class="tab-underline__count">16</span></button>
+        <button class="tab-underline__item" data-tab="remboursements" data-wrapper="billing-tabs">Remboursements <span class="tab-underline__count">1</span></button>
         <button class="tab-underline__item" data-tab="avoirs" data-wrapper="billing-tabs">Avoirs</button>
       </div>
 
@@ -913,15 +1090,15 @@
             <div class="card__body">
               <div class="information-row">
                 <div class="information-row__label">Raison sociale</div>
-                <div class="information-row__value">Durand & Associés SARL</div>
+                <div class="information-row__value">Agence LE TRIONNAIRE - LE CHAPELAIN - ALTA</div>
               </div>
               <div class="information-row">
                 <div class="information-row__label">Adresse</div>
-                <div class="information-row__value">15 rue de la Paix<br>75002 Paris</div>
+                <div class="information-row__value">12 rue des Architectes<br>35000 Rennes</div>
               </div>
               <div class="information-row">
                 <div class="information-row__label">TVA intracommunautaire</div>
-                <div class="information-row__value">FR 82 123456789</div>
+                <div class="information-row__value">FR 45 384927156</div>
               </div>
             </div>
           </div>
@@ -938,11 +1115,11 @@
             <div class="card__body">
               <div class="information-row">
                 <div class="information-row__label">Utilisateur principal</div>
-                <div class="information-row__value">Nicolas Vidal<br><span style="font-size: 11px; color: #6b7280;">n.vidal@durand-associes.fr</span></div>
+                <div class="information-row__value">Le Trionnaire<br><span style="font-size: 11px; color: #6b7280;">contact@letrionnaire-lechapelain.fr</span></div>
               </div>
               <div class="information-row">
                 <div class="information-row__label">Email supplémentaire</div>
-                <div class="information-row__value">compta@durand-associes.fr</div>
+                <div class="information-row__value">compta@letrionnaire-lechapelain.fr</div>
               </div>
             </div>
           </div>
@@ -979,7 +1156,10 @@
       <div class="panel" id="panel-factures" data-wrapper="billing-tabs">
         <div class="filter-bar">
           <select class="filter-bar__select">
-            <option>Toutes les périodes</option><option>2026</option><option selected>2025</option><option>2024</option>
+            <option>Toutes les périodes</option><option selected>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016</option><option>2015</option><option>2014</option><option>2013</option><option>2012</option><option>2011</option>
+          </select>
+          <select class="filter-bar__select">
+            <option>Tous les statuts</option><option>Payée</option><option>En attente</option><option>En retard</option>
           </select>
           <div class="filter-bar__spacer"></div>
           <button class="button button--ghost button--small">
@@ -996,40 +1176,143 @@
                   <tr>
                     <th>N° Facture</th><th>Émise le</th><th>Période</th><th>TVA</th>
                     <th class="th--right">Montant HT</th><th class="th--right">Montant TTC</th>
-                    <th>Échéances</th><th><span class="screen-reader-only">Actions</span></th>
+                    <th>Échéance</th><th>Statut</th><th><span class="screen-reader-only">Actions</span></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="billing-table__link">FA-2026-001</a></td>
-                    <td>15/01/2026</td><td>01/01/2026 → 31/01/2026</td><td>20 %</td>
-                    <td class="td--right billing-table__amount">3 940,00 €</td>
-                    <td class="td--right billing-table__amount">4 728,00 €</td>
-                    <td><div class="date-pair"><div class="date-pair__item">15/02/2026</div></div></td>
+                    <td><a class="billing-table__link">7591/09/2025</a></td>
+                    <td>29/09/2025</td><td>01/10/2025 → 30/09/2026</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 950,00 €</td>
+                    <td class="td--right billing-table__amount">2 340,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2025</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
                     <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
                   </tr>
                   <tr>
-                    <td><a class="billing-table__link">FA-2025-012</a></td>
-                    <td>15/12/2025</td><td>01/12/2025 → 31/12/2025</td><td>20 %</td>
-                    <td class="td--right billing-table__amount">3 940,00 €</td>
-                    <td class="td--right billing-table__amount">4 728,00 €</td>
-                    <td><div class="date-pair"><div class="date-pair__item">15/01/2026</div></div></td>
+                    <td><a class="billing-table__link">6421/09/2024</a></td>
+                    <td>11/09/2024</td><td>01/10/2024 → 30/09/2025</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 950,00 €</td>
+                    <td class="td--right billing-table__amount">2 340,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2024</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
                     <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
                   </tr>
                   <tr>
-                    <td><a class="billing-table__link">FA-2025-011</a></td>
-                    <td>15/11/2025</td><td>01/11/2025 → 30/11/2025</td><td>20 %</td>
-                    <td class="td--right billing-table__amount">3 940,00 €</td>
-                    <td class="td--right billing-table__amount">4 728,00 €</td>
-                    <td><div class="date-pair"><div class="date-pair__item">15/12/2025</div></div></td>
+                    <td><a class="billing-table__link">5394/09/2023</a></td>
+                    <td>01/09/2023</td><td>01/10/2023 → 30/09/2024</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 950,00 €</td>
+                    <td class="td--right billing-table__amount">2 340,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2023</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
                     <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
                   </tr>
                   <tr>
-                    <td><a class="billing-table__link">FA-2025-010</a></td>
-                    <td>15/10/2025</td><td>01/10/2025 → 31/10/2025</td><td>20 %</td>
-                    <td class="td--right billing-table__amount">3 940,00 €</td>
-                    <td class="td--right billing-table__amount">4 728,00 €</td>
-                    <td><div class="date-pair"><div class="date-pair__item">15/11/2025</div><div class="date-pair__item date-pair__item--secondary">30/11/2025</div></div></td>
+                    <td><a class="billing-table__link">4542/09/2022</a></td>
+                    <td>16/09/2022</td><td>01/10/2022 → 30/09/2023</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 300,00 €</td>
+                    <td class="td--right billing-table__amount">1 560,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2022</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">3766/09/2021</a></td>
+                    <td>22/09/2021</td><td>01/10/2021 → 30/09/2022</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 225,00 €</td>
+                    <td class="td--right billing-table__amount">1 470,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2021</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">3066/09/2020</a></td>
+                    <td>03/09/2020</td><td>01/10/2020 → 30/09/2021</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 225,00 €</td>
+                    <td class="td--right billing-table__amount">1 470,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2020</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">2560/09/2019</a></td>
+                    <td>12/09/2019</td><td>01/10/2019 → 30/09/2020</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 197,00 €</td>
+                    <td class="td--right billing-table__amount">1 436,40 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2019</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">2121/09/2018</a></td>
+                    <td>18/09/2018</td><td>01/10/2018 → 30/09/2019</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 197,00 €</td>
+                    <td class="td--right billing-table__amount">1 436,40 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2018</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">1794/10/2017</a></td>
+                    <td>03/10/2017</td><td>01/10/2017 → 30/09/2018</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 140,00 €</td>
+                    <td class="td--right billing-table__amount">1 368,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2017</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">1474/10/2016</a></td>
+                    <td>01/10/2016</td><td>01/10/2016 → 30/09/2017</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 140,00 €</td>
+                    <td class="td--right billing-table__amount">1 368,00 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2016</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">1231/09/2015</a></td>
+                    <td>25/09/2015</td><td>01/10/2015 → 30/09/2016</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 092,00 €</td>
+                    <td class="td--right billing-table__amount">1 310,40 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2015</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">991/09/2014</a></td>
+                    <td>29/09/2014</td><td>01/10/2014 → 30/09/2015</td><td>20,00 %</td>
+                    <td class="td--right billing-table__amount">1 092,00 €</td>
+                    <td class="td--right billing-table__amount">1 310,40 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">19/10/2014</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">800/09/2013</a></td>
+                    <td>23/09/2013</td><td>01/10/2013 → 30/09/2014</td><td>19,60 %</td>
+                    <td class="td--right billing-table__amount">1 092,00 €</td>
+                    <td class="td--right billing-table__amount">1 306,03 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2013</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">599/10/2012</a></td>
+                    <td>01/10/2012</td><td>01/10/2012 → 30/09/2013</td><td>19,60 %</td>
+                    <td class="td--right billing-table__amount">1 092,00 €</td>
+                    <td class="td--right billing-table__amount">1 306,03 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2012</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
+                    <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td><a class="billing-table__link">470/10/2011</a></td>
+                    <td>01/10/2011</td><td>01/10/2011 → 30/09/2012</td><td>19,60 %</td>
+                    <td class="td--right billing-table__amount">1 068,00 €</td>
+                    <td class="td--right billing-table__amount">1 277,33 €</td>
+                    <td><div class="date-pair"><div class="date-pair__item">21/10/2011</div></div></td>
+                    <td><span class="status-tag status-tag--paid">Payée</span></td>
                     <td><button class="button button--ghost-accent button--small"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button></td>
                   </tr>
                 </tbody>
@@ -1041,17 +1324,40 @@
 
       <!-- Panel : Encaissements -->
       <div class="panel" id="panel-encaissements" data-wrapper="billing-tabs">
+        <div class="filter-bar">
+          <select class="filter-bar__select">
+            <option>Toutes les années</option><option selected>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016</option><option>2015</option><option>2014</option><option>2013</option><option>2012</option><option>2011</option>
+          </select>
+          <div class="filter-bar__spacer"></div>
+          <button class="button button--ghost button--small">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exporter
+          </button>
+        </div>
         <div class="card">
           <div class="card__body card__body--flush">
             <div class="billing-table-wrapper">
               <table class="billing-table">
                 <thead>
-                  <tr><th>Date de réception</th><th>Date de dépôt</th><th>TVA</th><th class="th--right">Montant TTC</th><th>Moyen de paiement</th></tr>
+                  <tr><th>Date de réception</th><th>Date de dépôt</th><th>TVA</th><th class="th--right">Montant TTC</th><th>Moyen de paiement</th><th>Description</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>18 janvier 2026</td><td>20 janvier 2026</td><td>20 %</td><td class="td--right billing-table__amount">4 728,00 €</td><td><span class="chip">Virement</span></td></tr>
-                  <tr><td>20 décembre 2025</td><td>22 décembre 2025</td><td>20 %</td><td class="td--right billing-table__amount">4 728,00 €</td><td><span class="chip">Virement</span></td></tr>
-                  <tr><td>18 novembre 2025</td><td>20 novembre 2025</td><td>20 %</td><td class="td--right billing-table__amount">4 728,00 €</td><td><span class="chip">Prélèvement</span></td></tr>
+                  <tr><td>24 novembre 2025</td><td>24 novembre 2025</td><td>20,00 %</td><td class="td--right billing-table__amount">2 340,00 €</td><td><span class="chip">Virement</span></td><td></td></tr>
+                  <tr><td>10 octobre 2024</td><td>10 octobre 2024</td><td>20,00 %</td><td class="td--right billing-table__amount">2 340,00 €</td><td><span class="chip">Virement</span></td><td></td></tr>
+                  <tr><td>23 octobre 2023</td><td>23 octobre 2023</td><td>20,00 %</td><td class="td--right billing-table__amount">2 340,00 €</td><td><span class="chip">Virement</span></td><td></td></tr>
+                  <tr><td>20 octobre 2023</td><td>20 octobre 2023</td><td>20,00 %</td><td class="td--right billing-table__amount">2 340,00 €</td><td><span class="chip">Virement</span></td><td></td></tr>
+                  <tr><td>21 octobre 2022</td><td>21 octobre 2022</td><td>20,00 %</td><td class="td--right billing-table__amount">1 560,00 €</td><td><span class="chip">Virement</span></td><td></td></tr>
+                  <tr><td>21 octobre 2021</td><td>21 octobre 2021</td><td>20,00 %</td><td class="td--right billing-table__amount">1 470,00 €</td><td><span class="chip">Virement</span></td><td></td></tr>
+                  <tr><td>14 octobre 2020</td><td>14 octobre 2020</td><td>20,00 %</td><td class="td--right billing-table__amount">1 470,00 €</td><td><span class="chip">Virement</span></td><td></td></tr>
+                  <tr><td>18 octobre 2019</td><td>18 octobre 2019</td><td>20,00 %</td><td class="td--right billing-table__amount">1 436,40 €</td><td><span class="chip">Virement</span></td><td></td></tr>
+                  <tr><td>16 octobre 2018</td><td>16 octobre 2018</td><td>20,00 %</td><td class="td--right billing-table__amount">1 436,40 €</td><td><span class="chip">Chèque</span></td><td></td></tr>
+                  <tr><td>23 octobre 2017</td><td>23 octobre 2017</td><td>20,00 %</td><td class="td--right billing-table__amount">1 368,00 €</td><td><span class="chip">Chèque</span></td><td></td></tr>
+                  <tr><td>4 novembre 2016</td><td>4 novembre 2016</td><td>20,00 %</td><td class="td--right billing-table__amount">1 368,00 €</td><td><span class="chip">Chèque</span></td><td></td></tr>
+                  <tr><td>5 novembre 2015</td><td>5 novembre 2015</td><td>20,00 %</td><td class="td--right billing-table__amount">1 310,40 €</td><td><span class="chip">Chèque</span></td><td></td></tr>
+                  <tr><td>22 octobre 2014</td><td>23 octobre 2014</td><td>20,00 %</td><td class="td--right billing-table__amount">1 310,40 €</td><td><span class="chip">Chèque</span></td><td></td></tr>
+                  <tr><td>3 octobre 2013</td><td>11 octobre 2013</td><td>19,60 %</td><td class="td--right billing-table__amount">1 306,03 €</td><td><span class="chip">Chèque</span></td><td>LE TRIONNAIRE TASSOT</td></tr>
+                  <tr><td>4 octobre 2012</td><td>4 octobre 2012</td><td>19,60 %</td><td class="td--right billing-table__amount">1 306,03 €</td><td><span class="chip">Chèque</span></td><td>integrated on 2012-10-30</td></tr>
+                  <tr><td>8 octobre 2011</td><td>8 octobre 2011</td><td>19,60 %</td><td class="td--right billing-table__amount">1 277,33 €</td><td><span class="chip">Chèque</span></td><td>integrated on 2012-10-30</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1061,9 +1367,19 @@
 
       <!-- Panel : Remboursements -->
       <div class="panel" id="panel-remboursements" data-wrapper="billing-tabs">
-        <div class="empty-state">
-          <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-          <div class="empty-state__text">Aucun remboursement enregistré.</div>
+        <div class="card">
+          <div class="card__body card__body--flush">
+            <div class="billing-table-wrapper">
+              <table class="billing-table">
+                <thead>
+                  <tr><th>Date de réception</th><th class="th--right">Montant</th><th>Moyen de paiement</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>13 novembre 2023</td><td class="td--right billing-table__amount">2 340,00 €</td><td><span class="chip">Virement</span></td><td>Double paiement</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1364,6 +1680,506 @@
       </div>
     </div>
 
+    <!-- ════════════════════════════════════════════════════════════════
+         PAGE : PRÉFÉRENCES
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-preferences" style="display: none;">
+      <h1 class="page-header__title">Préférences</h1>
+
+      <!-- Onglets internes -->
+      <div class="content-tabs" id="pref-tabs">
+        <button class="content-tabs__item content-tabs__item--active" data-pref-tab="sec-messages">Modèles de messages</button>
+        <button class="content-tabs__item" data-pref-tab="sec-compte">Compte</button>
+      </div>
+
+      <!-- Section Messages -->
+      <div class="pref-section pref-section--active" id="sec-messages">
+        <div class="section-header">
+          <div class="section-title">Modèles de messages</div>
+          <div class="section-subtitle">Personnalisez les messages envoyés automatiquement depuis la plateforme</div>
+        </div>
+
+        <div class="card">
+          <div class="template-accordion">
+            <!-- Template 1 -->
+            <div class="template-accordion__item">
+              <button class="template-accordion__header" type="button">
+                <div class="template-accordion__header-left">
+                  <span class="badge badge--blue">Équipe</span>
+                  <span class="template-accordion__name">Proposition d'équipe — contact avec compte M2BPO</span>
+                </div>
+                <div class="template-accordion__header-right">
+                  <span class="template-accordion__vars-count">4 variables</span>
+                  <svg class="template-accordion__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </button>
+              <div class="template-accordion__body">
+                <div class="template-accordion__description">Message envoyé lorsque vous proposez de constituer une équipe avec un contact qui possède un compte M2BPO</div>
+                <div class="template-accordion__variables">
+                  <span class="variable-tag"><span class="variable-tag__brace">{</span>identifiant_annonce<span class="variable-tag__brace">}</span></span>
+                  <span class="variable-tag"><span class="variable-tag__brace">{</span>objet_annonce<span class="variable-tag__brace">}</span></span>
+                  <span class="variable-tag"><span class="variable-tag__brace">{</span>date_limite<span class="variable-tag__brace">}</span></span>
+                  <span class="variable-tag"><span class="variable-tag__brace">{</span>compétences<span class="variable-tag__brace">}</span></span>
+                </div>
+                <div class="template-accordion__preview">Bonjour,
+
+Nous vous proposons de constituer une équipe avec nous pour ce projet.
+{identifiant_annonce}, {objet_annonce}, {date_limite}
+
+Nous vous sollicitons pour : {compétences}
+Merci de nous confirmer votre participation.
+
+Cordialement,</div>
+                <div class="template-accordion__actions">
+                  <button class="button button--secondary button--small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifier</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template 2 -->
+            <div class="template-accordion__item">
+              <button class="template-accordion__header" type="button">
+                <div class="template-accordion__header-left">
+                  <span class="badge badge--blue">Équipe</span>
+                  <span class="template-accordion__name">Proposition d'équipe — contact sans compte M2BPO</span>
+                </div>
+                <div class="template-accordion__header-right">
+                  <svg class="template-accordion__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </button>
+              <div class="template-accordion__body">
+                <div class="template-accordion__description">Message envoyé lorsque le contact n'a pas encore de compte sur la plateforme</div>
+                <div class="template-accordion__preview">Bonjour,
+
+Nous vous proposons de constituer une équipe avec nous.
+Merci de nous confirmer votre participation.
+
+Cordialement</div>
+                <div class="template-accordion__actions">
+                  <button class="button button--secondary button--small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifier</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template 3 -->
+            <div class="template-accordion__item">
+              <button class="template-accordion__header" type="button">
+                <div class="template-accordion__header-left">
+                  <span class="badge badge--blue">Équipe</span>
+                  <span class="template-accordion__name">Relance de proposition d'équipe</span>
+                </div>
+                <div class="template-accordion__header-right">
+                  <svg class="template-accordion__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </button>
+              <div class="template-accordion__body">
+                <div class="template-accordion__description">Relance envoyée si pas de réponse à une proposition d'équipe</div>
+                <div class="template-accordion__preview">Bonjour,
+
+Nous nous permettons de vous relancer pour la constitution d'une équipe.
+Pouvez-vous nous confirmer votre participation ?
+
+Bonne journée,
+Cordialement,</div>
+                <div class="template-accordion__actions">
+                  <button class="button button--secondary button--small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifier</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template 4 -->
+            <div class="template-accordion__item">
+              <button class="template-accordion__header" type="button">
+                <div class="template-accordion__header-left">
+                  <span class="badge badge--green">Auto</span>
+                  <span class="template-accordion__name">Acceptation automatique de proposition</span>
+                </div>
+                <div class="template-accordion__header-right">
+                  <svg class="template-accordion__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </button>
+              <div class="template-accordion__body">
+                <div class="template-accordion__description">Message envoyé automatiquement lors de l'acceptation d'une proposition</div>
+                <div class="template-accordion__preview">Bonjour,
+
+OK pour nous.
+
+Cordialement</div>
+                <div class="template-accordion__actions">
+                  <button class="button button--secondary button--small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifier</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template 5 -->
+            <div class="template-accordion__item">
+              <button class="template-accordion__header" type="button">
+                <div class="template-accordion__header-left">
+                  <span class="badge badge--green">Auto</span>
+                  <span class="template-accordion__name">Refus automatique de proposition</span>
+                </div>
+                <div class="template-accordion__header-right">
+                  <svg class="template-accordion__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </button>
+              <div class="template-accordion__body">
+                <div class="template-accordion__description">Message envoyé automatiquement lors du refus d'une proposition</div>
+                <div class="template-accordion__preview">Bonjour,
+
+Merci pour votre proposition mais nous sommes malheureusement déjà engagés.
+
+Bonne journée,
+Cordialement</div>
+                <div class="template-accordion__actions">
+                  <button class="button button--secondary button--small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifier</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template 6 -->
+            <div class="template-accordion__item">
+              <button class="template-accordion__header" type="button">
+                <div class="template-accordion__header-left">
+                  <span class="badge badge--purple">Plateforme</span>
+                  <span class="template-accordion__name">Invitation à rejoindre M2BPO</span>
+                </div>
+                <div class="template-accordion__header-right">
+                  <svg class="template-accordion__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </button>
+              <div class="template-accordion__body">
+                <div class="template-accordion__description">Invitation envoyée à un contact pour rejoindre la plateforme M2BPO</div>
+                <div class="template-accordion__preview">Bonjour,
+
+Je me permets de vous écrire afin de vous inviter à nous rejoindre sur la plateforme M2BPO.
+
+Votre présence au sein de nos contacts sur M2BPO permettra de faciliter nos échanges sur les appels d'offres.
+
+Cordialement</div>
+                <div class="template-accordion__actions">
+                  <button class="button button--secondary button--small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifier</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template 7 -->
+            <div class="template-accordion__item">
+              <button class="template-accordion__header" type="button">
+                <div class="template-accordion__header-left">
+                  <span class="badge badge--amber">Réseau</span>
+                  <span class="template-accordion__name">Invitation de contact réseau</span>
+                </div>
+                <div class="template-accordion__header-right">
+                  <svg class="template-accordion__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </button>
+              <div class="template-accordion__body">
+                <div class="template-accordion__description">Message d'invitation à rejoindre votre réseau de contacts</div>
+                <div class="template-accordion__preview">Bonjour,
+
+Afin de faciliter nos échanges sur les appels d'offres, nous aimerions vous compter au sein de notre réseau sur M2BPO.
+
+Nous vous remercions de bien vouloir accepter notre invitation.
+
+Cordialement,</div>
+                <div class="template-accordion__actions">
+                  <button class="button button--secondary button--small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifier</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template 8 -->
+            <div class="template-accordion__item">
+              <button class="template-accordion__header" type="button">
+                <div class="template-accordion__header-left">
+                  <span class="badge badge--amber">Réseau</span>
+                  <span class="template-accordion__name">Invitation de contact réseau — relance</span>
+                </div>
+                <div class="template-accordion__header-right">
+                  <svg class="template-accordion__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </button>
+              <div class="template-accordion__body">
+                <div class="template-accordion__description">Relance envoyée si pas de réponse à une invitation réseau</div>
+                <div class="template-accordion__preview">Bonjour,
+
+Je me permets de vous relancer au sujet des demandes de contact sur votre compte M2BPO.
+
+Nous restons disponibles si vous avez des questions.
+
+Cordialement,</div>
+                <div class="template-accordion__actions">
+                  <button class="button button--secondary button--small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifier</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Compte -->
+      <div class="pref-section" id="sec-compte">
+        <div class="section-header">
+          <div class="section-title">Compte</div>
+          <div class="section-subtitle">Paramètres de votre équipe, réseau, notes, annonces et emails</div>
+        </div>
+
+        <!-- Équipe -->
+        <div class="subsection"><div class="subsection__title">Équipe</div></div>
+        <div class="card card--padded">
+          <div class="card__title mb-12">Membres et rôles</div>
+          <div class="member-row">
+            <div class="member-row__left">
+              <div class="member-row__avatar" style="background:#10b981">N</div>
+              <span class="member-row__name">Nicolas V.</span>
+            </div>
+            <select class="select-sm"><option selected>Mandataire</option><option>Co-traitant</option></select>
+          </div>
+          <div class="member-row">
+            <div class="member-row__left">
+              <div class="member-row__avatar" style="background:#3b82f6">B</div>
+              <span class="member-row__name">Blaise D.</span>
+            </div>
+            <select class="select-sm"><option>Mandataire</option><option selected>Co-traitant</option></select>
+          </div>
+          <div class="divider"></div>
+          <div class="toggle-row">
+            <div class="toggle toggle--on" role="switch" aria-checked="true" tabindex="0"><div class="toggle__knob"></div></div>
+            <span class="toggle-row__label">Masquer les négatifs</span>
+          </div>
+        </div>
+
+        <!-- Réseau -->
+        <div class="subsection mt-28"><div class="subsection__title">Réseau</div></div>
+        <div class="card card--padded">
+          <div class="row-between mb-12">
+            <span class="card__title">Visibilité du profil</span>
+            <div class="radio-group">
+              <button class="radio-group__option radio-group__option--active" type="button">Ouverte</button>
+              <button class="radio-group__option" type="button">Restreinte</button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="toggle-row">
+            <div class="toggle" role="switch" aria-checked="false" tabindex="0"><div class="toggle__knob"></div></div>
+            <span class="toggle-row__label">Acceptation automatique des invitations réseau</span>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="subsection mt-28"><div class="subsection__title">Notes</div></div>
+        <div class="card card--padded">
+          <div class="card__title mb-8">Drapeaux de notation</div>
+          <div class="card__description mb-12">Nommez chaque drapeau de couleur pour personnaliser votre système de notation</div>
+          <div class="flag-row"><div class="flag-row__dot" style="background:#ef4444"></div><input class="flag-row__input" type="text" value="Bloqué" placeholder="Nommer ce drapeau…"></div>
+          <div class="flag-row"><div class="flag-row__dot" style="background:#f59e0b"></div><input class="flag-row__input" type="text" value="En attente" placeholder="Nommer ce drapeau…"></div>
+          <div class="flag-row"><div class="flag-row__dot" style="background:#3b82f6"></div><input class="flag-row__input" type="text" value="À suivre" placeholder="Nommer ce drapeau…"></div>
+          <div class="flag-row"><div class="flag-row__dot" style="background:#10b981"></div><input class="flag-row__input" type="text" value="Validé" placeholder="Nommer ce drapeau…"></div>
+          <div class="flag-row"><div class="flag-row__dot" style="background:#8b5cf6"></div><input class="flag-row__input" type="text" value="Favori" placeholder="Nommer ce drapeau…"></div>
+        </div>
+
+        <!-- Gestion annonces -->
+        <div class="subsection mt-28"><div class="subsection__title">Gestion des annonces</div></div>
+        <div class="card card--padded">
+          <div class="card__title mb-8">Présélection</div>
+          <div class="card__description mb-12">Délai après la date limite pour les annonces présélectionnées</div>
+          <div class="config-row">
+            <span class="config-row__label">Délai</span>
+            <div class="radio-group">
+              <button class="radio-group__option" type="button">J+1</button>
+              <button class="radio-group__option" type="button">J+3</button>
+              <button class="radio-group__option radio-group__option--active" type="button">J+7</button>
+              <button class="radio-group__option" type="button">J+10</button>
+            </div>
+          </div>
+          <div class="config-row">
+            <span class="config-row__label">Redirection</span>
+            <div class="radio-group">
+              <button class="radio-group__option radio-group__option--active" type="button">Archive</button>
+              <button class="radio-group__option" type="button">Corbeille</button>
+              <button class="radio-group__option" type="button">Veille</button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="card__title mb-8">En cours</div>
+          <div class="card__description mb-12">Délai pour les annonces en cours de traitement</div>
+          <div class="config-row">
+            <span class="config-row__label">Délai</span>
+            <div class="radio-group">
+              <button class="radio-group__option" type="button">J+1</button>
+              <button class="radio-group__option radio-group__option--active" type="button">J+3</button>
+              <button class="radio-group__option" type="button">J+7</button>
+              <button class="radio-group__option" type="button">J+10</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="subsection mt-28"><div class="subsection__title">Email</div></div>
+        <div class="card card--padded">
+          <div class="row-between mb-12">
+            <span class="card__title">Expéditeur par défaut</span>
+            <select class="select-sm"><option selected>Nicolas V.</option><option>Blaise D.</option><option>Caroline M.</option><option>Pauline R.</option><option>Marion T.</option></select>
+          </div>
+          <div class="divider"></div>
+          <div class="toggle-row mb-12">
+            <div class="toggle toggle--on" role="switch" aria-checked="true" tabindex="0"><div class="toggle__knob"></div></div>
+            <span class="toggle-row__label">Accusé de réception</span>
+          </div>
+          <div class="divider"></div>
+          <div class="card__title mb-8">Utilisateurs en copie cachée (Cci)</div>
+          <div class="card__description mb-12">Cochez les utilisateurs qui recevront systématiquement une copie cachée des emails envoyés</div>
+          <div class="user-checkbox-row"><div class="pref-checkbox pref-checkbox--checked"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></div><span class="user-checkbox-row__name">Nicolas V.</span></div>
+          <div class="user-checkbox-row"><div class="pref-checkbox"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></div><span class="user-checkbox-row__name">Blaise D.</span></div>
+          <div class="user-checkbox-row"><div class="pref-checkbox"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></div><span class="user-checkbox-row__name">Caroline M.</span></div>
+          <div class="user-checkbox-row"><div class="pref-checkbox pref-checkbox--checked"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></div><span class="user-checkbox-row__name">Pauline R.</span></div>
+          <div class="user-checkbox-row"><div class="pref-checkbox"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></div><span class="user-checkbox-row__name">Marion T.</span></div>
+        </div>
+      </div>
+
+      <!-- Save bar -->
+      <div class="save-bar" id="save-bar">
+        <span class="save-bar__text">Modifications non enregistrées</span>
+        <button class="button button--secondary button--small" id="save-bar-discard">Annuler</button>
+        <button class="button button--primary button--small" id="save-bar-save">Enregistrer</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         PAGE : UTILISATEURS
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-utilisateurs" style="display: none;">
+      <div class="users-header">
+        <div>
+          <h1 class="page-header__title">Équipe</h1>
+          <p>Gérez les accès à votre compte Marchés Publics.</p>
+        </div>
+        <button class="button button--primary button--small">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Ajouter un utilisateur
+        </button>
+      </div>
+
+      <div class="card">
+        <!-- Tabs + Search -->
+        <div class="tabs-bar">
+          <div class="users-tabs">
+            <button class="users-tabs__button users-tabs__button--active" data-users-tab="active">Actifs <span class="users-tabs__count">5</span></button>
+            <button class="users-tabs__button" data-users-tab="blocked">Bloqués <span class="users-tabs__count">0</span></button>
+          </div>
+          <div class="search-box">
+            <span class="search-box__icon"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <input type="text" class="search-box__input" placeholder="Rechercher…">
+          </div>
+        </div>
+
+        <!-- Column headers -->
+        <div class="user-table__headers">
+          <span class="user-table__col-header">Membre</span>
+          <span class="user-table__col-header">Rôle</span>
+          <span class="user-table__col-header">Dernière activité</span>
+          <span class="user-table__col-header"></span>
+        </div>
+
+        <!-- User list (actifs) -->
+        <div id="users-active-list">
+          <!-- User 1 : Nicolas Valloo (owner) -->
+          <div class="user-table__row">
+            <div class="user-table__info">
+              <div class="user-table__avatar" style="background: #182948; color: #e0e0ff;">NV</div>
+              <div class="user-table__details">
+                <div class="user-table__name-row">
+                  <span class="user-table__name">Nicolas Valloo</span>
+                  <span class="badge-owner">Propriétaire</span>
+                </div>
+                <div class="user-table__email">nv@m2bpo.com</div>
+              </div>
+            </div>
+            <div><span class="role-badge role-badge--admin"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Admin</span></div>
+            <div class="user-table__last-login">Il y a 10 jours</div>
+            <div class="user-table__actions"><button class="button-dots" type="button" aria-label="Actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button></div>
+          </div>
+
+          <!-- User 2 : Pauline Lemarechal -->
+          <div class="user-table__row">
+            <div class="user-table__info">
+              <div class="user-table__avatar" style="background: #0f3d3e; color: #b8fff9;">PL</div>
+              <div class="user-table__details">
+                <div class="user-table__name-row"><span class="user-table__name">Pauline Lemarechal</span></div>
+                <div class="user-table__email">contact@m2bpo.com</div>
+              </div>
+            </div>
+            <div><span class="role-badge role-badge--user">Utilisateur</span></div>
+            <div class="user-table__last-login">Il y a 4 mois</div>
+            <div class="user-table__actions"><button class="button-dots" type="button" aria-label="Actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button></div>
+          </div>
+
+          <!-- User 3 : Blaise Malta-Bey (inactive) -->
+          <div class="user-table__row">
+            <div class="user-table__info">
+              <div class="user-table__avatar" style="background: #3d0f0f; color: #ffb8b8;">BM</div>
+              <div class="user-table__details">
+                <div class="user-table__name-row">
+                  <span class="user-table__name">Blaise Malta-Bey</span>
+                  <span class="dot-inactive" title="Inactif depuis plus de 90 jours"></span>
+                </div>
+                <div class="user-table__email">bmb@m2bpo.com</div>
+              </div>
+            </div>
+            <div><span class="role-badge role-badge--admin"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Admin</span></div>
+            <div class="user-table__last-login user-table__last-login--inactive">Il y a 11 mois</div>
+            <div class="user-table__actions"><button class="button-dots" type="button" aria-label="Actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button></div>
+          </div>
+
+          <!-- User 4 : Salomé G -->
+          <div class="user-table__row">
+            <div class="user-table__info">
+              <div class="user-table__avatar" style="background: #2d1b4e; color: #d4b8ff;">SG</div>
+              <div class="user-table__details">
+                <div class="user-table__name-row"><span class="user-table__name">Salomé G</span></div>
+                <div class="user-table__email">salomegazeau@gmail.com</div>
+              </div>
+            </div>
+            <div><span class="role-badge role-badge--user">Utilisateur</span></div>
+            <div class="user-table__last-login">Il y a 4 mois</div>
+            <div class="user-table__actions"><button class="button-dots" type="button" aria-label="Actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button></div>
+          </div>
+
+          <!-- User 5 : Marion Gavilan -->
+          <div class="user-table__row">
+            <div class="user-table__info">
+              <div class="user-table__avatar" style="background: #1b3a1b; color: #b8ffb8;">MG</div>
+              <div class="user-table__details">
+                <div class="user-table__name-row"><span class="user-table__name">Marion Gavilan</span></div>
+                <div class="user-table__email">marion.gavilan@gmail.com</div>
+              </div>
+            </div>
+            <div><span class="role-badge role-badge--admin"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Admin</span></div>
+            <div class="user-table__last-login">Il y a 4 mois</div>
+            <div class="user-table__actions"><button class="button-dots" type="button" aria-label="Actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button></div>
+          </div>
+        </div>
+
+        <!-- Blocked list (hidden) -->
+        <div id="users-blocked-list" style="display: none;">
+          <div class="users-empty-state">
+            <div class="users-empty-state__emoji">🔓</div>
+            Aucun utilisateur bloqué
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer legend -->
+      <div class="footer-legend">
+        <div class="footer-legend__item">
+          <span class="footer-legend__dot"></span> Inactif depuis +90 jours
+        </div>
+        <div class="footer-legend__item">
+          <span class="footer-legend__badge">P</span> Propriétaire du compte
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- ══════════════════════════════════════════════════════════════════
@@ -1448,6 +2264,8 @@
     <button class="preview-nav__btn preview-nav__btn--active" data-page="billing">Factures</button>
     <button class="preview-nav__btn" data-page="bibliotheque">Bibliothèque</button>
     <button class="preview-nav__btn" data-page="reseau">Contacts</button>
+    <button class="preview-nav__btn" data-page="preferences">Préférences</button>
+    <button class="preview-nav__btn" data-page="utilisateurs">Utilisateurs</button>
   </nav>
 
   <script>
@@ -1519,7 +2337,7 @@
       });
 
       // ── Navigation entre pages ──
-      const pages = { billing: 'Factures', bibliotheque: 'Bibliothèque', reseau: 'Contacts' };
+      const pages = { billing: 'Factures', bibliotheque: 'Bibliothèque', reseau: 'Contacts', preferences: 'Préférences', utilisateurs: 'Utilisateurs' };
       const breadcrumb = document.getElementById('breadcrumb-current');
 
       function showPage(pageName) {
@@ -1550,6 +2368,14 @@
           document.querySelector('#nav-settings > .sidebar__link').classList.add('sidebar__link--active');
         } else if (pageName === 'bibliotheque') {
           document.getElementById('nav-bibliotheque').classList.add('sidebar__sub-link--active');
+          document.getElementById('nav-settings').classList.add('sidebar__item--expanded');
+          document.querySelector('#nav-settings > .sidebar__link').classList.add('sidebar__link--active');
+        } else if (pageName === 'preferences') {
+          document.getElementById('nav-preferences').classList.add('sidebar__sub-link--active');
+          document.getElementById('nav-settings').classList.add('sidebar__item--expanded');
+          document.querySelector('#nav-settings > .sidebar__link').classList.add('sidebar__link--active');
+        } else if (pageName === 'utilisateurs') {
+          document.getElementById('nav-utilisateurs').classList.add('sidebar__sub-link--active');
           document.getElementById('nav-settings').classList.add('sidebar__item--expanded');
           document.querySelector('#nav-settings > .sidebar__link').classList.add('sidebar__link--active');
         }
@@ -1639,6 +2465,77 @@
           closeAllDrawers();
         });
       }
+
+      // ── Préférences : onglets internes ──
+      document.querySelectorAll('[data-pref-tab]').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('[data-pref-tab]').forEach(t => t.classList.remove('content-tabs__item--active'));
+          tab.classList.add('content-tabs__item--active');
+          document.querySelectorAll('.pref-section').forEach(s => s.classList.remove('pref-section--active'));
+          const target = document.getElementById(tab.dataset.prefTab);
+          if (target) target.classList.add('pref-section--active');
+        });
+      });
+
+      // ── Préférences : template accordéons ──
+      document.querySelectorAll('.template-accordion__header').forEach(header => {
+        header.addEventListener('click', () => {
+          const item = header.closest('.template-accordion__item');
+          const wasOpen = item.classList.contains('template-accordion__item--open');
+          // Fermer tous les autres
+          document.querySelectorAll('.template-accordion__item--open').forEach(i => i.classList.remove('template-accordion__item--open'));
+          if (!wasOpen) item.classList.add('template-accordion__item--open');
+        });
+      });
+
+      // ── Préférences : radio groups ──
+      document.querySelectorAll('.radio-group__option').forEach(option => {
+        option.addEventListener('click', () => {
+          const group = option.closest('.radio-group');
+          group.querySelectorAll('.radio-group__option').forEach(o => o.classList.remove('radio-group__option--active'));
+          option.classList.add('radio-group__option--active');
+          showSaveBar();
+        });
+      });
+
+      // ── Préférences : checkboxes ──
+      document.querySelectorAll('.user-checkbox-row').forEach(row => {
+        row.addEventListener('click', () => {
+          const cb = row.querySelector('.pref-checkbox');
+          cb.classList.toggle('pref-checkbox--checked');
+          showSaveBar();
+        });
+      });
+
+      // ── Préférences : save bar ──
+      const saveBar = document.getElementById('save-bar');
+      function showSaveBar() {
+        if (saveBar) saveBar.classList.add('save-bar--visible');
+      }
+      function hideSaveBar() {
+        if (saveBar) saveBar.classList.remove('save-bar--visible');
+      }
+      const discardBtn = document.getElementById('save-bar-discard');
+      const saveBtn = document.getElementById('save-bar-save');
+      if (discardBtn) discardBtn.addEventListener('click', hideSaveBar);
+      if (saveBtn) saveBtn.addEventListener('click', hideSaveBar);
+
+      // ── Préférences : flag inputs + select dirty ──
+      document.querySelectorAll('.flag-row__input, .select-sm').forEach(el => {
+        el.addEventListener('change', showSaveBar);
+        el.addEventListener('input', showSaveBar);
+      });
+
+      // ── Utilisateurs : tabs ──
+      document.querySelectorAll('[data-users-tab]').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('[data-users-tab]').forEach(t => t.classList.remove('users-tabs__button--active'));
+          tab.classList.add('users-tabs__button--active');
+          const target = tab.dataset.usersTab;
+          document.getElementById('users-active-list').style.display = target === 'active' ? 'block' : 'none';
+          document.getElementById('users-blocked-list').style.display = target === 'blocked' ? 'block' : 'none';
+        });
+      });
 
       // Init avec page billing active
       showPage('billing');

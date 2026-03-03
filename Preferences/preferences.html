@@ -1,0 +1,607 @@
+{% extends "base.html" %}
+{% load component_tags %}
+
+{# ══════════════════════════════════════════════════════════════════════════════
+   Maquette Blaise — Page Préférences
+   Template Django — zone contenu uniquement (layout géré par base.html)
+   Sidebar : active_section = 'preferences'
+   Topbar : breadcrumb_current = 'Préférences'
+   2 onglets : Modèles de messages, Compte
+   ══════════════════════════════════════════════════════════════════════════════ #}
+
+{% block page_content %}
+
+  {# ── Page header ── #}
+  <div class="page-header">
+    <h1 class="page-header__title">Préférences</h1>
+    <p class="page-header__subtitle">
+      Configurez vos paramètres, modèles de messages et préférences réseau
+    </p>
+  </div>
+
+
+  {# ── Onglets ── #}
+  {% component "tab_underline" tab_wrapper_id="preferences-tabs" active_tab="messages" %}
+    {% fill "tabs" %}
+      {% component "tab_underline_button" tab_id="messages" label="Modèles de messages" %}{% endcomponent %}
+      {% component "tab_underline_button" tab_id="account" label="Compte" %}{% endcomponent %}
+    {% endfill %}
+  {% endcomponent %}
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : MODÈLES DE MESSAGES
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel panel--active" id="panel-messages" role="tabpanel" aria-labelledby="tab-messages">
+
+    <div class="content-tabs">
+
+      {# Accordéon 1 — Proposition d'équipe (avec compte M2BPO) #}
+      <div class="template-accordion">
+        <div class="template-accordion__header">
+          <div class="template-accordion__title">
+            Proposition d'équipe — contact avec compte M2BPO
+          </div>
+          <div class="template-accordion__badge badge badge--blue">Équipe</div>
+        </div>
+        <div class="template-accordion__content">
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Description</label>
+            <p class="template-accordion__text">
+              Envoyée automatiquement quand vous proposez un contact qui possède un compte M2BPO
+            </p>
+          </div>
+
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Variables disponibles</label>
+            <div class="variable-tags">
+              <span class="variable-tag">identifiant_annonce</span>
+              <span class="variable-tag">objet_annonce</span>
+              <span class="variable-tag">date_limite</span>
+              <span class="variable-tag">compétences</span>
+            </div>
+          </div>
+
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Aperçu</label>
+            <div class="template-accordion__preview">
+              <p>Bonjour,</p>
+              <p>Nous vous proposons de participer à un projet : <strong>Création d'application web responsive</strong> (ID: ANN-2024-0156).</p>
+              <p><strong>Date limite :</strong> 15 mars 2026</p>
+              <p><strong>Compétences requises :</strong> React, JavaScript, CSS3, UX Design</p>
+              <p>Cordialement,<br>Équipe M2BPO</p>
+            </div>
+          </div>
+
+          <button class="template-accordion__button button button--secondary">Modifier</button>
+        </div>
+      </div>
+
+      {# Accordéon 2 — Proposition d'équipe (sans compte M2BPO) #}
+      <div class="template-accordion">
+        <div class="template-accordion__header">
+          <div class="template-accordion__title">
+            Proposition d'équipe — contact sans compte M2BPO
+          </div>
+          <div class="template-accordion__badge badge badge--blue">Équipe</div>
+        </div>
+        <div class="template-accordion__content">
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Description</label>
+            <p class="template-accordion__text">
+              Envoyée quand vous proposez un contact qui n'a pas encore de compte M2BPO
+            </p>
+          </div>
+
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Aperçu</label>
+            <div class="template-accordion__preview">
+              <p>Bonjour,</p>
+              <p>Un projet vous a été proposé sur M2BPO. Rejoignez notre plateforme pour consulter les détails et accepter la collaboration.</p>
+              <p>Cordialement,<br>Équipe M2BPO</p>
+            </div>
+          </div>
+
+          <button class="template-accordion__button button button--secondary">Modifier</button>
+        </div>
+      </div>
+
+      {# Accordéon 3 — Relance de proposition d'équipe #}
+      <div class="template-accordion">
+        <div class="template-accordion__header">
+          <div class="template-accordion__title">
+            Relance de proposition d'équipe
+          </div>
+          <div class="template-accordion__badge badge badge--blue">Équipe</div>
+        </div>
+        <div class="template-accordion__content">
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Description</label>
+            <p class="template-accordion__text">
+              Envoyée 3 jours après une proposition sans réponse
+            </p>
+          </div>
+
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Aperçu</label>
+            <div class="template-accordion__preview">
+              <p>Bonjour,</p>
+              <p>Nous attendons toujours votre réponse sur la proposition « Création d'application web responsive ».</p>
+              <p>Pouvez-vous nous confirmer votre intérêt ?</p>
+              <p>Cordialement,<br>Équipe M2BPO</p>
+            </div>
+          </div>
+
+          <button class="template-accordion__button button button--secondary">Modifier</button>
+        </div>
+      </div>
+
+      {# Accordéon 4 — Acceptation automatique de proposition #}
+      <div class="template-accordion">
+        <div class="template-accordion__header">
+          <div class="template-accordion__title">
+            Acceptation automatique de proposition
+          </div>
+          <div class="template-accordion__badge badge badge--green">Auto</div>
+        </div>
+        <div class="template-accordion__content">
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Description</label>
+            <p class="template-accordion__text">
+              Notification envoyée quand une proposition est acceptée automatiquement selon vos paramètres
+            </p>
+          </div>
+
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Aperçu</label>
+            <div class="template-accordion__preview">
+              <p>Félicitations,</p>
+              <p>Votre proposition pour « Création d'application web responsive » a été acceptée automatiquement.</p>
+              <p>Vous pouvez commencer la collaboration dès maintenant.</p>
+              <p>Cordialement,<br>Équipe M2BPO</p>
+            </div>
+          </div>
+
+          <button class="template-accordion__button button button--secondary">Modifier</button>
+        </div>
+      </div>
+
+      {# Accordéon 5 — Refus automatique de proposition #}
+      <div class="template-accordion">
+        <div class="template-accordion__header">
+          <div class="template-accordion__title">
+            Refus automatique de proposition
+          </div>
+          <div class="template-accordion__badge badge badge--green">Auto</div>
+        </div>
+        <div class="template-accordion__content">
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Description</label>
+            <p class="template-accordion__text">
+              Notification envoyée quand une proposition est refusée automatiquement
+            </p>
+          </div>
+
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Aperçu</label>
+            <div class="template-accordion__preview">
+              <p>Information,</p>
+              <p>Votre proposition pour « Création d'application web responsive » a été refusée automatiquement selon vos paramètres.</p>
+              <p>Vous pouvez mettre à jour vos préférences pour modifier ce comportement.</p>
+              <p>Cordialement,<br>Équipe M2BPO</p>
+            </div>
+          </div>
+
+          <button class="template-accordion__button button button--secondary">Modifier</button>
+        </div>
+      </div>
+
+      {# Accordéon 6 — Invitation à rejoindre M2BPO #}
+      <div class="template-accordion">
+        <div class="template-accordion__header">
+          <div class="template-accordion__title">
+            Invitation à rejoindre M2BPO
+          </div>
+          <div class="template-accordion__badge badge badge--purple">Plateforme</div>
+        </div>
+        <div class="template-accordion__content">
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Description</label>
+            <p class="template-accordion__text">
+              Envoyée aux contacts invités à créer un compte M2BPO
+            </p>
+          </div>
+
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Aperçu</label>
+            <div class="template-accordion__preview">
+              <p>Bienvenue,</p>
+              <p>Vous avez été invité à rejoindre M2BPO, la plateforme de collaboration entre organisations.</p>
+              <p>Créez votre compte dès maintenant pour accéder aux opportunités de projets et développer votre réseau.</p>
+              <p>Lien d'invitation : https://m2bpo.fr/invite/...</p>
+              <p>Cordialement,<br>Équipe M2BPO</p>
+            </div>
+          </div>
+
+          <button class="template-accordion__button button button--secondary">Modifier</button>
+        </div>
+      </div>
+
+      {# Accordéon 7 — Invitation de contact réseau #}
+      <div class="template-accordion">
+        <div class="template-accordion__header">
+          <div class="template-accordion__title">
+            Invitation de contact réseau
+          </div>
+          <div class="template-accordion__badge badge badge--amber">Réseau</div>
+        </div>
+        <div class="template-accordion__content">
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Description</label>
+            <p class="template-accordion__text">
+              Envoyée quand vous invitez un contact à rejoindre votre réseau
+            </p>
+          </div>
+
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Aperçu</label>
+            <div class="template-accordion__preview">
+              <p>Bonjour,</p>
+              <p>Nicolas V. vous invite à rejoindre son réseau M2BPO.</p>
+              <p>Accepter cette invitation vous permettra de collaborer et d'accéder à de nouvelles opportunités.</p>
+              <p>Cordialement,<br>Équipe M2BPO</p>
+            </div>
+          </div>
+
+          <button class="template-accordion__button button button--secondary">Modifier</button>
+        </div>
+      </div>
+
+      {# Accordéon 8 — Invitation de contact réseau (relance) #}
+      <div class="template-accordion">
+        <div class="template-accordion__header">
+          <div class="template-accordion__title">
+            Invitation de contact réseau — relance
+          </div>
+          <div class="template-accordion__badge badge badge--amber">Réseau</div>
+        </div>
+        <div class="template-accordion__content">
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Description</label>
+            <p class="template-accordion__text">
+              Envoyée 5 jours après une invitation sans réponse
+            </p>
+          </div>
+
+          <div class="template-accordion__section">
+            <label class="template-accordion__label">Aperçu</label>
+            <div class="template-accordion__preview">
+              <p>Bonjour,</p>
+              <p>Vous avez reçu une invitation réseau de Nicolas V. qui expire bientôt.</p>
+              <p>Acceptez-la pour commencer à collaborer.</p>
+              <p>Cordialement,<br>Équipe M2BPO</p>
+            </div>
+          </div>
+
+          <button class="template-accordion__button button button--secondary">Modifier</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     PANEL : COMPTE
+     ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="panel" id="panel-account" role="tabpanel" aria-labelledby="tab-account">
+
+    <div class="content-tabs">
+
+      {# ── Sous-section : Équipe ── #}
+      <div class="subsection">
+        <h2 class="subsection__title">Équipe</h2>
+        <p class="subsection__description">Gérez les membres de votre équipe et leurs rôles</p>
+
+        <div class="subsection__content">
+          {# Ligne 1 : Nicolas V. #}
+          <div class="member-row">
+            <div class="member-row__info">
+              <span class="member-row__name">Nicolas V.</span>
+            </div>
+            <div class="member-row__controls">
+              <select class="member-row__role-select" aria-label="Rôle de Nicolas V.">
+                <option selected>Mandataire</option>
+                <option>Co-traitant</option>
+                <option>Contributeur</option>
+              </select>
+            </div>
+          </div>
+
+          {# Ligne 2 : Blaise D. #}
+          <div class="member-row">
+            <div class="member-row__info">
+              <span class="member-row__name">Blaise D.</span>
+            </div>
+            <div class="member-row__controls">
+              <select class="member-row__role-select" aria-label="Rôle de Blaise D.">
+                <option>Mandataire</option>
+                <option selected>Co-traitant</option>
+                <option>Contributeur</option>
+              </select>
+            </div>
+          </div>
+
+          {# Toggle : Masquer les négatifs #}
+          <div class="subsection__divider"></div>
+
+          <div class="config-row">
+            <div class="config-row__label">Masquer les négatifs</div>
+            <div class="config-row__description">
+              Les contacts avec des retours négatifs ne s'affichent pas par défaut
+            </div>
+            <div class="config-row__control">
+              <label class="toggle-switch" for="toggle-hide-negatives">
+                <input type="checkbox" id="toggle-hide-negatives" class="toggle-switch__input" checked>
+                <span class="toggle-switch__slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ── Sous-section : Réseau ── #}
+      <div class="subsection">
+        <h2 class="subsection__title">Réseau</h2>
+        <p class="subsection__description">Configurez la visibilité et l'acceptation automatique</p>
+
+        <div class="subsection__content">
+          {# Radio group : Visibilité #}
+          <div class="config-row">
+            <div class="config-row__label">Visibilité du réseau</div>
+            <div class="config-row__description">
+              Contrôlez qui peut voir votre profil et votre réseau
+            </div>
+            <div class="config-row__control">
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="network-visibility" value="open" checked class="radio-label__input">
+                  <span class="radio-label__text">Ouverte</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="network-visibility" value="restricted" class="radio-label__input">
+                  <span class="radio-label__text">Restreinte</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {# Toggle : Acceptation automatique #}
+          <div class="subsection__divider"></div>
+
+          <div class="config-row">
+            <div class="config-row__label">Acceptation automatique</div>
+            <div class="config-row__description">
+              Acceptez automatiquement les invitations réseau de contacts approuvés
+            </div>
+            <div class="config-row__control">
+              <label class="toggle-switch" for="toggle-auto-accept">
+                <input type="checkbox" id="toggle-auto-accept" class="toggle-switch__input">
+                <span class="toggle-switch__slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ── Sous-section : Notes ── #}
+      <div class="subsection">
+        <h2 class="subsection__title">Notes</h2>
+        <p class="subsection__description">Organisez vos contacts avec des drapeaux colorés</p>
+
+        <div class="subsection__content">
+          <div class="flag-rows">
+            {# Drapeau Rouge : Bloqué #}
+            <div class="flag-row">
+              <div class="flag-row__badge flag-badge flag-badge--red">Bloqué</div>
+              <input type="text" class="flag-row__input" placeholder="Description ou détails…" value="">
+            </div>
+
+            {# Drapeau Ambre : En attente #}
+            <div class="flag-row">
+              <div class="flag-row__badge flag-badge flag-badge--amber">En attente</div>
+              <input type="text" class="flag-row__input" placeholder="Description ou détails…" value="">
+            </div>
+
+            {# Drapeau Bleu : À suivre #}
+            <div class="flag-row">
+              <div class="flag-row__badge flag-badge flag-badge--blue">À suivre</div>
+              <input type="text" class="flag-row__input" placeholder="Description ou détails…" value="">
+            </div>
+
+            {# Drapeau Vert : Validé #}
+            <div class="flag-row">
+              <div class="flag-row__badge flag-badge flag-badge--green">Validé</div>
+              <input type="text" class="flag-row__input" placeholder="Description ou détails…" value="">
+            </div>
+
+            {# Drapeau Violet : Favori #}
+            <div class="flag-row">
+              <div class="flag-row__badge flag-badge flag-badge--purple">Favori</div>
+              <input type="text" class="flag-row__input" placeholder="Description ou détails…" value="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ── Sous-section : Gestion des annonces ── #}
+      <div class="subsection">
+        <h2 class="subsection__title">Gestion des annonces</h2>
+        <p class="subsection__description">Configurez les délais d'archivage et de redirection</p>
+
+        <div class="subsection__content">
+          {# Configuration 1 : Présélection #}
+          <div class="config-row">
+            <div class="config-row__label">Délai pour Présélection</div>
+            <div class="config-row__description">
+              Archiver automatiquement après combien de jours ?
+            </div>
+            <div class="config-row__control">
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="delay-preselecton" value="1" class="radio-label__input">
+                  <span class="radio-label__text">J+1</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="delay-preselecton" value="3" class="radio-label__input">
+                  <span class="radio-label__text">J+3</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="delay-preselecton" value="7" selected class="radio-label__input">
+                  <span class="radio-label__text">J+7</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="delay-preselecton" value="10" class="radio-label__input">
+                  <span class="radio-label__text">J+10</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {# Configuration 2 : Redirection #}
+          <div class="config-row">
+            <div class="config-row__label">Redirection pour Présélection</div>
+            <div class="config-row__description">
+              Où archiver les annonces traitées ?
+            </div>
+            <div class="config-row__control">
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="redirect-preselecton" value="archive" selected class="radio-label__input">
+                  <span class="radio-label__text">Archive</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="redirect-preselecton" value="suppression" class="radio-label__input">
+                  <span class="radio-label__text">Suppression</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {# Divider #}
+          <div class="subsection__divider"></div>
+
+          {# Configuration 3 : En cours délai #}
+          <div class="config-row">
+            <div class="config-row__label">Délai pour En cours</div>
+            <div class="config-row__description">
+              Archiver automatiquement après combien de jours ?
+            </div>
+            <div class="config-row__control">
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="delay-encours" value="1" class="radio-label__input">
+                  <span class="radio-label__text">J+1</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="delay-encours" value="3" selected class="radio-label__input">
+                  <span class="radio-label__text">J+3</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="delay-encours" value="7" class="radio-label__input">
+                  <span class="radio-label__text">J+7</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="delay-encours" value="10" class="radio-label__input">
+                  <span class="radio-label__text">J+10</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ── Sous-section : Email ── #}
+      <div class="subsection">
+        <h2 class="subsection__title">Email</h2>
+        <p class="subsection__description">Configurez les paramètres d'envoi et de réception</p>
+
+        <div class="subsection__content">
+          {# Sélecteur : Expéditeur #}
+          <div class="config-row">
+            <div class="config-row__label">Expéditeur</div>
+            <div class="config-row__description">
+              Choisissez l'adresse d'envoi par défaut
+            </div>
+            <div class="config-row__control">
+              <select class="config-select" aria-label="Adresse d'expéditeur">
+                <option selected>Nicolas V. — nicolas.vidal@agence.fr</option>
+                <option>Blaise D. — blaise.dubois@agence.fr</option>
+              </select>
+            </div>
+          </div>
+
+          {# Toggle : Accusé de réception #}
+          <div class="subsection__divider"></div>
+
+          <div class="config-row">
+            <div class="config-row__label">Accusé de réception</div>
+            <div class="config-row__description">
+              Demander une confirmation de lecture sur les emails
+            </div>
+            <div class="config-row__control">
+              <label class="toggle-switch" for="toggle-read-receipt">
+                <input type="checkbox" id="toggle-read-receipt" class="toggle-switch__input" checked>
+                <span class="toggle-switch__slider"></span>
+              </label>
+            </div>
+          </div>
+
+          {# Checkboxes : Cci #}
+          <div class="subsection__divider"></div>
+
+          <div class="config-row">
+            <div class="config-row__label">Copie cachée (Cci)</div>
+            <div class="config-row__description">
+              Qui doit recevoir une copie des emails ?
+            </div>
+            <div class="config-row__control">
+              <div class="checkbox-group">
+                <label class="user-checkbox-row">
+                  <input type="checkbox" class="user-checkbox-row__input" value="nicolas" checked>
+                  <span class="user-checkbox-row__text">Nicolas V.</span>
+                </label>
+                <label class="user-checkbox-row">
+                  <input type="checkbox" class="user-checkbox-row__input" value="pauline" checked>
+                  <span class="user-checkbox-row__text">Pauline R.</span>
+                </label>
+                <label class="user-checkbox-row">
+                  <input type="checkbox" class="user-checkbox-row__input" value="sophie">
+                  <span class="user-checkbox-row__text">Sophie M.</span>
+                </label>
+                <label class="user-checkbox-row">
+                  <input type="checkbox" class="user-checkbox-row__input" value="thierry">
+                  <span class="user-checkbox-row__text">Thierry B.</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  {# ── Save bar (fixe en bas) ── #}
+  <div class="save-bar" id="save-bar" style="display: none;">
+    <div class="save-bar__container">
+      <span class="save-bar__message">Modifications non enregistrées</span>
+      <div class="save-bar__actions">
+        <button class="button button--ghost" id="btn-cancel-changes">Annuler</button>
+        <button class="button button--primary" id="btn-save-changes">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

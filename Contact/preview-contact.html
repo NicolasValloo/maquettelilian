@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview — Page Contacts (Réseau)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    /* ══════════════════════════════════════════════════════════════════
+       DESIGN SYSTEM BLAISE — Variables CSS compilées depuis Sass
+       ══════════════════════════════════════════════════════════════════ */
+
+    /* -- Reset -- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      color: #1f2937;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+
+    /* ── Sidebar (simplifiée pour preview) ── */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 58px;
+      height: 100vh;
+      background: #1a3a5c;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .sidebar__header {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+    }
+    .sidebar__hamburger {
+      width: 42px;
+      height: 42px;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+    .sidebar__hamburger svg { width: 20px; height: 20px; }
+    .sidebar__nav { flex: 1; padding: 8px 0; }
+    .sidebar__link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 42px;
+      padding: 0 8px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+    }
+    .sidebar__link:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); }
+    .sidebar__link--active {
+      color: #0073e6;
+      background: rgba(0,115,230,0.14);
+      position: relative;
+    }
+    .sidebar__link--active::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 22px;
+      background: #0073e6;
+      border-radius: 0 3px 3px 0;
+    }
+    .sidebar__icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .sidebar__icon svg { width: 20px; height: 20px; }
+    .sidebar__footer {
+      padding: 12px 8px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+    .sidebar__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6c5ce7, #0073e6);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.78rem;
+      margin-left: 3px;
+    }
+
+
+    /* ── Topbar ── */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 58px;
+      right: 0;
+      height: 56px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      z-index: 50;
+    }
+    .topbar__breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .topbar__breadcrumb span { color: #1f2937; font-weight: 500; }
+    .topbar__breadcrumb svg { width: 14px; height: 14px; opacity: 0.4; }
+    .topbar__spacer { flex: 1; }
+    .topbar__search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f3f4f6;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 0 12px;
+      height: 36px;
+      min-width: 200px;
+      flex: 0 1 340px;
+    }
+    .topbar__search svg { width: 15px; height: 15px; color: #9ca3af; flex-shrink: 0; }
+    .topbar__search-input {
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.85rem;
+      color: #1f2937;
+      width: 100%;
+      outline: none;
+    }
+    .topbar__search-input::placeholder { color: #9ca3af; }
+    .topbar__avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #e8f0f8;
+      color: #1a3a5c;
+      display: grid;
+      place-items: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+
+    /* ── Layout ── */
+    .layout-main {
+      margin-left: 58px;
+      margin-top: 56px;
+      min-height: calc(100vh - 56px);
+    }
+    .page {
+      padding: 28px 32px 48px;
+      max-width: 1280px;
+      width: 100%;
+    }
+
+
+    /* ── Page header ── */
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .page-header__title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111827;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .page-header__subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+    .page-header__badge {
+      display: inline-flex;
+      align-items: center;
+      background-color: #e8f0f8;
+      color: #0073e6;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+
+    /* ── Tab underline ── */
+    .tab-underline {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 24px;
+    }
+    .tab-underline__item {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6b7280;
+      cursor: pointer;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: none;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tab-underline__item:hover { color: #374151; }
+    .tab-underline__item--active {
+      color: #0073e6;
+      border-bottom-color: #0073e6;
+      font-weight: 600;
+    }
+    .tab-underline__count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #e5e7eb;
+      color: #4b5563;
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 20px;
+      height: 18px;
+      border-radius: 10px;
+      padding: 0 5px;
+      margin-left: 6px;
+    }
+    .tab-underline__item--active .tab-underline__count {
+      background: #0073e6;
+      color: #fff;
+    }
+
+
+    /* ── Panel ── */
+    .panel { display: none; }
+    .panel--active { display: block; animation: fade-in 0.25s ease; }
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .filter-bar__spacer { flex: 1; }
+    .filter-bar__search {
+      font-size: 13px;
+      padding: 6px 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #fff;
+      color: #374151;
+      outline: none;
+      min-width: 200px;
+    }
+    .filter-bar__search:focus { border-color: #0073e6; }
+    .filter-bar__select {
+      font-size: 13px;
+      padding: 6px 30px 6px 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #fff;
+      color: #374151;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      outline: none;
+    }
+    .filter-bar__select:focus { border-color: #0073e6; }
+    .filter-bar__count { font-size: 12px; color: #9ca3af; }
+
+
+    /* ── View toggle ── */
+    .view-toggle {
+      display: inline-flex;
+      gap: 0;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .view-toggle__button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 28px;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      color: #9ca3af;
+      transition: background-color 0.15s, color 0.15s;
+    }
+    .view-toggle__button:hover { background: #f9fafb; color: #374151; }
+    .view-toggle__button--active { background: #0073e6; color: #fff; }
+    .view-toggle__button + .view-toggle__button { border-left: 1px solid #e5e7eb; }
+    .view-toggle__button svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+
+    /* ── Company grid ── */
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .company-grid { grid-template-columns: 1fr; }
+    }
+    /* Le conteneur #contacts-grid utilise la même grille */
+    #contacts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      #contacts-grid { grid-template-columns: 1fr; }
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+       COMPANY CARD — Layout horizontal modernisé
+       Structure CSS Grid :
+         logo  |  body  |  map
+         ------|--------|------
+               | actions|
+       ══════════════════════════════════════════════════════════════════ */
+
+    .company-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 56px 1fr 100px;
+      grid-template-rows: 1fr auto;
+      grid-template-areas: "logo body map" ". actions actions";
+      gap: 12px;
+      transition: box-shadow 0.15s;
+    }
+    .company-card:hover {
+      box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.06);
+    }
+
+    /* -- Logo -- */
+    .company-card__logo {
+      grid-area: logo;
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      background: #e8f0f8;
+      color: #0073e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .company-card__logo svg {
+      width: 28px;
+      height: 28px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .company-card__logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* -- Body -- */
+    .company-card__body {
+      grid-area: body;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    /* -- Nom -- */
+    .company-card__name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    .company-card__name a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .company-card__name a:hover { color: #0073e6; }
+
+    /* -- Localisation -- */
+    .company-card__location {
+      font-size: 12px;
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .company-card__location svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    /* -- Coordonnées -- */
+    .company-card__contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .company-card__contact-item {
+      font-size: 12px;
+      color: #374151;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .company-card__contact-item svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+    a.company-card__contact-item { color: #0073e6; }
+    a.company-card__contact-item:hover { text-decoration: underline; }
+    .company-card__contact-item--link { color: #0073e6; }
+    .company-card__contact-item--link:hover { text-decoration: underline; }
+
+    /* -- Compétences -- */
+    .company-card__competences {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .company-card__certifications {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .company-card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* -- Map -- */
+    .company-card__map {
+      grid-area: map;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .company-card__map svg {
+      width: 100%;
+      height: auto;
+      max-height: 100px;
+    }
+
+    /* -- Actions -- */
+    .company-card__actions {
+      grid-area: actions;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid #f9fafb;
+    }
+
+    /* -- Date -- */
+    .company-card__date {
+      font-size: 11px;
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: auto;
+    }
+    .company-card__date svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* -- Responsive mobile -- */
+    @media (max-width: 576px) {
+      .company-card {
+        grid-template-columns: 48px 1fr;
+        grid-template-areas: "logo body" ". actions";
+      }
+      .company-card__logo { width: 48px; height: 48px; }
+      .company-card__map { display: none; }
+    }
+
+
+    /* ── Chip ── */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+    .chip--certification { background: #f0fdf4; color: #16a34a; }
+    .chip--tag { background: #fffbeb; color: #f59e0b; }
+
+
+    /* ── Boutons ── */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .button svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+    .button--quaternary {
+      background: transparent;
+      color: #9ca3af;
+      padding: 6px;
+    }
+    .button--quaternary:hover { background: #f3f4f6; color: #374151; }
+    .button--primary {
+      background: #0073e6;
+      color: #fff;
+    }
+    .button--primary:hover { background: #005bb5; }
+    .button--green {
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+    .button--green:hover { background: #dcfce7; }
+    .button--red {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+    .button--red:hover { background: #fee2e2; }
+    .button--fifth {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+    .button--fifth:hover { background: #e5e7eb; }
+
+
+    /* ── Screen reader only ── */
+    .screen-reader-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+
+    /* ── Mini carte de France (simplifiée pour preview) ── */
+    .france-map { opacity: 0.6; }
+    .france-map path { fill: #ddeeee; stroke: #fff; stroke-width: 0.5; }
+    .france-map .active { fill: #0073e6; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SIDEBAR (collapsée)
+       ══════════════════════════════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar__header">
+      <button class="sidebar__hamburger" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+    <nav class="sidebar__nav">
+      <div class="sidebar__item">
+        <a class="sidebar__link" href="#">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+        </a>
+      </div>
+      <div class="sidebar__item">
+        <a class="sidebar__link sidebar__link--active" href="#">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        </a>
+      </div>
+      <div class="sidebar__item">
+        <a class="sidebar__link" href="#">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+        </a>
+      </div>
+      <div class="sidebar__item">
+        <a class="sidebar__link" href="#">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__avatar">IM</div>
+    </div>
+  </aside>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       TOPBAR
+       ══════════════════════════════════════════════════════════════════ -->
+  <header class="topbar">
+    <div class="topbar__breadcrumb">
+      Accueil
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      <span>Réseau</span>
+    </div>
+    <div class="topbar__spacer"></div>
+    <div class="topbar__search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="topbar__search-input" type="search" placeholder="Rechercher…">
+    </div>
+    <div class="topbar__avatar">IM</div>
+  </header>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       CONTENU
+       ══════════════════════════════════════════════════════════════════ -->
+  <main class="layout-main">
+    <div class="page">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-header__title">
+            Réseau
+            <span class="page-header__badge">125 contacts</span>
+          </h1>
+          <p class="page-header__subtitle">
+            Gérez vos contacts professionnels et développez votre réseau — Agence Duval Architectes
+          </p>
+        </div>
+      </div>
+
+
+      <!-- Onglets -->
+      <div class="tab-underline">
+        <button class="tab-underline__item tab-underline__item--active">
+          Mes contacts <span class="tab-underline__count">125</span>
+        </button>
+        <button class="tab-underline__item" onclick="switchTab(this, 'panel-reseau')">
+          Réseau M2BPO <span class="tab-underline__count">9 040</span>
+        </button>
+        <button class="tab-underline__item" onclick="switchTab(this, 'panel-envoyees')">
+          Invitations envoyées <span class="tab-underline__count">3</span>
+        </button>
+        <button class="tab-underline__item" onclick="switchTab(this, 'panel-recues')">
+          Invitations reçues <span class="tab-underline__count">2</span>
+        </button>
+        <button class="tab-underline__item">Listes</button>
+        <button class="tab-underline__item">Recherche</button>
+      </div>
+
+
+      <!-- ════════ PANEL : MES CONTACTS ════════ -->
+      <div class="panel panel--active" id="panel-contacts">
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+          <input type="search" class="filter-bar__search" placeholder="Rechercher un contact…">
+          <select class="filter-bar__select">
+            <option>Toutes les activités</option>
+            <option>Architecte</option>
+            <option>Paysagiste</option>
+            <option>Acousticien</option>
+            <option>BIM Manager</option>
+          </select>
+          <select class="filter-bar__select">
+            <option>Toutes les villes</option>
+            <option>Paris</option>
+            <option>Rennes</option>
+            <option>Lyon</option>
+            <option>Lille</option>
+          </select>
+          <div class="filter-bar__spacer"></div>
+          <span class="filter-bar__count">125 contacts</span>
+          <div class="view-toggle">
+            <button class="view-toggle__button view-toggle__button--active" aria-label="Vue grille">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </button>
+            <button class="view-toggle__button" aria-label="Vue liste">
+              <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </button>
+            <button class="view-toggle__button" aria-label="Vue tableau">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+            </button>
+          </div>
+        </div>
+
+
+        <!-- Grille de cartes -->
+        <div id="contacts-grid">
+
+          <!-- ── Carte 1 : Agence ALTA Architectes ── -->
+          <div class="company-card">
+            <div class="company-card__logo">
+              <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+            </div>
+            <div class="company-card__body">
+              <div class="company-card__name">
+                <a href="#">Agence ALTA Architectes</a>
+              </div>
+              <div class="company-card__location">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                22 avenue Henri Fréville, 35 200 Rennes
+              </div>
+              <div class="company-card__contact-info">
+                <a href="mailto:contact@a-lta.fr" class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  contact@a-lta.fr
+                </a>
+                <span class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  +33 2 99 26 33 26
+                </span>
+                <a href="http://www.a-lta.fr/" class="company-card__contact-item company-card__contact-item--link" target="_blank">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  http://www.a-lta.fr/
+                </a>
+              </div>
+              <div class="company-card__competences">
+                <span class="chip">Architecte</span>
+                <span class="chip">Urbaniste</span>
+                <span class="chip">Économiste</span>
+                <span class="chip">OPC</span>
+                <span class="chip">BIM</span>
+              </div>
+              <div class="company-card__certifications">
+                <span class="chip chip--certification">BIM Manager</span>
+                <span class="chip chip--certification">Démolition</span>
+              </div>
+            </div>
+            <div class="company-card__map">
+              <!-- Mini carte de France — département 35 actif -->
+              <svg viewBox="0 0 210 200" class="france-map">
+                <path d="M95,10 L115,8 L130,15 L140,30 L155,25 L170,35 L180,50 L190,45 L200,55 L195,70 L200,85 L190,95 L195,110 L185,120 L175,115 L170,130 L155,135 L145,150 L130,155 L120,170 L105,175 L90,185 L75,180 L60,190 L45,180 L35,170 L25,155 L15,140 L10,125 L15,110 L10,95 L20,80 L15,65 L25,50 L35,40 L50,35 L60,25 L75,20 L85,15Z"/>
+                <circle cx="65" cy="55" r="6" class="active"/>
+              </svg>
+            </div>
+            <div class="company-card__actions">
+              <button class="button button--quaternary" aria-label="Envoyer un message">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </button>
+              <button class="button button--quaternary" aria-label="Voir le profil">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </button>
+            </div>
+          </div>
+
+
+          <!-- ── Carte 2 : Agence Arnold ── -->
+          <div class="company-card">
+            <div class="company-card__logo">
+              <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+            </div>
+            <div class="company-card__body">
+              <div class="company-card__name">
+                <a href="#">Agence Arnold</a>
+              </div>
+              <div class="company-card__location">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                7 Villa Aublet, 75 017 Paris
+              </div>
+              <div class="company-card__contact-info">
+                <a href="mailto:agence@arnold.fr" class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  agence@arnold.fr
+                </a>
+                <span class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  +33 6 71 76 83 73
+                </span>
+                <a href="https://www.arnold.fr/" class="company-card__contact-item company-card__contact-item--link" target="_blank">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  https://www.arnold.fr/
+                </a>
+              </div>
+              <div class="company-card__competences">
+                <span class="chip">Agencement d'espace</span>
+                <span class="chip">Architecte intérieur</span>
+                <span class="chip">Bâtiment tertiaire</span>
+                <span class="chip">Design d'espace</span>
+              </div>
+              <div class="company-card__certifications">
+                <span class="chip chip--certification">Ergonomie</span>
+              </div>
+            </div>
+            <div class="company-card__map">
+              <svg viewBox="0 0 210 200" class="france-map">
+                <path d="M95,10 L115,8 L130,15 L140,30 L155,25 L170,35 L180,50 L190,45 L200,55 L195,70 L200,85 L190,95 L195,110 L185,120 L175,115 L170,130 L155,135 L145,150 L130,155 L120,170 L105,175 L90,185 L75,180 L60,190 L45,180 L35,170 L25,155 L15,140 L10,125 L15,110 L10,95 L20,80 L15,65 L25,50 L35,40 L50,35 L60,25 L75,20 L85,15Z"/>
+                <circle cx="110" cy="55" r="6" class="active"/>
+              </svg>
+            </div>
+            <div class="company-card__actions">
+              <button class="button button--quaternary" aria-label="Envoyer un message">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </button>
+              <button class="button button--quaternary" aria-label="Voir le profil">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </button>
+            </div>
+          </div>
+
+
+          <!-- ── Carte 3 : Agence de Paysage Sébastien Sosson ── -->
+          <div class="company-card">
+            <div class="company-card__logo">
+              <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+            </div>
+            <div class="company-card__body">
+              <div class="company-card__name">
+                <a href="#">Agence de Paysage Sébastien Sosson</a>
+              </div>
+              <div class="company-card__location">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                110 rue de la Jonquière, 75 017 Paris
+              </div>
+              <div class="company-card__contact-info">
+                <a href="mailto:office@sosson.fr" class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  office@sosson.fr
+                </a>
+                <span class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  +33 1 46 27 52 21
+                </span>
+                <a href="http://sosson.fr/" class="company-card__contact-item company-card__contact-item--link" target="_blank">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  http://sosson.fr/
+                </a>
+              </div>
+              <div class="company-card__competences">
+                <span class="chip">Paysagiste</span>
+                <span class="chip">Biodiversité</span>
+                <span class="chip">Espaces Naturels Sensibles</span>
+              </div>
+              <div class="company-card__tags">
+                <span class="chip chip--tag">Partenaire fidèle</span>
+              </div>
+            </div>
+            <div class="company-card__map">
+              <svg viewBox="0 0 210 200" class="france-map">
+                <path d="M95,10 L115,8 L130,15 L140,30 L155,25 L170,35 L180,50 L190,45 L200,55 L195,70 L200,85 L190,95 L195,110 L185,120 L175,115 L170,130 L155,135 L145,150 L130,155 L120,170 L105,175 L90,185 L75,180 L60,190 L45,180 L35,170 L25,155 L15,140 L10,125 L15,110 L10,95 L20,80 L15,65 L25,50 L35,40 L50,35 L60,25 L75,20 L85,15Z"/>
+                <circle cx="110" cy="55" r="6" class="active"/>
+              </svg>
+            </div>
+            <div class="company-card__actions">
+              <button class="button button--quaternary" aria-label="Envoyer un message">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </button>
+              <button class="button button--quaternary" aria-label="Voir le profil">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </button>
+            </div>
+          </div>
+
+
+          <!-- ── Carte 4 : AGNA Acoustique ── -->
+          <div class="company-card">
+            <div class="company-card__logo">
+              <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+            </div>
+            <div class="company-card__body">
+              <div class="company-card__name">
+                <a href="#">AGNA Acoustique</a>
+              </div>
+              <div class="company-card__location">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                4 rue Hoche, 63 100 Clermont-Ferrand
+              </div>
+              <div class="company-card__contact-info">
+                <a href="mailto:contact@acoustique-agna.fr" class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  contact@acoustique-agna.fr
+                </a>
+                <span class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  +33 4 73 91 46 74
+                </span>
+              </div>
+              <div class="company-card__competences">
+                <span class="chip">Acousticien</span>
+              </div>
+            </div>
+            <div class="company-card__map">
+              <svg viewBox="0 0 210 200" class="france-map">
+                <path d="M95,10 L115,8 L130,15 L140,30 L155,25 L170,35 L180,50 L190,45 L200,55 L195,70 L200,85 L190,95 L195,110 L185,120 L175,115 L170,130 L155,135 L145,150 L130,155 L120,170 L105,175 L90,185 L75,180 L60,190 L45,180 L35,170 L25,155 L15,140 L10,125 L15,110 L10,95 L20,80 L15,65 L25,50 L35,40 L50,35 L60,25 L75,20 L85,15Z"/>
+                <circle cx="120" cy="100" r="6" class="active"/>
+              </svg>
+            </div>
+            <div class="company-card__actions">
+              <button class="button button--quaternary" aria-label="Envoyer un message">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </button>
+              <button class="button button--quaternary" aria-label="Voir le profil">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </button>
+            </div>
+          </div>
+
+
+          <!-- ── Carte 5 : AIRTCONTROLE ── -->
+          <div class="company-card">
+            <div class="company-card__logo">
+              <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+            </div>
+            <div class="company-card__body">
+              <div class="company-card__name">
+                <a href="#">AIRTCONTROLE</a>
+              </div>
+              <div class="company-card__location">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                54 avenue Victor Hugo, 92 500 Rueil-Malmaison
+              </div>
+              <div class="company-card__contact-info">
+                <a href="mailto:concours@airtcontrole.fr" class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  concours@airtcontrole.fr
+                </a>
+                <span class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  +33 1 71 01 88 63
+                </span>
+                <a href="http://www.airtcontrole.com" class="company-card__contact-item company-card__contact-item--link" target="_blank">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  http://www.airtcontrole.com
+                </a>
+              </div>
+              <div class="company-card__competences">
+                <span class="chip">HQE</span>
+                <span class="chip">Acousticien</span>
+                <span class="chip">Audit énergétique</span>
+                <span class="chip">BEE+</span>
+              </div>
+              <div class="company-card__certifications">
+                <span class="chip chip--certification">Bâtiment Énergie Environnement Plus</span>
+              </div>
+            </div>
+            <div class="company-card__map">
+              <svg viewBox="0 0 210 200" class="france-map">
+                <path d="M95,10 L115,8 L130,15 L140,30 L155,25 L170,35 L180,50 L190,45 L200,55 L195,70 L200,85 L190,95 L195,110 L185,120 L175,115 L170,130 L155,135 L145,150 L130,155 L120,170 L105,175 L90,185 L75,180 L60,190 L45,180 L35,170 L25,155 L15,140 L10,125 L15,110 L10,95 L20,80 L15,65 L25,50 L35,40 L50,35 L60,25 L75,20 L85,15Z"/>
+                <circle cx="108" cy="53" r="6" class="active"/>
+              </svg>
+            </div>
+            <div class="company-card__actions">
+              <button class="button button--quaternary" aria-label="Envoyer un message">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </button>
+              <button class="button button--quaternary" aria-label="Voir le profil">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </button>
+            </div>
+          </div>
+
+
+          <!-- ── Carte 6 : Agnès & Agnès Architecture ── -->
+          <div class="company-card">
+            <div class="company-card__logo">
+              <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+            </div>
+            <div class="company-card__body">
+              <div class="company-card__name">
+                <a href="#">Agnès &amp; Agnès Architecture</a>
+              </div>
+              <div class="company-card__location">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                136 avenue Parmentier, 75 011 Paris
+              </div>
+              <div class="company-card__contact-info">
+                <a href="mailto:candidature@agnesetagnes.com" class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  candidature@agnesetagnes.com
+                </a>
+                <span class="company-card__contact-item">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  +33 1 42 08 27 76
+                </span>
+                <a href="http://www.agnesetagnes.com/" class="company-card__contact-item company-card__contact-item--link" target="_blank">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  http://www.agnesetagnes.com/
+                </a>
+              </div>
+              <div class="company-card__competences">
+                <span class="chip">Architecte</span>
+                <span class="chip">Urbaniste</span>
+                <span class="chip">OPC</span>
+                <span class="chip">Paysagiste</span>
+                <span class="chip">Patrimoine</span>
+              </div>
+              <div class="company-card__certifications">
+                <span class="chip chip--certification">Architecte intérieur</span>
+                <span class="chip chip--certification">Conception</span>
+              </div>
+            </div>
+            <div class="company-card__map">
+              <svg viewBox="0 0 210 200" class="france-map">
+                <path d="M95,10 L115,8 L130,15 L140,30 L155,25 L170,35 L180,50 L190,45 L200,55 L195,70 L200,85 L190,95 L195,110 L185,120 L175,115 L170,130 L155,135 L145,150 L130,155 L120,170 L105,175 L90,185 L75,180 L60,190 L45,180 L35,170 L25,155 L15,140 L10,125 L15,110 L10,95 L20,80 L15,65 L25,50 L35,40 L50,35 L60,25 L75,20 L85,15Z"/>
+                <circle cx="110" cy="55" r="6" class="active"/>
+              </svg>
+            </div>
+            <div class="company-card__actions">
+              <button class="button button--quaternary" aria-label="Envoyer un message">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </button>
+              <button class="button button--quaternary" aria-label="Voir le profil">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       JS — Switch onglets (preview uniquement)
+       ══════════════════════════════════════════════════════════════════ -->
+  <script>
+    // Gestion des onglets dans la preview
+    document.querySelectorAll('.tab-underline__item').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        // Désactiver tous les onglets
+        document.querySelectorAll('.tab-underline__item').forEach(function(t) {
+          t.classList.remove('tab-underline__item--active');
+        });
+        // Cacher tous les panels
+        document.querySelectorAll('.panel').forEach(function(p) {
+          p.classList.remove('panel--active');
+        });
+        // Activer l'onglet cliqué
+        this.classList.add('tab-underline__item--active');
+        // Activer le panel contacts par défaut (seul panel dispo dans la preview)
+        document.getElementById('panel-contacts').classList.add('panel--active');
+      });
+    });
+  </script>
+
+</body>
+</html>
