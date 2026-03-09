@@ -300,8 +300,6 @@
 
       {# ── Sous-section : Équipe ── #}
       <div class="subsection">
-        <h2 class="subsection__title">Équipe</h2>
-        <p class="subsection__description">Gérez les membres de votre équipe et leurs rôles</p>
 
         <div class="subsection__content">
           {# Ligne 1 : Nicolas V. #}
@@ -332,19 +330,22 @@
             </div>
           </div>
 
-          {# Toggle : Masquer les négatifs #}
+          {# Rôle toggle row #}
           <div class="subsection__divider"></div>
 
           <div class="config-row">
-            <div class="config-row__label">Masquer les négatifs</div>
-            <div class="config-row__description">
-              Les contacts avec des retours négatifs ne s'affichent pas par défaut
-            </div>
+            <div class="config-row__label">Rôle</div>
             <div class="config-row__control">
-              <label class="toggle-switch" for="toggle-hide-negatives">
-                <input type="checkbox" id="toggle-hide-negatives" class="toggle-switch__input" checked>
-                <span class="toggle-switch__slider"></span>
-              </label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="team-role" value="mandataire" checked class="radio-label__input">
+                  <span class="radio-label__text">Mandataire</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="team-role" value="cotraitant" class="radio-label__input">
+                  <span class="radio-label__text">Co-traitant</span>
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -352,8 +353,6 @@
 
       {# ── Sous-section : Réseau ── #}
       <div class="subsection">
-        <h2 class="subsection__title">Réseau</h2>
-        <p class="subsection__description">Configurez la visibilité et l'acceptation automatique</p>
 
         <div class="subsection__content">
           {# Radio group : Visibilité #}
@@ -380,14 +379,11 @@
           <div class="subsection__divider"></div>
 
           <div class="config-row">
-            <div class="config-row__label">Acceptation automatique</div>
-            <div class="config-row__description">
-              Acceptez automatiquement les invitations réseau de contacts approuvés
-            </div>
+            <div class="config-row__label">Acceptation automatique des invitations réseau</div>
             <div class="config-row__control">
-              <label class="toggle-switch" for="toggle-auto-accept">
-                <input type="checkbox" id="toggle-auto-accept" class="toggle-switch__input">
-                <span class="toggle-switch__slider"></span>
+              <label class="toggle--off" for="toggle-auto-accept" aria-checked="false">
+                <input type="checkbox" id="toggle-auto-accept" class="toggle__input">
+                <span class="toggle__thumb"></span>
               </label>
             </div>
           </div>
@@ -396,8 +392,6 @@
 
       {# ── Sous-section : Notes ── #}
       <div class="subsection">
-        <h2 class="subsection__title">Notes</h2>
-        <p class="subsection__description">Organisez vos contacts avec des drapeaux colorés</p>
 
         <div class="subsection__content">
           <div class="flag-rows">
@@ -436,8 +430,6 @@
 
       {# ── Sous-section : Gestion des annonces ── #}
       <div class="subsection">
-        <h2 class="subsection__title">Gestion des annonces</h2>
-        <p class="subsection__description">Configurez les délais d'archivage et de redirection</p>
 
         <div class="subsection__content">
           {# Configuration 1 : Présélection #}
@@ -523,8 +515,6 @@
 
       {# ── Sous-section : Email ── #}
       <div class="subsection">
-        <h2 class="subsection__title">Email</h2>
-        <p class="subsection__description">Configurez les paramètres d'envoi et de réception</p>
 
         <div class="subsection__content">
           {# Sélecteur : Expéditeur #}
@@ -546,13 +536,10 @@
 
           <div class="config-row">
             <div class="config-row__label">Accusé de réception</div>
-            <div class="config-row__description">
-              Demander une confirmation de lecture sur les emails
-            </div>
             <div class="config-row__control">
-              <label class="toggle-switch" for="toggle-read-receipt">
-                <input type="checkbox" id="toggle-read-receipt" class="toggle-switch__input" checked>
-                <span class="toggle-switch__slider"></span>
+              <label class="toggle--on" for="toggle-read-receipt" aria-checked="true">
+                <input type="checkbox" id="toggle-read-receipt" class="toggle__input" checked>
+                <span class="toggle__thumb"></span>
               </label>
             </div>
           </div>

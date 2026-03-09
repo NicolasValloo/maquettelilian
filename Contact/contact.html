@@ -180,13 +180,6 @@
                 {% endfor %}
               </div>
             {% endif %}
-            {% if company.certifications.all %}
-              <div class="company-card__certifications">
-                {% for cert in company.certifications.all %}
-                  {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
-                {% endfor %}
-              </div>
-            {% endif %}
             {% if company.contact_tags.all %}
               <div class="company-card__tags">
                 {% for tag in company.contact_tags.all %}
@@ -201,22 +194,31 @@
             {% component "big_france" location=company.departement %}{% endcomponent %}
           </div>
 
-          {# -- Actions (bas droite) -- #}
-          <div class="company-card__actions">
-            {% component "button" modifier="quaternary" variant="icon-only" icon="mail" %}
-              {% fill "button_htmx_attrs" %}
-                hx-get="{% url 'reseau:message-modal' pk=company.pk %}"
-                hx-target="#modal-container"
-                hx-swap="innerHTML"
-              {% endfill %}
-              {% fill "button_extra_attrs" %}aria-label="Envoyer un message à {{ company.raison_sociale }}"{% endfill %}
-            {% endcomponent %}
-            {% component "button" modifier="quaternary" variant="icon-only" icon="user" %}
-              {% fill "button_extra_attrs" %}
-                aria-label="Voir le profil de {{ company.raison_sociale }}"
-                href="{% url 'reseau:contact-detail' pk=company.pk %}"
-              {% endfill %}
-            {% endcomponent %}
+          {# -- Menu actions (haut droite) -- #}
+          <div class="company-card__more">
+            <button class="company-card__more-btn" aria-label="Actions" type="button">⋮</button>
+            <div class="company-card__dropdown">
+              {% component "button" modifier="dropdown-item" icon="mail" label="Envoyer un message" %}
+                {% fill "button_htmx_attrs" %}
+                  hx-get="{% url 'reseau:message-modal' pk=company.pk %}"
+                  hx-target="#modal-container"
+                  hx-swap="innerHTML"
+                {% endfill %}
+              {% endcomponent %}
+              {% component "button" modifier="dropdown-item" icon="user" label="Voir le profil" %}
+                {% fill "button_extra_attrs" %}
+                  href="{% url 'reseau:contact-detail' pk=company.pk %}"
+                {% endfill %}
+              {% endcomponent %}
+              {% component "button" modifier="dropdown-item-danger" icon="slash" label="Bloquer" %}
+                {% fill "button_htmx_attrs" %}
+                  hx-post="{% url 'reseau:block-contact' pk=company.pk %}"
+                  hx-confirm="Bloquer {{ company.raison_sociale }} ?"
+                  hx-target="closest .company-card"
+                  hx-swap="outerHTML"
+                {% endfill %}
+              {% endcomponent %}
+            </div>
           </div>
         </div>
       {% empty %}
@@ -365,37 +367,32 @@
                 {% endfor %}
               </div>
             {% endif %}
-            {% if company.certifications.all %}
-              <div class="company-card__certifications">
-                {% for cert in company.certifications.all %}
-                  {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
-                {% endfor %}
-              </div>
-            {% endif %}
           </div>
 
           <div class="company-card__map">
             {% component "big_france" location=company.departement %}{% endcomponent %}
           </div>
 
-          <div class="company-card__actions">
-            {% component "button" modifier="primary" icon="user-plus" %}
-              {% fill "label" %}Inviter{% endfill %}
-              {% fill "button_htmx_attrs" %}
-                hx-post="{% url 'reseau:invite' pk=company.pk %}"
-                hx-target="closest .company-card"
-                hx-swap="outerHTML"
-              {% endfill %}
-            {% endcomponent %}
-            {% component "button" modifier="red" variant="icon-only" icon="slash" %}
-              {% fill "button_htmx_attrs" %}
-                hx-post="{% url 'reseau:block-contact' pk=company.pk %}"
-                hx-confirm="Bloquer {{ company.raison_sociale }} ?"
-                hx-target="closest .company-card"
-                hx-swap="outerHTML"
-              {% endfill %}
-              {% fill "button_extra_attrs" %}aria-label="Bloquer {{ company.raison_sociale }}"{% endfill %}
-            {% endcomponent %}
+          {# -- Menu actions (haut droite) -- #}
+          <div class="company-card__more">
+            <button class="company-card__more-btn" aria-label="Actions" type="button">⋮</button>
+            <div class="company-card__dropdown">
+              {% component "button" modifier="dropdown-item" icon="user-plus" label="Inviter" %}
+                {% fill "button_htmx_attrs" %}
+                  hx-post="{% url 'reseau:invite' pk=company.pk %}"
+                  hx-target="closest .company-card"
+                  hx-swap="outerHTML"
+                {% endfill %}
+              {% endcomponent %}
+              {% component "button" modifier="dropdown-item-danger" icon="slash" label="Bloquer" %}
+                {% fill "button_htmx_attrs" %}
+                  hx-post="{% url 'reseau:block-contact' pk=company.pk %}"
+                  hx-confirm="Bloquer {{ company.raison_sociale }} ?"
+                  hx-target="closest .company-card"
+                  hx-swap="outerHTML"
+                {% endfill %}
+              {% endcomponent %}
+            </div>
           </div>
         </div>
       {% empty %}
@@ -452,33 +449,29 @@
                 {% endfor %}
               </div>
             {% endif %}
-            {% if invitation.target.certifications.all %}
-              <div class="company-card__certifications">
-                {% for cert in invitation.target.certifications.all %}
-                  {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
-                {% endfor %}
-              </div>
-            {% endif %}
           </div>
 
           <div class="company-card__map">
             {% component "big_france" location=invitation.target.departement %}{% endcomponent %}
           </div>
 
-          <div class="company-card__actions">
-            <span class="company-card__date">
-              {% component "icon" name="clock" size="12" %}{% endcomponent %}
-              Envoyée le {{ invitation.sent_at|date:"j M Y" }}
-            </span>
-            {% component "button" modifier="fifth" icon="user-minus" %}
-              {% fill "label" %}Annuler{% endfill %}
-              {% fill "button_htmx_attrs" %}
-                hx-delete="{% url 'reseau:cancel-invitation' pk=invitation.pk %}"
-                hx-confirm="Annuler l'invitation envoyée à {{ invitation.target.raison_sociale }} ?"
-                hx-target="closest .company-card"
-                hx-swap="outerHTML"
-              {% endfill %}
-            {% endcomponent %}
+          {# -- Menu actions (haut droite) -- #}
+          <div class="company-card__more">
+            <button class="company-card__more-btn" aria-label="Actions" type="button">⋮</button>
+            <div class="company-card__dropdown">
+              <span class="company-card__dropdown-info">
+                {% component "icon" name="clock" size="12" %}{% endcomponent %}
+                Envoyée le {{ invitation.sent_at|date:"j M Y" }}
+              </span>
+              {% component "button" modifier="dropdown-item-danger" icon="user-minus" label="Annuler l'invitation" %}
+                {% fill "button_htmx_attrs" %}
+                  hx-delete="{% url 'reseau:cancel-invitation' pk=invitation.pk %}"
+                  hx-confirm="Annuler l'invitation envoyée à {{ invitation.target.raison_sociale }} ?"
+                  hx-target="closest .company-card"
+                  hx-swap="outerHTML"
+                {% endfill %}
+              {% endcomponent %}
+            </div>
           </div>
         </div>
       {% empty %}
@@ -534,41 +527,36 @@
                 {% endfor %}
               </div>
             {% endif %}
-            {% if invitation.sender.certifications.all %}
-              <div class="company-card__certifications">
-                {% for cert in invitation.sender.certifications.all %}
-                  {% component "chip" modifier="certification" %}{{ cert.name }}{% endcomponent %}
-                {% endfor %}
-              </div>
-            {% endif %}
           </div>
 
           <div class="company-card__map">
             {% component "big_france" location=invitation.sender.departement %}{% endcomponent %}
           </div>
 
-          <div class="company-card__actions">
-            <span class="company-card__date">
-              {% component "icon" name="clock" size="12" %}{% endcomponent %}
-              Reçue le {{ invitation.sent_at|date:"j M Y" }}
-            </span>
-            {% component "button" modifier="green" icon="check" %}
-              {% fill "label" %}Accepter{% endfill %}
-              {% fill "button_htmx_attrs" %}
-                hx-post="{% url 'reseau:accept-invitation' pk=invitation.pk %}"
-                hx-target="closest .company-card"
-                hx-swap="outerHTML"
-              {% endfill %}
-            {% endcomponent %}
-            {% component "button" modifier="red" icon="x" %}
-              {% fill "label" %}Refuser{% endfill %}
-              {% fill "button_htmx_attrs" %}
-                hx-post="{% url 'reseau:refuse-invitation' pk=invitation.pk %}"
-                hx-confirm="Refuser l'invitation de {{ invitation.sender.raison_sociale }} ?"
-                hx-target="closest .company-card"
-                hx-swap="outerHTML"
-              {% endfill %}
-            {% endcomponent %}
+          {# -- Menu actions (haut droite) -- #}
+          <div class="company-card__more">
+            <button class="company-card__more-btn" aria-label="Actions" type="button">⋮</button>
+            <div class="company-card__dropdown">
+              <span class="company-card__dropdown-info">
+                {% component "icon" name="clock" size="12" %}{% endcomponent %}
+                Reçue le {{ invitation.sent_at|date:"j M Y" }}
+              </span>
+              {% component "button" modifier="dropdown-item" icon="check" label="Accepter" %}
+                {% fill "button_htmx_attrs" %}
+                  hx-post="{% url 'reseau:accept-invitation' pk=invitation.pk %}"
+                  hx-target="closest .company-card"
+                  hx-swap="outerHTML"
+                {% endfill %}
+              {% endcomponent %}
+              {% component "button" modifier="dropdown-item-danger" icon="x" label="Refuser" %}
+                {% fill "button_htmx_attrs" %}
+                  hx-post="{% url 'reseau:refuse-invitation' pk=invitation.pk %}"
+                  hx-confirm="Refuser l'invitation de {{ invitation.sender.raison_sociale }} ?"
+                  hx-target="closest .company-card"
+                  hx-swap="outerHTML"
+                {% endfill %}
+              {% endcomponent %}
+            </div>
           </div>
         </div>
       {% empty %}

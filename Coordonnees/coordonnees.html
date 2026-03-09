@@ -1,0 +1,633 @@
+{% extends "base.html" %}
+{% load component_tags %}
+
+{# ══════════════════════════════════════════════════════════════════════════════
+   Maquette Blaise — Page Coordonnées
+   Template Django — zone contenu uniquement (layout géré par base.html)
+   Sidebar : active_section = 'coordonnees' (dans Paramètres de compte)
+   Topbar : breadcrumb_current = 'Coordonnées'
+   Composants : card, icon_inline, information_row, toggle_row
+   ══════════════════════════════════════════════════════════════════════════════ #}
+
+{% block page_class %}page--coordonnees{% endblock %}
+
+{% block page_content %}
+
+  {# ── Profile Header ── #}
+  <div class="profile-header">
+    <div class="profile-header__avatar">
+      <img src="/static/images/logo-lamoureux-ricciotti.svg" alt="Logo Lamoureux & Ricciotti Ingénierie" class="profile-header__logo">
+    </div>
+    <div class="profile-header__info">
+      <h1 class="profile-header__name">Lamoureux & Ricciotti Ingénierie</h1>
+      <div class="profile-header__meta">
+        <span class="profile-header__meta-item">
+          {% component "icon_inline" name="map-pin" %}{% endcomponent %}
+          Bandol
+        </span>
+        <span class="profile-header__meta-item">
+          {% component "icon_inline" name="mail" %}{% endcomponent %}
+          contact@lamoureux-ricciotti.fr
+        </span>
+        <span class="profile-header__meta-item">
+          {% component "icon_inline" name="phone" %}{% endcomponent %}
+          +33 (0)4 94 29 40 12
+        </span>
+      </div>
+    </div>
+    <div class="profile-header__actions">
+      <button class="btn btn--primary">
+        {% component "icon_inline" name="edit-2" %}{% endcomponent %}
+        Modifier
+      </button>
+    </div>
+  </div>
+
+  {# ══════════════════════════════════════════════════════════════════════════════
+     GRID PROFILE — Sections de contenu
+     ══════════════════════════════════════════════════════════════════════════════ #}
+
+  <div class="profile-grid">
+
+    {# ── ROW 1: PRÉSENTATION DE L'AGENCE ── #}
+    <div class="profile-row profile-row--1">
+      <div class="profile-row__item profile-row--1-1">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header card__header--collapsible">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="info" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Présentation de l'agence</h2>
+              <button class="card__header-action card__collapse-icon">
+                {% component "icon_inline" name="chevron-down" %}{% endcomponent %}
+              </button>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body">
+              <p class="presentation-text">
+                Fondée en 1985, Lamoureux & Ricciotti Ingénierie est un cabinet d'ingénierie spécialisé dans l'étude et la conception de structures complexes. Avec plus de 35 ans d'expérience, nous accompagnons nos clients publics et privés dans leurs projets les plus ambitieux. Notre équipe pluridisciplinaire maîtrise l'ensemble des domaines de l'ingénierie : structures, façades, ouvrages d'art et génie civil.
+              </p>
+              <p class="presentation-text">
+                Basé à Bandol, dans le sud de la France, notre cabinet s'appuie sur une expertise reconnue et des moyens techniques de pointe. Nous combinons rigueur méthodologique et innovation pour proposer des solutions durables et performantes.
+              </p>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+    </div>
+
+    {# ── ROW 2: INFORMATIONS JURIDIQUES + RÉSEAUX + COMPÉTENCES ── #}
+    <div class="profile-row profile-row--2">
+
+      {# Informations juridiques #}
+      <div class="profile-row__item profile-row--2-1">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header card__header--collapsible">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="briefcase" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Informations juridiques</h2>
+              <button class="card__header-action card__collapse-icon">
+                {% component "icon_inline" name="chevron-down" %}{% endcomponent %}
+              </button>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body">
+              <div class="data-row">
+                <span class="data-row__label">Raison sociale</span>
+                <span class="data-row__value">Lamoureux & Ricciotti Ingénierie SARL</span>
+              </div>
+              <div class="data-row">
+                <span class="data-row__label">Siège social</span>
+                <span class="data-row__value">12 Rue de la Paix, 83150 Bandol</span>
+              </div>
+              <div class="data-row">
+                <span class="data-row__label">SIRET</span>
+                <span class="data-row__value data-row__value--small">404 123 456 00012</span>
+              </div>
+              <div class="data-row">
+                <span class="data-row__label">SIREN</span>
+                <span class="data-row__value data-row__value--small">404 123 456</span>
+              </div>
+              <div class="data-row">
+                <span class="data-row__label">Capital social</span>
+                <span class="data-row__value">50 000 €</span>
+              </div>
+              <div class="data-row">
+                <span class="data-row__label">Forme juridique</span>
+                <span class="data-row__value">SARL à associé unique</span>
+              </div>
+              <div class="data-row">
+                <span class="data-row__label">Régime fiscal</span>
+                <span class="data-row__value">Micro-entreprise</span>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+      {# Réseaux sociaux #}
+      <div class="profile-row__item profile-row--2-2">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="share-2" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Réseaux</h2>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body card__body--flush">
+              <div class="social-links">
+                <a href="https://www.lamoureux-ricciotti.fr" target="_blank" rel="noopener noreferrer" class="social-link">
+                  <span class="social-link__icon social-link__icon--web">
+                    {% component "icon_inline" name="globe" %}{% endcomponent %}
+                  </span>
+                  <span>Site web</span>
+                </a>
+                <a href="https://www.linkedin.com/company/lamoureux-ricciotti/" target="_blank" rel="noopener noreferrer" class="social-link">
+                  <span class="social-link__icon social-link__icon--linkedin">
+                    {% component "icon_inline" name="linkedin" %}{% endcomponent %}
+                  </span>
+                  <span>LinkedIn</span>
+                </a>
+                <a href="https://www.instagram.com/lamoureux_ricciotti/" target="_blank" rel="noopener noreferrer" class="social-link">
+                  <span class="social-link__icon social-link__icon--instagram">
+                    {% component "icon_inline" name="instagram" %}{% endcomponent %}
+                  </span>
+                  <span>Instagram</span>
+                </a>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+      {# Compétences #}
+      <div class="profile-row__item profile-row--2-3">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="star" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Compétences</h2>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body">
+              <div class="tag-list">
+                <span class="tag">Structure</span>
+                <span class="tag">Génie Civil</span>
+                <span class="tag">Façade</span>
+                <span class="tag">Ouvrages d'Art</span>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+    </div>
+
+    {# ── ROW 3: MOYENS HUMAINS + MOYENS TECHNIQUES ── #}
+    <div class="profile-row profile-row--3">
+
+      {# Moyens humains #}
+      <div class="profile-row__item profile-row--3-1">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header card__header--collapsible">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="users" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Moyens humains (22)</h2>
+              <button class="card__header-action card__collapse-icon">
+                {% component "icon_inline" name="chevron-down" %}{% endcomponent %}
+              </button>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body">
+              <div class="search-bar">
+                <input type="text" class="search-bar__input" placeholder="Rechercher une personne...">
+                <span class="search-bar__count">22 personnes</span>
+              </div>
+
+              <div class="human-resources">
+                <h3 class="human-resources__section-title">Direction (3)</h3>
+                <div class="human-resources__person">Olivier Lamoureux — Directeur</div>
+                <div class="human-resources__person">Sophie Ricciotti — Directrice Générale</div>
+                <div class="human-resources__person">Jean-Michel Bernard — Directeur Technique</div>
+
+                <h3 class="human-resources__section-title">Ingénierie (8)</h3>
+                <div class="human-resources__person">Marie Dupont — Ingénieur Structure</div>
+                <div class="human-resources__person">Philippe Martin — Ingénieur Génie Civil</div>
+                <div class="human-resources__person">Isabelle Leclerc — Ingénieur Façade</div>
+                <div class="human-resources__person">Claude Rousseau — Ingénieur Ouvrages d'Art</div>
+                <div class="human-resources__person">Nathalie Girard — Ingénieur Bureautique</div>
+                <div class="human-resources__person">François Petit — Ingénieur Apprenti</div>
+                <div class="human-resources__person">Amélie Mercier — Ingénieur Junior</div>
+                <div class="human-resources__person">Luc Dubois — Ingénieur Senior</div>
+
+                <h3 class="human-resources__section-title">Dessin (6)</h3>
+                <div class="human-resources__person">Paul Lefevre — Projeteur Senior</div>
+                <div class="human-resources__person">Carole Renaud — Projeteur</div>
+                <div class="human-resources__person">David Fontaine — Dessinateur CAO</div>
+                <div class="human-resources__person">Monique Gaillard — Dessinatrice</div>
+                <div class="human-resources__person">Étienne Nicolas — Maquettiste</div>
+                <div class="human-resources__person">Rose Petit — Stagiaire</div>
+
+                <h3 class="human-resources__section-title">Administratif (5)</h3>
+                <div class="human-resources__person">Laurence Renault — Responsable Administratif</div>
+                <div class="human-resources__person">Sylvie Moreau — Secrétaire</div>
+                <div class="human-resources__person">Martine Lemaire — Comptable</div>
+                <div class="human-resources__person">Valérie Laurent — Ressources Humaines</div>
+                <div class="human-resources__person">Chantal Royer — Assistante de direction</div>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+      {# Moyens techniques #}
+      <div class="profile-row__item profile-row--3-2">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header card__header--collapsible">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="tool" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Moyens techniques</h2>
+              <button class="card__header-action card__collapse-icon">
+                {% component "icon_inline" name="chevron-down" %}{% endcomponent %}
+              </button>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body">
+              <div class="tech-groups">
+                <div class="tech-group">
+                  <h3 class="tech-group__title">Logiciels CAO</h3>
+                  <div class="tech-group__tags">
+                    <span class="tech-tag">AutoCAD 2024</span>
+                    <span class="tech-tag">Revit</span>
+                    <span class="tech-tag">SketchUp</span>
+                  </div>
+                </div>
+                <div class="tech-group">
+                  <h3 class="tech-group__title">Calcul structures</h3>
+                  <div class="tech-group__tags">
+                    <span class="tech-tag">Robot Structural</span>
+                    <span class="tech-tag">Advance Design</span>
+                    <span class="tech-tag">SAP2000</span>
+                  </div>
+                </div>
+                <div class="tech-group">
+                  <h3 class="tech-group__title">Gestion de projets</h3>
+                  <div class="tech-group__tags">
+                    <span class="tech-tag">Asana</span>
+                    <span class="tech-tag">Jira</span>
+                    <span class="tech-tag">Monday.com</span>
+                  </div>
+                </div>
+                <div class="tech-group">
+                  <h3 class="tech-group__title">Matériel</h3>
+                  <div class="tech-group__tags">
+                    <span class="tech-tag">12 postes stations</span>
+                    <span class="tech-tag">Serveur données</span>
+                    <span class="tech-tag">Imprimante 3D</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+    </div>
+
+    {# ── ROW 4: CERTIFICATIONS + OPQIBI + PRIX ET DISTINCTIONS + NOTE ── #}
+    <div class="profile-row profile-row--4">
+
+      {# Certifications + OPQIBI #}
+      <div class="profile-row__item profile-row--4-1">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header card__header--collapsible">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="award" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Certifications & OPQIBI (25)</h2>
+              <button class="card__header-action card__collapse-icon">
+                {% component "icon_inline" name="chevron-down" %}{% endcomponent %}
+              </button>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body">
+              <div class="opqibi-list">
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">STRU</span>
+                  <span class="opqibi-item__description">Structures - Bureaux d'études</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">CIVI</span>
+                  <span class="opqibi-item__description">Génie civil - Études générales</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">FACA</span>
+                  <span class="opqibi-item__description">Façades - Études</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">OUVA</span>
+                  <span class="opqibi-item__description">Ouvrages d'art - Études</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">RNQU</span>
+                  <span class="opqibi-item__description">Reconnaissance qualité</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">MABI</span>
+                  <span class="opqibi-item__description">Maintenance du bâtiment</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">DEVI</span>
+                  <span class="opqibi-item__description">Études devis - Évaluation</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">INSP</span>
+                  <span class="opqibi-item__description">Inspections structures</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">VERI</span>
+                  <span class="opqibi-item__description">Vérification structures</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">QUAT</span>
+                  <span class="opqibi-item__description">Qualité sismique</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">DESE</span>
+                  <span class="opqibi-item__description">Détail sismique</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">CONC</span>
+                  <span class="opqibi-item__description">Conception béton armé</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">ACON</span>
+                  <span class="opqibi-item__description">Acier construction</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">BOIS</span>
+                  <span class="opqibi-item__description">Structures bois</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">ALUM</span>
+                  <span class="opqibi-item__description">Structures aluminium</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">ENV1</span>
+                  <span class="opqibi-item__description">Enveloppe - Airtight</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">FACH</span>
+                  <span class="opqibi-item__description">Façade châssis</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">FACO</span>
+                  <span class="opqibi-item__description">Façade opaque</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">DESI</span>
+                  <span class="opqibi-item__description">Design façade</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">PONT</span>
+                  <span class="opqibi-item__description">Ponts - Structures spéciales</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">VERT</span>
+                  <span class="opqibi-item__description">Génie ferroviaire</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">HYDR</span>
+                  <span class="opqibi-item__description">Ouvrages hydrauliques</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">STRE</span>
+                  <span class="opqibi-item__description">Structures spéciales</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">SOL1</span>
+                  <span class="opqibi-item__description">Géotechnique - Fondations</span>
+                </div>
+                <div class="opqibi-item">
+                  <span class="opqibi-item__code">SOLF</span>
+                  <span class="opqibi-item__description">Fondations spéciales</span>
+                </div>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+      {# Prix et distinctions #}
+      <div class="profile-row__item profile-row--4-2">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header card__header--collapsible">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="trophy" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Prix et distinctions (12)</h2>
+              <button class="card__header-action card__collapse-icon">
+                {% component "icon_inline" name="chevron-down" %}{% endcomponent %}
+              </button>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body">
+              <div class="prix-list">
+                <div class="prix-item">
+                  <span class="prix-item__year">2023</span>
+                  <span>Grand Prix Ingénierie - Région PACA</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2023</span>
+                  <span>Innovation Façade - Salon BatiExpo</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2022</span>
+                  <span>Meilleur Projet Structure - Ordre des Ingénieurs</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2021</span>
+                  <span>Excellence Développement Durable</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2021</span>
+                  <span>Projet Emblématique - Architectes de Provence</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2020</span>
+                  <span>Reconnaissance BIM Excellence</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2019</span>
+                  <span>Prix Ouvrages d'Art Innovants</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2019</span>
+                  <span>Qualité Service Client - Constructeurs Associés</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2018</span>
+                  <span>Meilleure Collaboration - Maîtres d'Ouvrage</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2017</span>
+                  <span>Innovation Méthodologique</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2016</span>
+                  <span>Trophée de l'Ingénieur Provençal</span>
+                </div>
+                <div class="prix-item">
+                  <span class="prix-item__year">2015</span>
+                  <span>Label Engagement Environnemental</span>
+                </div>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+      {# Note #}
+      <div class="profile-row__item profile-row--4-3">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="pen-tool" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Note</h2>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body">
+              <div class="note-empty">
+                <p>Aucune note pour le moment.</p>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+    </div>
+
+    {# ── ROW 5: PROGRAMMES + ZONE DE TRAVAIL ── #}
+    <div class="profile-row profile-row--5">
+
+      {# Programmes #}
+      <div class="profile-row__item profile-row--5-1">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header card__header--collapsible">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="layers" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Programmes (15)</h2>
+              <button class="card__header-action card__collapse-icon">
+                {% component "icon_inline" name="chevron-down" %}{% endcomponent %}
+              </button>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body">
+              <div class="programmes">
+                <div class="programme-section">
+                  <h3 class="programme-section__category">Bâtiments</h3>
+                  <ul class="programme-section__items">
+                    <li>Immeubles résidentiels</li>
+                    <li>Bâtiments de bureaux</li>
+                    <li>Centres commerciaux</li>
+                    <li>Hôtels et Loisirs</li>
+                  </ul>
+                </div>
+                <div class="programme-section">
+                  <h3 class="programme-section__category">Ouvrages d'Art</h3>
+                  <ul class="programme-section__items">
+                    <li>Ponts et viaducs</li>
+                    <li>Tunnels</li>
+                    <li>Passerelles</li>
+                  </ul>
+                </div>
+                <div class="programme-section">
+                  <h3 class="programme-section__category">Infrastructure</h3>
+                  <ul class="programme-section__items">
+                    <li>Routes et autoroutes</li>
+                    <li>Voies ferrées</li>
+                    <li>Ports et aéroports</li>
+                    <li>Ouvrages hydrauliques</li>
+                  </ul>
+                </div>
+                <div class="programme-section">
+                  <h3 class="programme-section__category">Spécialisés</h3>
+                  <ul class="programme-section__items">
+                    <li>Structures métalliques complexes</li>
+                    <li>Réhabilitation structures</li>
+                    <li>Renforts sismiques</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+      {# Zone de travail #}
+      <div class="profile-row__item profile-row--5-2">
+        {% component "card" %}
+          {% fill "header" %}
+            <div class="card__header">
+              <div class="card__header-icon">
+                {% component "icon_inline" name="map" %}{% endcomponent %}
+              </div>
+              <h2 class="card__header-title">Zone de travail</h2>
+            </div>
+          {% endfill %}
+          {% fill "body" %}
+            <div class="card__body card__body--flush">
+              <div class="zone-map-container">
+                <svg viewBox="0 0 500 600" class="france-map">
+                  <!-- Simplified France map with Bandol region highlighted -->
+                  <defs>
+                    <style>
+                      .france-outline { fill: #f3f4f6; stroke: #e5e7eb; stroke-width: 2; }
+                      .france-active { fill: #0073e6; opacity: 0.2; }
+                      .france-highlight { fill: #0073e6; }
+                    </style>
+                  </defs>
+                  <!-- Simplified France outline -->
+                  <polygon class="france-outline" points="50,100 150,80 200,100 220,150 200,200 180,220 150,210 120,230 80,220 60,180 50,150"/>
+                  <!-- Bandol region highlight -->
+                  <circle class="france-highlight" cx="180" cy="240" r="8"/>
+                  <text x="180" y="270" text-anchor="middle" fill="#0073e6" font-size="12" font-weight="600">Bandol</text>
+                </svg>
+              </div>
+            </div>
+          {% endfill %}
+        {% endcomponent %}
+      </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}

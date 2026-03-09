@@ -40,7 +40,7 @@
 
   {# ── Zone de contenu principal ── #}
   <main class="layout-main">
-    <div class="page">
+    <div class="page {% block page_class %}{% endblock %}">
       {% block page_content %}{% endblock %}
     </div>
   </main>

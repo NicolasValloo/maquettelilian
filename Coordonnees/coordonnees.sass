@@ -1,0 +1,500 @@
+// ══════════════════════════════════════════════════════════════════════════════
+// Maquette Blaise — Page Coordonnées : styles spécifiques à cette page
+// Design system Blaise : DM Sans, palette neutral, shadow-card
+// Les composants réutilisables sont dans components/
+// Les utilitaires globaux sont dans styles/
+// ══════════════════════════════════════════════════════════════════════════════
+
+@use '../styles/utils/colors'
+@use '../styles/utils/variables'
+@use '../styles/utils/fonts'
+@use '../styles/utils/media_queries'
+
+
+// ── Page override — pleine largeur ────────────────────────────────────────
+.page--coordonnees
+  max-width: 100%
+
+
+// ── Profile Header — en-tête avec informations agence ────────────────────
+
+.profile-header
+  display: flex
+  align-items: center
+  gap: variables.$spacing-big
+  padding: variables.$spacing-big
+  background-color: colors.$white
+  border-radius: variables.$border-radius-medium
+  box-shadow: colors.$shadow-card
+  margin-bottom: variables.$spacing-big
+
+  @include media_queries.lte-tablet
+    flex-direction: column
+    text-align: center
+
+.profile-header__avatar
+  flex-shrink: 0
+  width: 80px
+  height: 80px
+  border-radius: 50%
+  overflow: hidden
+  background-color: colors.$grey-light
+  display: flex
+  align-items: center
+  justify-content: center
+
+.profile-header__logo
+  width: 100%
+  height: 100%
+  object-fit: cover
+
+.profile-header__info
+  flex: 1
+  min-width: 0
+
+.profile-header__name
+  @include fonts.font-size-big
+  @include fonts.font-weight-bold
+  color: colors.$main-color
+  margin: 0 0 variables.$spacing-medium 0
+
+.profile-header__meta
+  display: flex
+  gap: variables.$spacing-big
+  flex-wrap: wrap
+
+  @include media_queries.lte-tablet
+    flex-direction: column
+    gap: variables.$spacing-medium
+
+.profile-header__meta-item
+  display: flex
+  align-items: center
+  gap: variables.$spacing-small
+  @include fonts.font-size-normal
+  color: colors.$main-color-lighter
+
+.profile-header__actions
+  flex-shrink: 0
+
+  @include media_queries.lte-tablet
+    width: 100%
+
+
+// ── Profile Grid — grille principale de contenu ────────────────────────
+
+.profile-grid
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-big
+
+.profile-row
+  display: grid
+  gap: variables.$spacing-big
+
+.profile-row--1
+  grid-template-columns: 1fr
+
+.profile-row--2
+  grid-template-columns: repeat(3, 1fr)
+
+  @include media_queries.lte-laptop
+    grid-template-columns: 1fr
+
+.profile-row--3
+  grid-template-columns: repeat(2, 1fr)
+
+  @include media_queries.lte-laptop
+    grid-template-columns: 1fr
+
+.profile-row--4
+  grid-template-columns: repeat(3, 1fr)
+
+  @include media_queries.lte-laptop
+    grid-template-columns: repeat(2, 1fr)
+
+  @include media_queries.lte-tablet
+    grid-template-columns: 1fr
+
+.profile-row--5
+  grid-template-columns: repeat(2, 1fr)
+
+  @include media_queries.lte-laptop
+    grid-template-columns: 1fr
+
+.profile-row__item
+  width: 100%
+
+
+// ── Card — conteneurs de contenu ─────────────────────────────────────
+
+.card
+  background-color: colors.$white
+  border-radius: variables.$border-radius-medium
+  box-shadow: colors.$shadow-card
+  overflow: hidden
+  transition: box-shadow variables.$transition-default
+
+  &:hover
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06)
+
+.card__header
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+  padding: variables.$spacing-big
+  border-bottom: 1px solid colors.$main-border
+  background-color: colors.$grey-light
+
+.card__header-icon
+  flex-shrink: 0
+  color: colors.$blue
+  display: flex
+  align-items: center
+
+.card__header-title
+  flex: 1
+  @include fonts.font-size-normal
+  @include fonts.font-weight-bold
+  color: colors.$main-color
+  margin: 0
+
+.card__header--collapsible
+  cursor: pointer
+  user-select: none
+
+.card__header-action
+  flex-shrink: 0
+  background: none
+  border: none
+  padding: 0
+  cursor: pointer
+  color: colors.$main-color-lighter
+  display: flex
+  align-items: center
+  transition: color variables.$transition-default
+
+  &:hover
+    color: colors.$main-color
+
+.card__collapse-icon
+  transition: transform variables.$transition-default
+
+.card--collapsed .card__collapse-icon
+  transform: rotate(180deg)
+
+.card__body
+  padding: variables.$spacing-big
+  background-color: colors.$white
+
+.card__body--flush
+  padding: 0
+
+
+// ── Data Row — lignes d'informations clé-valeur ───────────────────────
+
+.data-row
+  display: flex
+  justify-content: space-between
+  align-items: flex-start
+  gap: variables.$spacing-big
+  padding: variables.$spacing-medium 0
+  border-bottom: 1px solid colors.$grey-light
+
+  &:last-child
+    border-bottom: none
+
+  @include media_queries.lte-tablet
+    flex-direction: column
+    gap: variables.$spacing-small
+
+.data-row--stacked
+  flex-direction: column
+
+.data-row__label
+  @include fonts.font-size-small
+  @include fonts.font-weight-bold
+  color: colors.$main-color
+  flex-shrink: 0
+
+.data-row__value
+  @include fonts.font-size-normal
+  color: colors.$main-color-lighter
+  text-align: right
+
+  @include media_queries.lte-tablet
+    text-align: left
+
+.data-row__value--small
+  @include fonts.font-size-small
+  font-family: 'Courier New', monospace
+
+
+// ── Social Links — liens réseaux sociaux ──────────────────────────────
+
+.social-links
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-small
+
+.social-link
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+  padding: variables.$spacing-medium
+  border-radius: variables.$border-radius-small
+  background-color: colors.$grey-light
+  text-decoration: none
+  color: colors.$main-color
+  transition: background-color variables.$transition-default
+
+  &:hover
+    background-color: colors.$blue-very-light
+
+.social-link__icon
+  flex-shrink: 0
+  width: 20px
+  height: 20px
+  display: flex
+  align-items: center
+  justify-content: center
+
+.social-link__icon--web
+  color: colors.$blue
+
+.social-link__icon--linkedin
+  color: #0a66c2
+
+.social-link__icon--instagram
+  color: #e4405f
+
+
+// ── Tags — badges de compétences et technologies ────────────────────
+
+.tag-list
+  display: flex
+  flex-wrap: wrap
+  gap: variables.$spacing-small
+
+.tag
+  display: inline-block
+  padding: 6px 12px
+  background-color: colors.$blue-very-light
+  color: colors.$blue
+  border-radius: variables.$border-radius-small
+  @include fonts.font-size-small
+  @include fonts.font-weight-medium
+
+.tech-tag
+  @extend .tag
+
+
+// ── Presentation Text — textes d'introduction ───────────────────────────
+
+.presentation-text
+  @include fonts.font-size-normal
+  line-height: variables.$line-height-normal
+  color: colors.$main-color-lighter
+  margin: 0 0 variables.$spacing-medium 0
+
+  &:last-child
+    margin-bottom: 0
+
+
+// ── Human Resources — section équipe ────────────────────────────────────
+
+.human-resources
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-big
+
+.human-resources__section-title
+  @include fonts.font-size-small
+  @include fonts.font-weight-bold
+  color: colors.$main-color
+  text-transform: uppercase
+  letter-spacing: 0.02em
+  margin: variables.$spacing-big 0 variables.$spacing-medium 0
+
+  &:first-child
+    margin-top: 0
+
+.human-resources__person
+  padding: variables.$spacing-medium
+  background-color: colors.$grey-light
+  border-radius: variables.$border-radius-small
+  @include fonts.font-size-normal
+  color: colors.$main-color
+  display: flex
+  align-items: center
+
+  & + &
+    margin-top: variables.$spacing-small
+
+
+// ── Tech Groups — groupes de technologies ────────────────────────────
+
+.tech-groups
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-big
+
+.tech-group
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-small
+
+.tech-group__title
+  @include fonts.font-size-small
+  @include fonts.font-weight-bold
+  color: colors.$main-color
+
+.tech-group__tags
+  display: flex
+  flex-wrap: wrap
+  gap: variables.$spacing-small
+
+
+// ── OPQIBI List — qualifications professionnelles ──────────────────────
+
+.opqibi-list
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
+  gap: variables.$spacing-small
+
+  @include media_queries.lte-tablet
+    grid-template-columns: 1fr
+
+.opqibi-item
+  display: flex
+  gap: variables.$spacing-medium
+  padding: variables.$spacing-medium
+  background-color: colors.$grey-light
+  border-radius: variables.$border-radius-small
+  align-items: flex-start
+
+.opqibi-item__code
+  flex-shrink: 0
+  @include fonts.font-size-small
+  @include fonts.font-weight-bold
+  color: colors.$blue
+  min-width: 50px
+
+.opqibi-item__description
+  @include fonts.font-size-small
+  color: colors.$main-color-lighter
+
+
+// ── Prix List — prix et récompenses ──────────────────────────────────
+
+.prix-list
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-small
+
+.prix-item
+  display: flex
+  gap: variables.$spacing-medium
+  padding: variables.$spacing-medium
+  background-color: colors.$grey-light
+  border-radius: variables.$border-radius-small
+  align-items: flex-start
+
+.prix-item__year
+  flex-shrink: 0
+  @include fonts.font-size-small
+  @include fonts.font-weight-bold
+  color: colors.$blue
+  min-width: 45px
+
+
+// ── Note Empty — zone de note vide ───────────────────────────────────
+
+.note-empty
+  display: flex
+  align-items: center
+  justify-content: center
+  min-height: 150px
+  color: colors.$main-color-lighter
+  text-align: center
+
+  p
+    @include fonts.font-size-normal
+    margin: 0
+
+
+// ── Programmes — catégories de projets ──────────────────────────────
+
+.programmes
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-big
+
+.programme-section
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-small
+
+.programme-section__category
+  @include fonts.font-size-small
+  @include fonts.font-weight-bold
+  color: colors.$main-color
+  margin: 0
+
+.programme-section__items
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-small
+  margin: 0
+  padding-left: variables.$spacing-big
+  list-style: disc
+
+  li
+    @include fonts.font-size-normal
+    color: colors.$main-color-lighter
+
+
+// ── Zone Map Container — carte France ───────────────────────────────
+
+.zone-map-container
+  display: flex
+  align-items: center
+  justify-content: center
+  min-height: 250px
+  background-color: colors.$grey-light
+  border-radius: variables.$border-radius-small
+  padding: variables.$spacing-big
+
+.france-map
+  width: 100%
+  max-width: 300px
+  height: auto
+
+
+// ── Search Bar — barre de recherche pour listes ───────────────────────
+
+.search-bar
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+  margin-bottom: variables.$spacing-big
+  padding: variables.$spacing-medium
+  background-color: colors.$grey-light
+  border-radius: variables.$border-radius-small
+
+.search-bar__input
+  flex: 1
+  border: none
+  background: transparent
+  @include fonts.font-size-normal
+  color: colors.$main-color
+  outline: none
+
+  &::placeholder
+    color: colors.$main-color-lighter
+
+.search-bar__count
+  flex-shrink: 0
+  @include fonts.font-size-small
+  color: colors.$main-color-lighter
+  white-space: nowrap

@@ -377,9 +377,9 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
       padding: 24px;
       display: grid;
-      grid-template-columns: 56px 1fr 100px;
-      grid-template-rows: 1fr auto;
-      grid-template-areas: "logo body map" ". actions actions";
+      grid-template-columns: 56px 1fr 100px auto;
+      grid-template-rows: 1fr;
+      grid-template-areas: "logo body map dots";
       gap: 12px;
       transition: box-shadow 0.15s;
     }
@@ -511,15 +511,78 @@
       max-height: 100px;
     }
 
-    /* -- Actions -- */
-    .company-card__actions {
-      grid-area: actions;
+    /* -- More button (top-right) -- */
+    .company-card__more {
+      grid-area: dots;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      padding-top: 2px;
+    }
+    .company-card__more-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: #9ca3af;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .company-card__more-btn:hover {
+      background: #f3f4f6;
+      color: #374151;
+    }
+    /* Dropdown */
+    .company-card__dropdown {
+      display: none;
+      position: absolute;
+      top: 36px;
+      right: 0;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      min-width: 160px;
+      z-index: 10;
+      padding: 4px;
+    }
+    .company-card__dropdown--open {
+      display: block;
+    }
+    .company-card__dropdown-item {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
       gap: 8px;
-      padding-top: 12px;
-      border-top: 1px solid #f9fafb;
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+    .company-card__dropdown-item:hover {
+      background: #f3f4f6;
+    }
+    .company-card__dropdown-item svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+    .company-card__dropdown-item--danger {
+      color: #dc2626;
     }
 
     /* -- Date -- */
@@ -542,8 +605,8 @@
     /* -- Responsive mobile -- */
     @media (max-width: 576px) {
       .company-card {
-        grid-template-columns: 48px 1fr;
-        grid-template-areas: "logo body" ". actions";
+        grid-template-columns: 48px 1fr auto;
+        grid-template-areas: "logo body dots";
       }
       .company-card__logo { width: 48px; height: 48px; }
       .company-card__map { display: none; }
@@ -805,10 +868,6 @@
                 <span class="chip">OPC</span>
                 <span class="chip">BIM</span>
               </div>
-              <div class="company-card__certifications">
-                <span class="chip chip--certification">BIM Manager</span>
-                <span class="chip chip--certification">Démolition</span>
-              </div>
             </div>
             <div class="company-card__map">
               <!-- Mini carte de France — département 35 actif -->
@@ -817,13 +876,22 @@
                 <circle cx="65" cy="55" r="6" class="active"/>
               </svg>
             </div>
-            <div class="company-card__actions">
-              <button class="button button--quaternary" aria-label="Envoyer un message">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </button>
-              <button class="button button--quaternary" aria-label="Voir le profil">
-                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </button>
+            <div class="company-card__more">
+              <button class="company-card__more-btn" aria-label="Actions" onclick="toggleDropdown(this)">⋮</button>
+              <div class="company-card__dropdown">
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Envoyer un message
+                </button>
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Voir le profil
+                </button>
+                <button class="company-card__dropdown-item company-card__dropdown-item--danger">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  Bloquer
+                </button>
+              </div>
             </div>
           </div>
 
@@ -861,9 +929,6 @@
                 <span class="chip">Bâtiment tertiaire</span>
                 <span class="chip">Design d'espace</span>
               </div>
-              <div class="company-card__certifications">
-                <span class="chip chip--certification">Ergonomie</span>
-              </div>
             </div>
             <div class="company-card__map">
               <svg viewBox="0 0 210 200" class="france-map">
@@ -871,13 +936,22 @@
                 <circle cx="110" cy="55" r="6" class="active"/>
               </svg>
             </div>
-            <div class="company-card__actions">
-              <button class="button button--quaternary" aria-label="Envoyer un message">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </button>
-              <button class="button button--quaternary" aria-label="Voir le profil">
-                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </button>
+            <div class="company-card__more">
+              <button class="company-card__more-btn" aria-label="Actions" onclick="toggleDropdown(this)">⋮</button>
+              <div class="company-card__dropdown">
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Envoyer un message
+                </button>
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Voir le profil
+                </button>
+                <button class="company-card__dropdown-item company-card__dropdown-item--danger">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  Bloquer
+                </button>
+              </div>
             </div>
           </div>
 
@@ -924,13 +998,22 @@
                 <circle cx="110" cy="55" r="6" class="active"/>
               </svg>
             </div>
-            <div class="company-card__actions">
-              <button class="button button--quaternary" aria-label="Envoyer un message">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </button>
-              <button class="button button--quaternary" aria-label="Voir le profil">
-                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </button>
+            <div class="company-card__more">
+              <button class="company-card__more-btn" aria-label="Actions" onclick="toggleDropdown(this)">⋮</button>
+              <div class="company-card__dropdown">
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Envoyer un message
+                </button>
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Voir le profil
+                </button>
+                <button class="company-card__dropdown-item company-card__dropdown-item--danger">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  Bloquer
+                </button>
+              </div>
             </div>
           </div>
 
@@ -968,13 +1051,22 @@
                 <circle cx="120" cy="100" r="6" class="active"/>
               </svg>
             </div>
-            <div class="company-card__actions">
-              <button class="button button--quaternary" aria-label="Envoyer un message">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </button>
-              <button class="button button--quaternary" aria-label="Voir le profil">
-                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </button>
+            <div class="company-card__more">
+              <button class="company-card__more-btn" aria-label="Actions" onclick="toggleDropdown(this)">⋮</button>
+              <div class="company-card__dropdown">
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Envoyer un message
+                </button>
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Voir le profil
+                </button>
+                <button class="company-card__dropdown-item company-card__dropdown-item--danger">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  Bloquer
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1012,9 +1104,6 @@
                 <span class="chip">Audit énergétique</span>
                 <span class="chip">BEE+</span>
               </div>
-              <div class="company-card__certifications">
-                <span class="chip chip--certification">Bâtiment Énergie Environnement Plus</span>
-              </div>
             </div>
             <div class="company-card__map">
               <svg viewBox="0 0 210 200" class="france-map">
@@ -1022,13 +1111,22 @@
                 <circle cx="108" cy="53" r="6" class="active"/>
               </svg>
             </div>
-            <div class="company-card__actions">
-              <button class="button button--quaternary" aria-label="Envoyer un message">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </button>
-              <button class="button button--quaternary" aria-label="Voir le profil">
-                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </button>
+            <div class="company-card__more">
+              <button class="company-card__more-btn" aria-label="Actions" onclick="toggleDropdown(this)">⋮</button>
+              <div class="company-card__dropdown">
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Envoyer un message
+                </button>
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Voir le profil
+                </button>
+                <button class="company-card__dropdown-item company-card__dropdown-item--danger">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  Bloquer
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1067,10 +1165,6 @@
                 <span class="chip">Paysagiste</span>
                 <span class="chip">Patrimoine</span>
               </div>
-              <div class="company-card__certifications">
-                <span class="chip chip--certification">Architecte intérieur</span>
-                <span class="chip chip--certification">Conception</span>
-              </div>
             </div>
             <div class="company-card__map">
               <svg viewBox="0 0 210 200" class="france-map">
@@ -1078,13 +1172,22 @@
                 <circle cx="110" cy="55" r="6" class="active"/>
               </svg>
             </div>
-            <div class="company-card__actions">
-              <button class="button button--quaternary" aria-label="Envoyer un message">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </button>
-              <button class="button button--quaternary" aria-label="Voir le profil">
-                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </button>
+            <div class="company-card__more">
+              <button class="company-card__more-btn" aria-label="Actions" onclick="toggleDropdown(this)">⋮</button>
+              <div class="company-card__dropdown">
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Envoyer un message
+                </button>
+                <button class="company-card__dropdown-item">
+                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Voir le profil
+                </button>
+                <button class="company-card__dropdown-item company-card__dropdown-item--danger">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  Bloquer
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1115,6 +1218,21 @@
         // Activer le panel contacts par défaut (seul panel dispo dans la preview)
         document.getElementById('panel-contacts').classList.add('panel--active');
       });
+    });
+
+    // Toggle dropdown menus
+    function toggleDropdown(btn) {
+      const dropdown = btn.nextElementSibling;
+      const isOpen = dropdown.classList.contains('company-card__dropdown--open');
+      // Close all dropdowns first
+      document.querySelectorAll('.company-card__dropdown--open').forEach(d => d.classList.remove('company-card__dropdown--open'));
+      if (!isOpen) dropdown.classList.add('company-card__dropdown--open');
+    }
+    // Close dropdown on click outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.company-card__more')) {
+        document.querySelectorAll('.company-card__dropdown--open').forEach(d => d.classList.remove('company-card__dropdown--open'));
+      }
     });
   </script>
 

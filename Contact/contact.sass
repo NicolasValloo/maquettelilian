@@ -51,9 +51,8 @@
 
 // ── Carte entreprise (layout horizontal) ──────────────────────────────────
 // Structure CSS Grid :
-//   logo  |  body  |  map
-//   ------|--------|------
-//         | actions|
+//   logo  |  body  |  map  |  dots
+//
 
 .company-card
   background: colors.$white
@@ -61,9 +60,9 @@
   box-shadow: colors.$shadow-card
   padding: variables.$spacing-big
   display: grid
-  grid-template-columns: 56px 1fr 100px
-  grid-template-rows: 1fr auto
-  grid-template-areas: "logo body map" ". actions actions"
+  grid-template-columns: 56px 1fr 100px auto
+  grid-template-rows: 1fr
+  grid-template-areas: "logo body map dots"
   gap: variables.$spacing-medium
   transition: box-shadow 0.15s
 
@@ -200,24 +199,88 @@
     @include media_queries.lte-mobile
       display: none
 
-  // -- Zone actions (bas droite) --
-  &__actions
-    grid-area: actions
+  // -- Menu actions (haut droite, bouton ⋮) --
+  &__more
+    grid-area: dots
+    position: relative
+    display: flex
+    align-items: flex-start
+    padding-top: 2px
+
+  &__more-btn
+    width: 32px
+    height: 32px
+    border: none
+    background: transparent
+    border-radius: variables.$border-radius-small
+    cursor: pointer
+    display: grid
+    place-items: center
+    color: colors.$grey-dark
+    font-size: 18px
+    font-weight: 700
+    letter-spacing: 1px
+    transition: background 0.15s, color 0.15s
+
+    &:hover
+      background: colors.$grey
+      color: colors.$main-color-light
+
+  // -- Dropdown menu --
+  &__dropdown
+    display: none
+    position: absolute
+    top: 36px
+    right: 0
+    background: colors.$white
+    border: 1px solid colors.$grey-blue
+    border-radius: variables.$border-radius-medium
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
+    min-width: 180px
+    z-index: 10
+    padding: 4px
+
+    &--open
+      display: block
+
+  &__dropdown-item
     display: flex
     align-items: center
-    justify-content: flex-end
     gap: variables.$spacing-small
-    padding-top: variables.$spacing-medium
-    border-top: 1px solid colors.$grey-light
+    width: 100%
+    padding: variables.$spacing-small variables.$spacing-medium
+    border: none
+    background: none
+    font-family: inherit
+    @include fonts.font-size-normal
+    color: colors.$main-color-light
+    cursor: pointer
+    border-radius: variables.$border-radius-small
+    transition: background 0.15s
 
-  // -- Date d'invitation --
-  &__date
+    &:hover
+      background: colors.$grey-light
+
+    svg
+      width: 14px
+      height: 14px
+      stroke: currentColor
+      fill: none
+      stroke-width: 2
+      flex-shrink: 0
+
+    &--danger
+      color: colors.$red
+
+  &__dropdown-info
+    display: flex
+    align-items: center
+    gap: variables.$spacing-small
+    padding: variables.$spacing-small variables.$spacing-medium
     @include fonts.font-size-very-small
     color: colors.$grey-dark
-    display: flex
-    align-items: center
-    gap: variables.$spacing-small
-    margin-right: auto
+    border-bottom: 1px solid colors.$grey-light
+    margin-bottom: 4px
 
     svg
       width: 12px
@@ -228,8 +291,8 @@
 
   // -- Responsive : empilé en mobile --
   @include media_queries.lte-mobile
-    grid-template-columns: 48px 1fr
-    grid-template-areas: "logo body" ". actions"
+    grid-template-columns: 48px 1fr auto
+    grid-template-areas: "logo body dots"
 
     &__logo
       width: 48px
