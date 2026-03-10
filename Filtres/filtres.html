@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+{% load component_tags %}
+
+{# ══════════════════════════════════════════════════════════════════════════════
+   Maquette Blaise — Page Mes Filtres
+   Template Django — zone contenu uniquement (layout géré par base.html)
+   Sidebar : active_section = 'filtres' (dans Paramètres de compte)
+   Topbar : breadcrumb_current = 'Mes filtres'
+   Composants : button, badge, icon, filter_card, criteria_tag
+   ══════════════════════════════════════════════════════════════════════════════ #}
+
+{% block page_content %}
+
+  {# ── Page header ── #}
+  <div class="page-header">
+    <div class="page-header__content-container">
+      <div class="page-header__title-row">
+        <h1 class="page-header__title">
+          Mes filtres
+          <span class="page-header__badge">{{ filters_count }}</span>
+        </h1>
+        {% component "button" style="primary" size="medium" icon="plus" %}
+          Créer un filtre
+        {% endcomponent %}
+      </div>
+      <p class="page-header__subtitle">
+        Gérez vos filtres de recherche pour accélérer vos recherches d'annonces
+      </p>
+    </div>
+  </div>
+
+  {# ── Filters list ── #}
+  <div class="filters-container">
+    <div class="filters-grid">
+
+      {# Filter 1: Bâtiment Neuf — Île-de-France #}
+      <div class="filter-card">
+        <div class="filter-card__top">
+          <div class="filter-card__name-section">
+            <h3 class="filter-card__name">
+              Bâtiment Neuf — Île-de-France
+            </h3>
+            <span class="filter-card__count">131 annonces</span>
+            <span class="filter-card__zone">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Île-de-France
+            </span>
+          </div>
+          <div class="filter-card__actions">
+            <button class="filter-card__action-btn" title="Modifier ce filtre" aria-label="Modifier">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 17.5h3l11-11-3-3-11 11v3z" fill="currentColor"/>
+                <path d="M15.3 4.3l1.4-1.4c.4-.4.4-1 0-1.4l-2-2c-.4-.4-1-.4-1.4 0l-1.4 1.4" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="filter-card__action-btn" title="Dupliquer ce filtre" aria-label="Dupliquer">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 1h10a2 2 0 012 2v10a2 2 0 01-2 2h-10a2 2 0 01-2-2V3a2 2 0 012-2z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M3 5h12v10a2 2 0 01-2 2H3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </button>
+            <button class="filter-card__action-btn filter-card__action-btn--danger" title="Supprimer ce filtre" aria-label="Supprimer">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 5h14M8 9v4M12 9v4M4 5l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-card__criteria">
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--montant">200k–5M€</span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat">Mission de Base</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure">Adaptée Ouverte</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--marche">Construction</span>
+            <span class="filter-criteria-tag filter-criteria-tag--programme">Programme 1</span>
+            <span class="filter-criteria-tag filter-criteria-tag--programme">Programme 2</span>
+            <span class="filter-criteria-tag filter-criteria-tag--programme">+ 6 autres</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--keyword">bâtiment neuf</span>
+            <span class="filter-criteria-tag filter-criteria-tag--specific">3 compétences</span>
+          </div>
+        </div>
+
+        <div class="filter-card__meta">
+          <span class="filter-card__meta-item">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 7a6 6 0 1112 0A6 6 0 011 7z" stroke="currentColor" stroke-width="1" fill="none"/>
+              <path d="M7 3v4l3 2" stroke="currentColor" stroke-width="1" fill="none"/>
+            </svg>
+            Modifié le 8 mars
+          </span>
+        </div>
+      </div>
+
+      {# Filter 2: Rénovation énergétique — National #}
+      <div class="filter-card">
+        <div class="filter-card__top">
+          <div class="filter-card__name-section">
+            <h3 class="filter-card__name">
+              Rénovation énergétique — National
+            </h3>
+            <span class="filter-card__count">87 annonces</span>
+            <span class="filter-card__zone">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              France entière
+            </span>
+          </div>
+          <div class="filter-card__info-tags">
+            <span class="filter-info-tag">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Nicolas V., Blaise D.
+            </span>
+            <span class="filter-info-tag">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+              Prioritaires
+            </span>
+          </div>
+          <div class="filter-card__actions">
+            <button class="filter-card__action-btn" title="Modifier ce filtre" aria-label="Modifier">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 17.5h3l11-11-3-3-11 11v3z" fill="currentColor"/>
+                <path d="M15.3 4.3l1.4-1.4c.4-.4.4-1 0-1.4l-2-2c-.4-.4-1-.4-1.4 0l-1.4 1.4" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="filter-card__action-btn" title="Dupliquer ce filtre" aria-label="Dupliquer">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 1h10a2 2 0 012 2v10a2 2 0 01-2 2h-10a2 2 0 01-2-2V3a2 2 0 012-2z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M3 5h12v10a2 2 0 01-2 2H3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </button>
+            <button class="filter-card__action-btn filter-card__action-btn--danger" title="Supprimer ce filtre" aria-label="Supprimer">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 5h14M8 9v4M12 9v4M4 5l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-card__criteria">
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--montant">100k–2M€ · <span style="text-decoration:line-through">€</span></span>
+            <span class="filter-criteria-tag filter-criteria-tag--montant">Prime: 5k–30k€</span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat">Mission de Base</span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat">Conception Réalisation</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure">Procédure A</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure">Procédure B</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure">+ 1 autre</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--marche">Construction</span>
+            <span class="filter-criteria-tag filter-criteria-tag--marche">Études</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--keyword">rénovation</span>
+            <span class="filter-criteria-tag filter-criteria-tag--keyword">énergie</span>
+            <span class="filter-criteria-tag filter-criteria-tag--specific">Offre + Visite</span>
+          </div>
+        </div>
+
+        <div class="filter-card__meta">
+          <span class="filter-card__meta-item">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 7a6 6 0 1112 0A6 6 0 011 7z" stroke="currentColor" stroke-width="1" fill="none"/>
+              <path d="M7 3v4l3 2" stroke="currentColor" stroke-width="1" fill="none"/>
+            </svg>
+            Modifié le 5 mars
+          </span>
+        </div>
+      </div>
+
+      {# Filter 3: Équipements sportifs — Grand Sud #}
+      <div class="filter-card">
+        <div class="filter-card__top">
+          <div class="filter-card__name-section">
+            <h3 class="filter-card__name">
+              Équipements sportifs — Grand Sud
+            </h3>
+            <span class="filter-card__count">23 annonces</span>
+            <span class="filter-card__zone">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              PACA · Occitanie · Nouvelle-Aquitaine
+            </span>
+          </div>
+          <div class="filter-card__actions">
+            <button class="filter-card__action-btn" title="Modifier ce filtre" aria-label="Modifier">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 17.5h3l11-11-3-3-11 11v3z" fill="currentColor"/>
+                <path d="M15.3 4.3l1.4-1.4c.4-.4.4-1 0-1.4l-2-2c-.4-.4-1-.4-1.4 0l-1.4 1.4" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="filter-card__action-btn" title="Dupliquer ce filtre" aria-label="Dupliquer">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 1h10a2 2 0 012 2v10a2 2 0 01-2 2h-10a2 2 0 01-2-2V3a2 2 0 012-2z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M3 5h12v10a2 2 0 01-2 2H3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </button>
+            <button class="filter-card__action-btn filter-card__action-btn--danger" title="Supprimer ce filtre" aria-label="Supprimer">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 5h14M8 9v4M12 9v4M4 5l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-card__criteria">
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--montant">500k–10M€</span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat">Mission de Base</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure">Concours d'Idées</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure">Ouverte</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--programme">Sport > Tous</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--specific">Exclusivité</span>
+            <span class="filter-criteria-tag filter-criteria-tag--specific">2–3 archi</span>
+          </div>
+        </div>
+
+        <div class="filter-card__meta">
+          <span class="filter-card__meta-item">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 7a6 6 0 1112 0A6 6 0 011 7z" stroke="currentColor" stroke-width="1" fill="none"/>
+              <path d="M7 3v4l3 2" stroke="currentColor" stroke-width="1" fill="none"/>
+            </svg>
+            Modifié le 2 mars
+          </span>
+        </div>
+      </div>
+
+      {# Filter 4: Concours — Architecture #}
+      <div class="filter-card">
+        <div class="filter-card__top">
+          <div class="filter-card__name-section">
+            <h3 class="filter-card__name">
+              Concours — Architecture
+            </h3>
+            <span class="filter-card__count">12 annonces</span>
+            <span class="filter-card__zone">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              France · DOM-TOM
+            </span>
+          </div>
+          <div class="filter-card__actions">
+            <button class="filter-card__action-btn" title="Modifier ce filtre" aria-label="Modifier">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 17.5h3l11-11-3-3-11 11v3z" fill="currentColor"/>
+                <path d="M15.3 4.3l1.4-1.4c.4-.4.4-1 0-1.4l-2-2c-.4-.4-1-.4-1.4 0l-1.4 1.4" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="filter-card__action-btn" title="Dupliquer ce filtre" aria-label="Dupliquer">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 1h10a2 2 0 012 2v10a2 2 0 01-2 2h-10a2 2 0 01-2-2V3a2 2 0 012-2z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M3 5h12v10a2 2 0 01-2 2H3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </button>
+            <button class="filter-card__action-btn filter-card__action-btn--danger" title="Supprimer ce filtre" aria-label="Supprimer">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 5h14M8 9v4M12 9v4M4 5l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-card__criteria">
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--montant">Prime: 15k–80k€ · <span style="text-decoration:line-through">€€</span></span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat">Mission de Base</span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat">1% artistique</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure">Concours d'Idées</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure">International</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--keyword">concours</span>
+            <span class="filter-criteria-tag filter-criteria-tag--keyword">excl: démolition</span>
+            <span class="filter-criteria-tag filter-criteria-tag--specific">4 compétences</span>
+          </div>
+        </div>
+
+        <div class="filter-card__meta">
+          <span class="filter-card__meta-item">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 7a6 6 0 1112 0A6 6 0 011 7z" stroke="currentColor" stroke-width="1" fill="none"/>
+              <path d="M7 3v4l3 2" stroke="currentColor" stroke-width="1" fill="none"/>
+            </svg>
+            Modifié le 28 février
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,292 @@
+// ══════════════════════════════════════════════════════════════════════════════
+// Maquette Blaise — Page Mes Filtres : styles spécifiques à cette page
+// Design system Blaise : DM Sans, palette neutral, shadow-card
+// Les composants réutilisables sont dans components/
+// Les utilitaires globaux sont dans styles/
+// ══════════════════════════════════════════════════════════════════════════════
+
+@use '../styles/utils/colors'
+@use '../styles/utils/variables'
+@use '../styles/utils/fonts'
+@use '../styles/utils/media_queries'
+
+
+// ── Page header — extensions spécifiques filtres ────────────────────
+
+.page-header__title-row
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: variables.$spacing-large
+
+.page-header__title
+  font-size: 22px
+  font-weight: 700
+  color: colors.$black
+  letter-spacing: -0.02em
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+
+.page-header__subtitle
+  @include fonts.font-size-normal
+  color: colors.$main-color-lighter
+  margin-top: variables.$spacing-very-small
+
+.page-header__badge
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  min-width: 28px
+  height: 28px
+  padding: 0 variables.$spacing-small
+  background-color: colors.$primary-light
+  color: colors.$primary-dark
+  border-radius: variables.$border-radius-full
+  font-size: 12px
+  font-weight: 600
+
+
+// ── Filters container and grid ────────────────────
+
+.filters-container
+  margin-top: variables.$spacing-large
+
+.filters-grid
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr))
+  gap: variables.$spacing-large
+
+  @include media_queries.small-screens
+    grid-template-columns: 1fr
+
+
+// ── Filter card — main container ────────────────────
+
+.filter-card
+  background: colors.$white
+  border-radius: variables.$border-radius-medium
+  padding: variables.$spacing-large
+  box-shadow: variables.$shadow-card
+  transition: box-shadow 200ms ease, transform 200ms ease
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-medium
+
+  &:hover
+    box-shadow: variables.$shadow-card-hover
+    transform: translateY(-2px)
+
+
+// ── Filter card top section (name + actions) ────────────────────
+
+.filter-card__top
+  display: flex
+  align-items: center
+  gap: variables.$spacing-medium
+
+.filter-card__info-tags
+  display: flex
+  align-items: center
+  gap: variables.$spacing-small
+  margin-left: auto
+  flex-shrink: 0
+
+.filter-info-tag
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  font-size: 11px
+  font-weight: 500
+  color: colors.$text-secondary
+
+  svg
+    width: 13px
+    height: 13px
+    stroke: currentColor
+    fill: none
+    stroke-width: 1.8
+    flex-shrink: 0
+    opacity: 0.6
+
+  &--user
+    color: #0369a1
+
+  &--list
+    color: #6b21a8
+
+.filter-card__name-section
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-very-small
+  flex: 1
+  min-width: 0
+
+.filter-card__name
+  font-size: 14px
+  font-weight: 600
+  color: colors.$black
+  margin: 0
+  word-break: break-word
+  overflow-wrap: break-word
+
+.filter-card__count
+  display: inline-block
+  padding: 4px 8px
+  background-color: colors.$primary-light
+  color: colors.$primary-dark
+  border-radius: variables.$border-radius-small
+  font-size: 12px
+  font-weight: 600
+  max-width: fit-content
+
+.filter-card__zone
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  font-size: 12px
+  font-weight: 600
+  color: #065f46
+  background: #ecfdf5
+  padding: 3px 10px
+  border-radius: variables.$border-radius-full
+  border: 1px solid #a7f3d0
+
+  svg
+    width: 13px
+    height: 13px
+    stroke: currentColor
+    fill: none
+    stroke-width: 2
+    flex-shrink: 0
+
+
+// ── Filter card actions ────────────────────
+
+.filter-card__actions
+  display: flex
+  gap: variables.$spacing-small
+  flex-shrink: 0
+
+.filter-card__action-btn
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  width: 32px
+  height: 32px
+  padding: 0
+  background-color: colors.$white
+  border: 1px solid colors.$border-light
+  border-radius: variables.$border-radius-small
+  color: colors.$text-secondary
+  cursor: pointer
+  transition: all 200ms ease
+
+  &:hover
+    background-color: colors.$neutral-light
+    color: colors.$text-primary
+    border-color: colors.$border-medium
+
+  &:focus
+    outline: none
+    ring: 2px
+    ring-color: colors.$primary
+
+  svg
+    width: 20px
+    height: 20px
+
+  &--danger
+    &:hover
+      color: colors.$error
+      background-color: colors.$error-light
+      border-color: colors.$error
+
+
+// ── Filter criteria tags ────────────────────
+
+.filter-card__criteria
+  display: flex
+  flex-direction: column
+  gap: variables.$spacing-small
+
+.filter-card__criteria-row
+  display: flex
+  flex-wrap: wrap
+  gap: 6px
+
+.filter-criteria-tag
+  display: inline-block
+  padding: 4px 8px
+  border-radius: variables.$border-radius-small
+  font-size: 12px
+  font-weight: 500
+  white-space: nowrap
+  border: 1px solid
+
+  &--montant
+    background-color: rgba(34, 197, 94, 0.08)
+    color: #166534
+    border-color: rgba(34, 197, 94, 0.2)
+
+  &--procedure
+    background-color: rgba(59, 130, 246, 0.08)
+    color: #1e40af
+    border-color: rgba(59, 130, 246, 0.2)
+
+  &--contrat
+    background-color: rgba(147, 51, 234, 0.08)
+    color: #6b21a8
+    border-color: rgba(147, 51, 234, 0.2)
+
+  &--marche
+    background-color: rgba(217, 119, 6, 0.08)
+    color: #7c2d12
+    border-color: rgba(217, 119, 6, 0.2)
+
+  &--programme
+    background-color: rgba(236, 72, 153, 0.08)
+    color: #9d174d
+    border-color: rgba(236, 72, 153, 0.2)
+
+  &--zone
+    background-color: rgba(16, 185, 129, 0.08)
+    color: #065f46
+    border-color: rgba(16, 185, 129, 0.2)
+
+  &--user
+    background-color: rgba(14, 165, 233, 0.08)
+    color: #0c4a6e
+    border-color: rgba(14, 165, 233, 0.2)
+
+  &--keyword
+    background-color: rgba(234, 179, 8, 0.08)
+    color: #713f12
+    border-color: rgba(234, 179, 8, 0.2)
+
+  &--specific
+    background-color: rgba(71, 85, 105, 0.08)
+    color: #1e293b
+    border-color: rgba(71, 85, 105, 0.2)
+
+
+// ── Filter card meta info ────────────────────
+
+.filter-card__meta
+  display: flex
+  gap: variables.$spacing-medium
+  padding-top: variables.$spacing-small
+  border-top: 1px solid colors.$border-light
+
+.filter-card__meta-item
+  display: flex
+  align-items: center
+  gap: 6px
+  font-size: 12px
+  color: colors.$text-secondary
+
+  svg
+    width: 14px
+    height: 14px
+    color: colors.$text-tertiary
+    flex-shrink: 0

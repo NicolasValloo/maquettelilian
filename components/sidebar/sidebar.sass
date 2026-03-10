@@ -13,8 +13,8 @@ $sidebar-collapsed-width: 58px
 $sidebar-expanded-width: 272px
 $sidebar-background: colors.$navigation-background
 $sidebar-hover: rgba(255, 255, 255, 0.06)
-$sidebar-active-background: rgba(0, 115, 230, 0.14)
-$sidebar-accent: colors.$blue
+$sidebar-active-background: colors.$navigation-active-bg
+$sidebar-accent: colors.$white
 $sidebar-text: colors.$navigation-color
 $sidebar-text-active: colors.$navigation-color-active
 $sidebar-text-hover: colors.$navigation-color-hover
@@ -51,6 +51,19 @@ $sidebar-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1)
   flex-direction: column
   transition: width $sidebar-transition
   overflow: hidden
+
+  &::before
+    content: ""
+    position: absolute
+    inset: 0
+    z-index: 0
+    pointer-events: none
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='1000' viewBox='0 0 300 1000'%3E%3Cpolygon points='0,0 150,40 300,0 300,80 180,110 0,70' fill='%230e9ad6' opacity='0.25'/%3E%3Cpolygon points='0,70 180,110 120,200 0,160' fill='%230a7ab8' opacity='0.2'/%3E%3Cpolygon points='180,110 300,80 300,200 220,220 120,200' fill='%23106daa' opacity='0.18'/%3E%3Cpolygon points='0,160 120,200 80,310 0,280' fill='%230b84c0' opacity='0.22'/%3E%3Cpolygon points='120,200 220,220 260,330 140,350 80,310' fill='%230d5e96' opacity='0.15'/%3E%3Cpolygon points='220,220 300,200 300,340 260,330' fill='%230c90c8' opacity='0.2'/%3E%3Cpolygon points='0,280 80,310 40,420 0,400' fill='%23107ab5' opacity='0.18'/%3E%3Cpolygon points='80,310 140,350 180,440 100,460 40,420' fill='%230a6ba5' opacity='0.22'/%3E%3Cpolygon points='140,350 260,330 300,340 300,460 240,470 180,440' fill='%230d80b8' opacity='0.16'/%3E%3Cpolygon points='0,400 40,420 20,540 0,520' fill='%230e92cc' opacity='0.2'/%3E%3Cpolygon points='40,420 100,460 120,560 60,580 20,540' fill='%230b6ea8' opacity='0.18'/%3E%3Cpolygon points='100,460 180,440 240,470 220,580 120,560' fill='%23105d92' opacity='0.14'/%3E%3Cpolygon points='240,470 300,460 300,590 220,580' fill='%230c88be' opacity='0.2'/%3E%3Cpolygon points='0,520 20,540 0,650 0,620' fill='%230a78b2' opacity='0.16'/%3E%3Cpolygon points='20,540 60,580 80,680 30,700 0,650' fill='%230e85b8' opacity='0.22'/%3E%3Cpolygon points='60,580 120,560 220,580 200,690 140,710 80,680' fill='%230c5e96' opacity='0.15'/%3E%3Cpolygon points='220,580 300,590 300,710 260,720 200,690' fill='%230d72aa' opacity='0.2'/%3E%3Cpolygon points='0,650 30,700 20,800 0,780' fill='%230a8cc4' opacity='0.18'/%3E%3Cpolygon points='30,700 80,680 140,710 120,810 60,830 20,800' fill='%230b6aa2' opacity='0.2'/%3E%3Cpolygon points='140,710 200,690 260,720 240,830 180,840 120,810' fill='%230e80b5' opacity='0.16'/%3E%3Cpolygon points='260,720 300,710 300,850 240,830' fill='%230c5888' opacity='0.22'/%3E%3Cpolygon points='0,780 20,800 0,920' fill='%230d8ec6' opacity='0.18'/%3E%3Cpolygon points='20,800 60,830 80,940 40,960 0,920' fill='%230a72aa' opacity='0.2'/%3E%3Cpolygon points='60,830 120,810 180,840 200,950 120,970 80,940' fill='%230e6298' opacity='0.14'/%3E%3Cpolygon points='180,840 240,830 300,850 300,970 200,950' fill='%230c84b8' opacity='0.2'/%3E%3C/svg%3E")
+    background-size: cover
+
+  & > *
+    position: relative
+    z-index: 1
 
   &--expanded
     width: $sidebar-expanded-width
@@ -176,6 +189,10 @@ $sidebar-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1)
     .sidebar--expanded &
       opacity: 1
 
+  // ── Spacer de section (remplace le label) ──
+  &__section-spacer
+    height: 10px
+
 
   // ── Item de navigation ──
   &__item
@@ -208,7 +225,7 @@ $sidebar-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1)
       background: $sidebar-hover
 
     &--active
-      color: $sidebar-accent
+      color: colors.$white
       background: $sidebar-active-background
 
       &::before
@@ -219,7 +236,7 @@ $sidebar-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1)
         transform: translateY(-50%)
         width: 3px
         height: 22px
-        background: $sidebar-accent
+        background: colors.$white
         border-radius: 0 3px 3px 0
 
 
@@ -247,7 +264,7 @@ $sidebar-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1)
         width: 7px
         height: 7px
         background: colors.$red
-        border: 2px solid $sidebar-background
+        border: 2px solid colors.$navigation-background
         border-radius: 50%
 
 
@@ -309,7 +326,7 @@ $sidebar-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1)
     align-items: center
     gap: 8px
     padding: 7px 18px 7px 62px
-    color: $sidebar-text
+    color: rgba(255, 255, 255, 0.6)
     text-decoration: none
     font-size: 0.82rem
     white-space: nowrap
@@ -319,29 +336,12 @@ $sidebar-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1)
     .sidebar--expanded &
       opacity: 1
 
-    &::before
-      content: ""
-      width: 5px
-      height: 5px
-      border-radius: 50%
-      background: $sidebar-text
-      opacity: 0.3
-      flex-shrink: 0
-      transition: opacity $sidebar-transition, background $sidebar-transition
-
     &:hover
       color: $sidebar-text-active
       background: $sidebar-hover
 
-      &::before
-        opacity: 0.7
-
     &--active
       color: $sidebar-accent
-
-      &::before
-        background: $sidebar-accent
-        opacity: 1
 
   &__sub-badge
     margin-left: auto

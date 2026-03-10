@@ -49,9 +49,16 @@
 
     .sidebar {
       position: fixed; top: 0; left: 0; width: 58px; height: 100vh;
-      background: #1a3a5c; z-index: 100; display: flex; flex-direction: column;
+      background: #1272b8;
+      z-index: 100; display: flex; flex-direction: column;
       transition: width 0.28s cubic-bezier(0.4,0,0.2,1); overflow: hidden;
     }
+    .sidebar::before {
+      content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='1000' viewBox='0 0 300 1000'%3E%3Cpolygon points='0,0 150,40 300,0 300,80 180,110 0,70' fill='%230e9ad6' opacity='0.25'/%3E%3Cpolygon points='0,70 180,110 120,200 0,160' fill='%230a7ab8' opacity='0.2'/%3E%3Cpolygon points='180,110 300,80 300,200 220,220 120,200' fill='%23106daa' opacity='0.18'/%3E%3Cpolygon points='0,160 120,200 80,310 0,280' fill='%230b84c0' opacity='0.22'/%3E%3Cpolygon points='120,200 220,220 260,330 140,350 80,310' fill='%230d5e96' opacity='0.15'/%3E%3Cpolygon points='220,220 300,200 300,340 260,330' fill='%230c90c8' opacity='0.2'/%3E%3Cpolygon points='0,280 80,310 40,420 0,400' fill='%23107ab5' opacity='0.18'/%3E%3Cpolygon points='80,310 140,350 180,440 100,460 40,420' fill='%230a6ba5' opacity='0.22'/%3E%3Cpolygon points='140,350 260,330 300,340 300,460 240,470 180,440' fill='%230d80b8' opacity='0.16'/%3E%3Cpolygon points='0,400 40,420 20,540 0,520' fill='%230e92cc' opacity='0.2'/%3E%3Cpolygon points='40,420 100,460 120,560 60,580 20,540' fill='%230b6ea8' opacity='0.18'/%3E%3Cpolygon points='100,460 180,440 240,470 220,580 120,560' fill='%23105d92' opacity='0.14'/%3E%3Cpolygon points='240,470 300,460 300,590 220,580' fill='%230c88be' opacity='0.2'/%3E%3Cpolygon points='0,520 20,540 0,650 0,620' fill='%230a78b2' opacity='0.16'/%3E%3Cpolygon points='20,540 60,580 80,680 30,700 0,650' fill='%230e85b8' opacity='0.22'/%3E%3Cpolygon points='60,580 120,560 220,580 200,690 140,710 80,680' fill='%230c5e96' opacity='0.15'/%3E%3Cpolygon points='220,580 300,590 300,710 260,720 200,690' fill='%230d72aa' opacity='0.2'/%3E%3Cpolygon points='0,650 30,700 20,800 0,780' fill='%230a8cc4' opacity='0.18'/%3E%3Cpolygon points='30,700 80,680 140,710 120,810 60,830 20,800' fill='%230b6aa2' opacity='0.2'/%3E%3Cpolygon points='140,710 200,690 260,720 240,830 180,840 120,810' fill='%230e80b5' opacity='0.16'/%3E%3Cpolygon points='260,720 300,710 300,850 240,830' fill='%230c5888' opacity='0.22'/%3E%3Cpolygon points='0,780 20,800 0,920' fill='%230d8ec6' opacity='0.18'/%3E%3Cpolygon points='20,800 60,830 80,940 40,960 0,920' fill='%230a72aa' opacity='0.2'/%3E%3Cpolygon points='60,830 120,810 180,840 200,950 120,970 80,940' fill='%230e6298' opacity='0.14'/%3E%3Cpolygon points='180,840 240,830 300,850 300,970 200,950' fill='%230c84b8' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: cover;
+    }
+    .sidebar > * { position: relative; z-index: 1; }
     .sidebar--expanded { width: 272px; }
 
     .sidebar__header {
@@ -106,23 +113,24 @@
       text-transform: uppercase; white-space: nowrap; opacity: 0; transition: opacity 0.18s;
     }
     .sidebar--expanded .sidebar__section-label { opacity: 1; }
+    .sidebar__section-spacer { height: 10px; }
 
     .sidebar__item { position: relative; }
 
     .sidebar__link {
       display: flex; align-items: center; gap: 12px; height: 42px;
-      padding: 0 8px; color: rgba(255,255,255,0.5); text-decoration: none;
+      padding: 0 8px; color: rgba(255,255,255,0.75); text-decoration: none;
       font-weight: 500; font-size: 0.88rem; cursor: pointer; border: none;
       background: none; width: 100%; text-align: left; font-family: inherit;
       transition: color 0.28s, background 0.28s; white-space: nowrap; overflow: hidden;
     }
-    .sidebar__link:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); }
+    .sidebar__link:hover { color: #fff; background: rgba(255,255,255,0.1); }
     .sidebar__link--active {
-      color: #0073e6; background: rgba(0,115,230,0.14);
+      color: #fff; background: rgba(255,255,255,0.15);
     }
     .sidebar__link--active::before {
       content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-      width: 3px; height: 22px; background: #0073e6; border-radius: 0 3px 3px 0;
+      width: 3px; height: 22px; background: #fff; border-radius: 0 3px 3px 0;
     }
 
     .sidebar__icon {
@@ -133,7 +141,7 @@
     .sidebar__icon--dot::after {
       content: ""; position: absolute; top: 8px; right: 8px;
       width: 7px; height: 7px; background: #dc2626;
-      border: 2px solid #1a3a5c; border-radius: 50%;
+      border: 2px solid #1272b8; border-radius: 50%;
     }
 
     .sidebar__label {
@@ -163,20 +171,13 @@
 
     .sidebar__sub-link {
       display: flex; align-items: center; gap: 8px;
-      padding: 7px 18px 7px 62px; color: rgba(255,255,255,0.5);
+      padding: 7px 18px 7px 62px; color: rgba(255,255,255,0.6);
       text-decoration: none; font-size: 0.82rem; white-space: nowrap;
       opacity: 0; transition: color 0.28s, background 0.28s, opacity 0.18s;
     }
     .sidebar--expanded .sidebar__sub-link { opacity: 1; }
-    .sidebar__sub-link::before {
-      content: ""; width: 5px; height: 5px; border-radius: 50%;
-      background: rgba(255,255,255,0.5); opacity: 0.3; flex-shrink: 0;
-      transition: opacity 0.28s, background 0.28s;
-    }
     .sidebar__sub-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
-    .sidebar__sub-link:hover::before { opacity: 0.7; }
-    .sidebar__sub-link--active { color: #0073e6; }
-    .sidebar__sub-link--active::before { background: #0073e6; opacity: 1; }
+    .sidebar__sub-link--active { color: #fff; }
 
     .sidebar__sub-badge {
       margin-left: auto; background: rgba(0,115,230,0.12); color: #0073e6;
@@ -530,6 +531,61 @@
     .document-table__tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .document-table__actions { display: flex; align-items: center; gap: 8px; }
     .document-table__toggle-cell { display: flex; justify-content: center; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       FILTRES — Gestion des filtres de recherche
+       ══════════════════════════════════════════════════════════════════ */
+    .filter-card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 0 0 1px rgba(0,0,0,.04);
+      padding: 24px; transition: box-shadow 0.2s; position: relative;
+    }
+    .filter-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.04); }
+    .filter-card + .filter-card { margin-top: 16px; }
+    .filter-card__top { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .filter-card__name { font-size: 16px; font-weight: 700; color: #1f2937; display: flex; align-items: center; gap: 10px; }
+    .filter-card__count { font-size: 12px; font-weight: 600; color: #0073e6; background: #eff6ff; padding: 2px 10px; border-radius: 12px; }
+    .filter-card__zone { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: #065f46; background: #ecfdf5; padding: 3px 10px; border-radius: 12px; border: 1px solid #a7f3d0; }
+    .filter-card__zone svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+    .filter-card__info-tags { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
+    .filter-info-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: #6b7280; }
+    .filter-info-tag svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; flex-shrink: 0; opacity: .6; }
+    .filter-info-tag--user { color: #0369a1; }
+    .filter-info-tag--list { color: #7c3aed; }
+    .filter-card__actions { display: flex; gap: 6px; }
+    .filter-card__action-btn {
+      width: 32px; height: 32px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff;
+      display: grid; place-items: center; cursor: pointer; color: #6b7280; transition: all 0.15s;
+    }
+    .filter-card__action-btn:hover { background: #f3f4f6; color: #1f2937; border-color: #d1d5db; }
+    .filter-card__action-btn--danger:hover { background: #fef2f2; color: #dc2626; border-color: #fca5a5; }
+    .filter-card__action-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .filter-card__criteria { display: flex; flex-direction: column; gap: 8px; }
+    .filter-card__criteria-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .filter-criteria-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+      background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb;
+    }
+    .filter-criteria-tag__icon { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; flex-shrink: 0; opacity: 0.5; }
+    .filter-criteria-tag--montant { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+    .filter-criteria-tag--procedure { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .filter-criteria-tag--contrat { background: #faf5ff; color: #7c3aed; border-color: #ddd6fe; }
+    .filter-criteria-tag--marche { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+    .filter-criteria-tag--programme { background: #fce7f3; color: #be185d; border-color: #fbcfe8; }
+    .filter-criteria-tag--zone { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+    .filter-criteria-tag--user { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
+    .filter-criteria-tag--keyword { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .filter-criteria-tag--specific { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+    .filter-criteria-tag__count { font-weight: 700; }
+    .filter-card__meta { display: flex; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f3f4f6; }
+    .filter-card__meta-item { font-size: 11px; color: #9ca3af; display: flex; align-items: center; gap: 4px; }
+    .filter-card__meta-item svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .filters-empty { text-align: center; padding: 80px 24px; }
+    .filters-empty__icon { width: 48px; height: 48px; margin: 0 auto 16px; color: #d1d5db; }
+    .filters-empty__icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .filters-empty__title { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 8px; }
+    .filters-empty__text { font-size: 14px; color: #6b7280; max-width: 400px; margin: 0 auto; }
 
     /* ══════════════════════════════════════════════════════════════════
        COORDONNÉES — PROFIL PAGE
@@ -1004,7 +1060,7 @@
        ══════════════════════════════════════════════════════════════════ */
     .preview-nav {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: #1a3a5c; color: #fff; border-radius: 14px;
+      background: #0d5a9e; color: #fff; border-radius: 14px;
       padding: 6px; display: flex; gap: 4px; z-index: 200;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
@@ -1042,7 +1098,7 @@
     </div>
 
     <nav class="sidebar__nav">
-      <div class="sidebar__section-label">Navigation</div>
+      <div class="sidebar__section-spacer"></div>
 
       <!-- Multi comptes -->
       <div class="sidebar__item sidebar__item--accordion">
@@ -1081,6 +1137,14 @@
         </div>
       </div>
 
+      <!-- Filtres -->
+      <div class="sidebar__item" id="nav-filtres">
+        <a href="#" class="sidebar__link" data-tip="Filtres" data-page="filtres">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>
+          <span class="sidebar__label">Filtres</span>
+        </a>
+      </div>
+
       <!-- Messagerie -->
       <div class="sidebar__item">
         <a href="#" class="sidebar__link" data-tip="Messagerie">
@@ -1104,7 +1168,7 @@
       </div>
 
       <div class="sidebar__divider"></div>
-      <div class="sidebar__section-label">Gestion</div>
+      <div class="sidebar__section-spacer"></div>
 
       <!-- Contacts -->
       <div class="sidebar__item" id="nav-contacts">
@@ -1877,6 +1941,163 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         PAGE : FILTRES
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-filtres" style="display: none;">
+      <div class="page-header">
+        <div>
+          <h1 class="page-header__title">
+            Mes filtres
+            <span class="page-header__badge page-header__badge--blue">4 filtres</span>
+          </h1>
+          <p class="page-header__subtitle">Gérez vos filtres de recherche pour les appels d'offres</p>
+        </div>
+        <button class="button button--primary button--small">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Créer un filtre
+        </button>
+      </div>
+
+      <!-- Filtre 1 -->
+      <div class="filter-card">
+        <div class="filter-card__top">
+          <div class="filter-card__name">
+            Bâtiment Neuf — Île-de-France
+            <span class="filter-card__count">131 annonces</span>
+            <span class="filter-card__zone"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Île-de-France</span>
+          </div>
+          <div class="filter-card__actions">
+            <button class="filter-card__action-btn" title="Modifier"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="filter-card__action-btn" title="Dupliquer"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+            <button class="filter-card__action-btn filter-card__action-btn--danger" title="Supprimer"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
+          </div>
+        </div>
+        <div class="filter-card__criteria">
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--montant"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" fill="currentColor" stroke="none" font-size="12" font-weight="600">€</text></svg> 200 000 € — 5 000 000 €</span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Mission de Base</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Procédure Adaptée Ouverte</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--marche"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Construction</span>
+            <span class="filter-criteria-tag filter-criteria-tag--programme"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> <span class="filter-criteria-tag__count">8</span> programmes</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--keyword"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> "bâtiment neuf"</span>
+            <span class="filter-criteria-tag filter-criteria-tag--specific"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> <span class="filter-criteria-tag__count">3</span> compétences</span>
+          </div>
+        </div>
+        <div class="filter-card__meta">
+          <span class="filter-card__meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Modifié il y a 2 jours</span>
+          <span class="filter-card__meta-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Nicolas V.</span>
+        </div>
+      </div>
+
+      <!-- Filtre 2 -->
+      <div class="filter-card">
+        <div class="filter-card__top">
+          <div class="filter-card__name">
+            Rénovation énergétique — National
+            <span class="filter-card__count">87 annonces</span>
+            <span class="filter-card__zone"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> France entière</span>
+          </div>
+          <div class="filter-card__actions">
+            <button class="filter-card__action-btn" title="Modifier"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="filter-card__action-btn" title="Dupliquer"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+            <button class="filter-card__action-btn filter-card__action-btn--danger" title="Supprimer"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
+          </div>
+          <div class="filter-card__info-tags">
+            <span class="filter-info-tag filter-info-tag--user"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Nicolas V., Blaise D.</span>
+            <span class="filter-info-tag filter-info-tag--list"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Prioritaires</span>
+          </div>
+        </div>
+        <div class="filter-card__criteria">
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--montant"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" fill="currentColor" stroke="none" font-size="12" font-weight="600">€</text></svg> 100 000 € — 2 000 000 € · <svg style="width:14px;height:14px;vertical-align:middle;display:inline" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" fill="none" stroke-width="1.8"/><text x="12" y="16" text-anchor="middle" fill="currentColor" stroke="none" font-size="12" font-weight="600">€</text><line x1="4" y1="20" x2="20" y2="4" stroke="currentColor" stroke-width="2"/></svg></span>
+            <span class="filter-criteria-tag filter-criteria-tag--montant"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" /><circle cx="8" cy="16" r="6" /><circle cx="16" cy="16" r="6" /></svg> Prime : 5 000 € — 30 000 €</span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Mission de Base · Conception Réalisation</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> <span class="filter-criteria-tag__count">3</span> procédures</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--marche"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Construction · Études</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--keyword"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> "rénovation" · "énergie"</span>
+            <span class="filter-criteria-tag filter-criteria-tag--specific"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Offre · Visite</span>
+          </div>
+        </div>
+        <div class="filter-card__meta">
+          <span class="filter-card__meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Modifié il y a 5 jours</span>
+          <span class="filter-card__meta-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Nicolas V.</span>
+        </div>
+      </div>
+
+      <!-- Filtre 3 -->
+      <div class="filter-card">
+        <div class="filter-card__top">
+          <div class="filter-card__name">
+            Équipements sportifs — Grand Sud
+            <span class="filter-card__count">23 annonces</span>
+            <span class="filter-card__zone"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> PACA · Occitanie · Nouvelle-Aquitaine</span>
+          </div>
+          <div class="filter-card__actions">
+            <button class="filter-card__action-btn" title="Modifier"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="filter-card__action-btn" title="Dupliquer"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+            <button class="filter-card__action-btn filter-card__action-btn--danger" title="Supprimer"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
+          </div>
+        </div>
+        <div class="filter-card__criteria">
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--montant"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" fill="currentColor" stroke="none" font-size="12" font-weight="600">€</text></svg> 500 000 € — 10 000 000 €</span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Mission de Base</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Concours d'Idées · Procédure Ouverte</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--programme"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> Sport › Tous</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--specific"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg> Exclusivité · 2-3 archi</span>
+          </div>
+        </div>
+        <div class="filter-card__meta">
+          <span class="filter-card__meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Modifié il y a 2 semaines</span>
+          <span class="filter-card__meta-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Blaise D.</span>
+        </div>
+      </div>
+
+      <!-- Filtre 4 -->
+      <div class="filter-card">
+        <div class="filter-card__top">
+          <div class="filter-card__name">
+            Concours — Architecture
+            <span class="filter-card__count">12 annonces</span>
+            <span class="filter-card__zone"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> France entière · DOM-TOM</span>
+          </div>
+          <div class="filter-card__actions">
+            <button class="filter-card__action-btn" title="Modifier"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="filter-card__action-btn" title="Dupliquer"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+            <button class="filter-card__action-btn filter-card__action-btn--danger" title="Supprimer"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
+          </div>
+        </div>
+        <div class="filter-card__criteria">
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--montant"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" /><circle cx="8" cy="16" r="6" /><circle cx="16" cy="16" r="6" /></svg> Prime : 15 000 € — 80 000 € · <svg style="width:14px;height:14px;vertical-align:middle;display:inline" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" stroke="currentColor" fill="none" stroke-width="1.8"/><circle cx="8" cy="16" r="6" stroke="currentColor" fill="none" stroke-width="1.8"/><circle cx="16" cy="16" r="6" stroke="currentColor" fill="none" stroke-width="1.8"/><line x1="2" y1="22" x2="22" y2="2" stroke="currentColor" stroke-width="2"/></svg></span>
+            <span class="filter-criteria-tag filter-criteria-tag--contrat"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Mission de Base · 1% artistique</span>
+            <span class="filter-criteria-tag filter-criteria-tag--procedure"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Concours d'Idées · Concours International</span>
+          </div>
+          <div class="filter-card__criteria-row">
+            <span class="filter-criteria-tag filter-criteria-tag--keyword"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> "concours" · excl: "démolition"</span>
+            <span class="filter-criteria-tag filter-criteria-tag--specific"><svg class="filter-criteria-tag__icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> <span class="filter-criteria-tag__count">4</span> compétences</span>
+          </div>
+        </div>
+        <div class="filter-card__meta">
+          <span class="filter-card__meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Modifié il y a 1 mois</span>
+          <span class="filter-card__meta-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Nicolas V.</span>
         </div>
       </div>
     </div>
@@ -2661,6 +2882,7 @@ Cordialement,</div>
     <button class="preview-nav__btn" data-page="preferences">Préférences</button>
     <button class="preview-nav__btn" data-page="utilisateurs">Utilisateurs</button>
     <button class="preview-nav__btn" data-page="coordonnees">Coordonnées</button>
+    <button class="preview-nav__btn" data-page="filtres">Filtres</button>
   </nav>
 
   <script>
@@ -2732,7 +2954,7 @@ Cordialement,</div>
       });
 
       // ── Navigation entre pages ──
-      const pages = { billing: 'Factures', bibliotheque: 'Bibliothèque', reseau: 'Contacts', preferences: 'Préférences', utilisateurs: 'Utilisateurs', coordonnees: 'Coordonnées' };
+      const pages = { billing: 'Factures', bibliotheque: 'Bibliothèque', reseau: 'Contacts', preferences: 'Préférences', utilisateurs: 'Utilisateurs', coordonnees: 'Coordonnées', filtres: 'Filtres' };
       const breadcrumb = document.getElementById('breadcrumb-current');
 
       function showPage(pageName) {
@@ -2777,6 +2999,8 @@ Cordialement,</div>
           document.getElementById('nav-coordonnees').classList.add('sidebar__sub-link--active');
           document.getElementById('nav-settings').classList.add('sidebar__item--expanded');
           document.querySelector('#nav-settings > .sidebar__link').classList.add('sidebar__link--active');
+        } else if (pageName === 'filtres') {
+          document.querySelector('#nav-filtres .sidebar__link').classList.add('sidebar__link--active');
         }
       }
 
