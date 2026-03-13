@@ -805,6 +805,457 @@
     .search-panel__input::placeholder { color: #9ca3af; }
 
     /* ══════════════════════════════════════════════════════════════════
+       DASHBOARD
+       ══════════════════════════════════════════════════════════════════ */
+    #page-dashboard { max-width: none; width: 100%; padding: 20px 28px 32px; }
+    #page-dashboard .page-header { margin-bottom: 16px; }
+    #page-dashboard .page-header__title { font-size: 1.25rem; }
+    #page-dashboard .page-header__subtitle { font-size: 13px; margin-top: 2px; }
+    .dash-toolbar {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .dash-toolbar__period {
+      display: flex; gap: 0; background: #f3f4f6; padding: 3px; border-radius: 8px;
+    }
+    .dash-toolbar__period-btn {
+      padding: 6px 14px; border: none; background: transparent; font-family: inherit;
+      font-size: 12px; font-weight: 500; color: #6b7280; border-radius: 6px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .dash-toolbar__period-btn--active { background: #fff; color: #1f2937; box-shadow: 0 1px 3px rgba(0,0,0,0.08); font-weight: 600; }
+    .dash-toolbar__spacer { flex: 1; }
+    .dash-toolbar__config-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
+      border: 1px solid #e5e7eb; border-radius: 8px; background: #fff;
+      font-family: inherit; font-size: 13px; font-weight: 500; color: #374151;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .dash-toolbar__config-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+    .dash-toolbar__config-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* KPI Grid */
+    .dash-kpi-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px;
+    }
+    .dash-kpi {
+      background: #fff; border-radius: 12px; padding: 16px 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+      position: relative; transition: box-shadow 0.2s;
+    }
+    .dash-kpi:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04); }
+    .dash-kpi__header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+    .dash-kpi__icon-box {
+      width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
+    }
+    .dash-kpi__icon-box svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .dash-kpi__icon-box--blue { background: #e8f0f8; color: #0073e6; }
+    .dash-kpi__icon-box--green { background: #ecfdf5; color: #16a34a; }
+    .dash-kpi__icon-box--amber { background: #fffbeb; color: #d97706; }
+    .dash-kpi__icon-box--red { background: #fef2f2; color: #dc2626; }
+    .dash-kpi__icon-box--purple { background: #f3e8ff; color: #7c3aed; }
+    .dash-kpi__icon-box--teal { background: #f0fdfa; color: #0d9488; }
+    .dash-kpi__icon-box--slate { background: #f1f5f9; color: #475569; }
+    .dash-kpi__icon-box--pink { background: #fdf2f8; color: #db2777; }
+    .dash-kpi__drag {
+      width: 20px; height: 20px; color: #d1d5db; cursor: grab; opacity: 0;
+      transition: opacity 0.15s; display: grid; place-items: center;
+    }
+    .dash-kpi:hover .dash-kpi__drag { opacity: 1; }
+    .dash-kpi__drag svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .dash-kpi__value {
+      font-size: 26px; font-weight: 700; color: #111827;
+      font-family: 'JetBrains Mono', monospace; letter-spacing: -0.02em; margin-bottom: 2px;
+    }
+    .dash-kpi__label { font-size: 13px; color: #6b7280; font-weight: 500; }
+    .dash-kpi__trend {
+      display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 600;
+      margin-top: 8px; padding: 2px 8px; border-radius: 6px;
+    }
+    .dash-kpi__trend svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+    .dash-kpi__trend--up { color: #16a34a; background: #ecfdf5; }
+    .dash-kpi__trend--down { color: #dc2626; background: #fef2f2; }
+    .dash-kpi__trend--flat { color: #6b7280; background: #f3f4f6; }
+    .dash-kpi__sparkline { margin-top: 12px; height: 32px; }
+    .dash-kpi__sparkline svg { width: 100%; height: 100%; }
+    .dash-kpi--hidden { display: none; }
+
+    /* Charts row */
+    .dash-charts { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 18px; }
+    .dash-chart-card {
+      background: #fff; border-radius: 12px; padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+    }
+    .dash-chart-card__header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+    }
+    .dash-chart-card__title { font-size: 14px; font-weight: 600; color: #1f2937; }
+    .dash-chart-card__body { position: relative; }
+    .dash-chart-placeholder {
+      height: 220px; background: linear-gradient(180deg, #f9fafb 0%, #fff 100%);
+      border-radius: 8px; display: flex; align-items: flex-end; padding: 0 8px 8px;
+      gap: 6px; overflow: hidden;
+    }
+    .dash-chart-bar {
+      flex: 1; border-radius: 4px 4px 0 0; transition: height 0.4s ease;
+      min-width: 0;
+    }
+    .dash-chart-bar--primary { background: #0073e6; }
+    .dash-chart-bar--light { background: #bfdbfe; }
+
+    /* Donut chart */
+    .dash-donut-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .dash-donut { width: 160px; height: 160px; position: relative; }
+    .dash-donut svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .dash-donut__center {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .dash-donut__center-value {
+      font-size: 24px; font-weight: 700; color: #111827;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .dash-donut__center-label { font-size: 11px; color: #9ca3af; }
+    .dash-donut-legend { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .dash-donut-legend__item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #374151; }
+    .dash-donut-legend__dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Activity + table row */
+    .dash-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .dash-activity-card {
+      background: #fff; border-radius: 12px; padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+    }
+    .dash-activity-card__header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+    }
+    .dash-activity-card__title { font-size: 14px; font-weight: 600; color: #1f2937; }
+    .dash-activity-item {
+      display: flex; align-items: flex-start; gap: 12px; padding: 10px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .dash-activity-item:last-child { border-bottom: none; }
+    .dash-activity-item__dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+    }
+    .dash-activity-item__dot--blue { background: #0073e6; }
+    .dash-activity-item__dot--green { background: #16a34a; }
+    .dash-activity-item__dot--amber { background: #f59e0b; }
+    .dash-activity-item__dot--red { background: #dc2626; }
+    .dash-activity-item__text { font-size: 13px; color: #374151; line-height: 1.5; }
+    .dash-activity-item__text strong { font-weight: 600; color: #111827; }
+    .dash-activity-item__time { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+
+    /* Top AO table */
+    .dash-table-card {
+      background: #fff; border-radius: 12px; padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+    }
+    .dash-table-card__header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+    }
+    .dash-table-card__title { font-size: 14px; font-weight: 600; color: #1f2937; }
+    .dash-mini-table { width: 100%; }
+    .dash-mini-table th {
+      text-align: left; font-size: 11px; font-weight: 600; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .dash-mini-table td {
+      font-size: 13px; color: #374151; padding: 10px; border-bottom: 1px solid #f3f4f6;
+    }
+    .dash-mini-table tr:last-child td { border-bottom: none; }
+    .dash-mini-table__status {
+      display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500;
+      padding: 3px 8px; border-radius: 6px;
+    }
+    .dash-mini-table__status--active { background: #ecfdf5; color: #16a34a; }
+    .dash-mini-table__status--pending { background: #fffbeb; color: #d97706; }
+    .dash-mini-table__status--closed { background: #f3f4f6; color: #6b7280; }
+
+    /* Config drawer */
+    .dash-config-overlay {
+      position: fixed; inset: 0; background: rgba(10,14,28,0.35); z-index: 300;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .dash-config-overlay--active { opacity: 1; pointer-events: auto; }
+    .dash-config-drawer {
+      position: fixed; top: 0; right: -420px; width: 420px; height: 100vh;
+      background: #fff; z-index: 301; transition: right 0.3s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column; box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+    }
+    .dash-config-drawer--open { right: 0; }
+    .dash-config-drawer__header {
+      padding: 20px 24px; border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dash-config-drawer__title { font-size: 16px; font-weight: 700; color: #111827; }
+    .dash-config-drawer__close {
+      width: 32px; height: 32px; border: none; background: none; cursor: pointer;
+      border-radius: 8px; color: #6b7280; display: grid; place-items: center; transition: all 0.15s;
+    }
+    .dash-config-drawer__close:hover { background: #f3f4f6; color: #111827; }
+    .dash-config-drawer__close svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .dash-config-drawer__body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+    .dash-config-drawer__section { margin-bottom: 24px; }
+    .dash-config-drawer__section-title {
+      font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 12px;
+    }
+    .dash-config-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 0;
+      border-bottom: 1px solid #f3f4f6; cursor: grab;
+    }
+    .dash-config-item:last-child { border-bottom: none; }
+    .dash-config-item__drag { color: #d1d5db; display: grid; place-items: center; }
+    .dash-config-item__drag svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .dash-config-item__label { flex: 1; font-size: 13px; color: #374151; font-weight: 500; }
+    .dash-config-item__toggle {
+      position: relative; width: 36px; height: 20px; border-radius: 10px;
+      background: #e5e7eb; border: none; cursor: pointer; transition: background 0.2s;
+    }
+    .dash-config-item__toggle::after {
+      content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
+      border-radius: 50%; background: #fff; transition: transform 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+    .dash-config-item__toggle--on { background: #0073e6; }
+    .dash-config-item__toggle--on::after { transform: translateX(16px); }
+    .dash-config-drawer__footer {
+      padding: 16px 24px; border-top: 1px solid #e5e7eb;
+      display: flex; justify-content: flex-end; gap: 8px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       MESSAGERIE
+       ══════════════════════════════════════════════════════════════════ */
+    #page-messagerie { max-width: 100%; padding: 0; }
+    #page-messagerie .page-header { padding: 20px 28px 0; margin-bottom: 0; }
+    .msg-layout {
+      display: flex; height: calc(100vh - 56px);
+      background: #f5f7fa;
+    }
+    /* -- Panneau dossiers -- */
+    .msg-folders {
+      width: 220px; flex-shrink: 0; background: #fff;
+      border-right: 1px solid #e5e7eb; display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+    .msg-folders__header {
+      padding: 20px 18px 12px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .msg-folders__title { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; }
+    .msg-folders__item {
+      display: flex; align-items: center; gap: 10px; padding: 9px 18px;
+      font-size: 13px; color: #374151; cursor: pointer; transition: background 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .msg-folders__item:hover { background: #f9fafb; }
+    .msg-folders__item--active { background: #e8f0f8; color: #0073e6; font-weight: 600; border-left-color: #0073e6; }
+    .msg-folders__item svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    .msg-folders__count {
+      margin-left: auto; font-size: 11px; font-weight: 600; color: #9ca3af;
+      background: #f3f4f6; padding: 2px 7px; border-radius: 8px; min-width: 22px; text-align: center;
+    }
+    .msg-folders__item--active .msg-folders__count { background: #0073e6; color: #fff; }
+    .msg-folders__divider { height: 1px; background: #e5e7eb; margin: 8px 18px; }
+    .msg-folders__section { padding: 14px 18px 6px; font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; }
+    .msg-label-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .msg-label-dot--red { background: #dc2626; }
+    .msg-label-dot--green { background: #16a34a; }
+    .msg-label-dot--amber { background: #f59e0b; }
+
+    /* -- Liste messages -- */
+    .msg-list {
+      width: 380px; flex-shrink: 0; background: #fff;
+      border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; overflow: hidden;
+    }
+    .msg-list__header {
+      padding: 16px 18px; border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .msg-list__search {
+      flex: 1; font-size: 13px; padding: 8px 14px 8px 34px;
+      border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb;
+      outline: none; transition: border-color 0.2s; font-family: inherit;
+      background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: 10px center;
+    }
+    .msg-list__search:focus { border-color: #0073e6; background-color: #fff; }
+    .msg-list__actions { display: flex; gap: 4px; }
+    .msg-list__actions button {
+      width: 32px; height: 32px; border: none; background: none; cursor: pointer;
+      border-radius: 6px; color: #9ca3af; display: grid; place-items: center; transition: all 0.15s;
+    }
+    .msg-list__actions button:hover { background: #f3f4f6; color: #374151; }
+    .msg-list__actions button svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .msg-list__scroll { flex: 1; overflow-y: auto; }
+    .msg-item {
+      display: flex; gap: 12px; padding: 14px 18px; cursor: pointer;
+      transition: background 0.15s; border-bottom: 1px solid #f3f4f6; position: relative;
+    }
+    .msg-item:hover { background: #f9fafb; }
+    .msg-item--active { background: #e8f0f8; }
+    .msg-item--unread .msg-item__sender { font-weight: 700; color: #111827; }
+    .msg-item--unread::before {
+      content: ""; position: absolute; left: 6px; top: 50%; transform: translateY(-50%);
+      width: 6px; height: 6px; border-radius: 50%; background: #0073e6;
+    }
+    .msg-item__avatar {
+      width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+      display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #fff;
+      overflow: hidden; background: #e5e7eb;
+    }
+    .msg-item__avatar img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .msg-item__body { flex: 1; min-width: 0; }
+    .msg-item__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .msg-item__sender { font-size: 13px; font-weight: 600; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-item__date { font-size: 11px; color: #9ca3af; flex-shrink: 0; }
+    .msg-item__subject { font-size: 12px; color: #6b7280; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-item__preview { font-size: 12px; color: #9ca3af; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-item__tags { display: flex; gap: 4px; margin-top: 6px; }
+    .msg-item__tag {
+      font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px;
+    }
+    .msg-item__tag--urgent { background: #fef2f2; color: #dc2626; }
+    .msg-item__tag--status { background: #f0fdf4; color: #16a34a; }
+
+    /* -- Détail conversation -- */
+    .msg-detail { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #f9fafb; }
+    /* -- Header agence -- */
+    .msg-detail__agency {
+      padding: 14px 24px; background: #fff; border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .msg-detail__agency-avatar {
+      width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+      display: grid; place-items: center; font-size: 15px; font-weight: 700; color: #fff;
+    }
+    .msg-detail__agency-info { flex: 1; min-width: 0; }
+    .msg-detail__agency-name { font-size: 14px; font-weight: 700; color: #111827; }
+    .msg-detail__agency-meta { font-size: 12px; color: #6b7280; margin-top: 1px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .msg-detail__agency-meta svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+    .msg-detail__agency-actions { display: flex; gap: 4px; flex-shrink: 0; }
+    .msg-detail__agency-actions button {
+      width: 34px; height: 34px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer;
+      border-radius: 8px; color: #6b7280; display: grid; place-items: center; transition: all 0.15s;
+    }
+    .msg-detail__agency-actions button:hover { background: #f3f4f6; color: #374151; }
+    .msg-detail__agency-actions button svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .msg-detail__agency-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px;
+    }
+    .msg-detail__agency-badge--partner { background: #f0fdf4; color: #16a34a; }
+    .msg-detail__agency-badge--pending { background: #fef3c7; color: #d97706; }
+    .msg-detail__agency-skills {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 5px;
+      font-size: 11px; color: #6b7280;
+    }
+    .msg-detail__agency-skills span { white-space: nowrap; }
+    .msg-detail__agency-skills-label {
+      font-size: 11px; font-weight: 600; color: #9ca3af; margin-right: 2px;
+    }
+
+    /* -- Header annonce -- */
+    .msg-detail__annonce {
+      padding: 14px 24px; background: #fff; border-bottom: 1px solid #e5e7eb;
+      border-left: 3px solid #0073e6; display: flex; gap: 16px;
+    }
+    .msg-detail__annonce-body { flex: 1; min-width: 0; }
+    .msg-detail__annonce-row1 {
+      display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+    }
+    .msg-detail__annonce-owner { font-size: 13px; font-weight: 600; color: #0073e6; }
+    .msg-detail__annonce-city { font-size: 12px; font-weight: 600; color: #0073e6; }
+    .msg-detail__annonce-age { font-size: 11px; color: #9ca3af; }
+    .msg-detail__annonce-row2 {
+      margin-top: 4px; display: flex; align-items: baseline; gap: 6px;
+    }
+    .msg-detail__annonce-ref { font-size: 12px; font-weight: 700; color: #0073e6; flex-shrink: 0; }
+    .msg-detail__annonce-title { font-size: 12px; font-weight: 600; color: #374151; line-height: 1.4; }
+    .msg-detail__annonce-tags {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px;
+      font-size: 11px; color: #6b7280;
+    }
+    .msg-detail__annonce-tag {
+      font-size: 11px; color: #6b7280; white-space: nowrap;
+    }
+    .msg-detail__annonce-sep { color: #d1d5db; font-size: 11px; }
+    .msg-detail__annonce-amount { font-size: 12px; font-weight: 600; color: #374151; }
+    .msg-detail__annonce-surface { font-size: 11px; color: #9ca3af; }
+    .msg-detail__annonce-link {
+      font-size: 11px; color: #0073e6; font-weight: 500; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 3px;
+    }
+    .msg-detail__annonce-link:hover { text-decoration: underline; }
+    .msg-detail__annonce-link svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .msg-detail__annonce-dl-wrapper {
+      flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      align-self: flex-start;
+    }
+    .msg-detail__annonce-dl {
+      display: inline-flex; flex-direction: column; align-items: center;
+      font-size: 11px; font-weight: 600; color: #dc2626;
+      padding: 6px 14px; border: 1px solid #fca5a5; border-radius: 10px; background: #fef2f2;
+      line-height: 1.4; text-align: center;
+    }
+    .msg-detail__annonce-dl__label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .msg-detail__thread { flex: 1; overflow-y: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .msg-bubble {
+      background: #fff; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05); max-width: 85%;
+    }
+    .msg-bubble--self { align-self: flex-end; background: #e8f0f8; }
+    .msg-bubble__header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+    .msg-bubble__author { font-size: 13px; font-weight: 600; color: #111827; }
+    .msg-bubble__time { font-size: 11px; color: #9ca3af; }
+    .msg-bubble__text { font-size: 13px; color: #374151; line-height: 1.6; }
+    .msg-bubble__attachment {
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+      padding: 6px 12px; background: #f3f4f6; border-radius: 8px; font-size: 12px; color: #374151;
+    }
+    .msg-bubble__attachment svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .msg-event {
+      text-align: center; font-size: 11px; color: #9ca3af; padding: 4px 0;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .msg-event::before, .msg-event::after { content: ""; flex: 1; height: 1px; background: #e5e7eb; }
+    .msg-event__badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 500;
+      background: #f3f4f6; color: #6b7280;
+    }
+    .msg-event__badge svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+
+    /* -- Zone réponse -- */
+    .msg-reply {
+      padding: 16px 24px; background: #fff; border-top: 1px solid #e5e7eb;
+    }
+    .msg-reply__wrapper {
+      border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; transition: border-color 0.2s;
+    }
+    .msg-reply__wrapper:focus-within { border-color: #0073e6; }
+    .msg-reply__textarea {
+      width: 100%; min-height: 80px; padding: 12px 16px; border: none; resize: vertical;
+      font-family: inherit; font-size: 13px; color: #1f2937; outline: none;
+      background: transparent; line-height: 1.5;
+    }
+    .msg-reply__textarea::placeholder { color: #9ca3af; }
+    .msg-reply__bar {
+      display: flex; align-items: center; justify-content: space-between; padding: 8px 12px;
+      background: #f9fafb;
+    }
+    .msg-reply__tools { display: flex; gap: 2px; }
+    .msg-reply__tools button {
+      width: 32px; height: 32px; border: none; background: none; cursor: pointer;
+      border-radius: 6px; color: #9ca3af; display: grid; place-items: center; transition: all 0.15s;
+    }
+    .msg-reply__tools button:hover { background: #e5e7eb; color: #374151; }
+    .msg-reply__tools button svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* ══════════════════════════════════════════════════════════════════
        BUTTONS (simplified for preview)
        ══════════════════════════════════════════════════════════════════ */
     .button {
@@ -1100,6 +1551,14 @@
     <nav class="sidebar__nav">
       <div class="sidebar__section-spacer"></div>
 
+      <!-- Dashboard -->
+      <div class="sidebar__item" id="nav-dashboard">
+        <a href="#" class="sidebar__link" data-tip="Dashboard" data-page="dashboard">
+          <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+          <span class="sidebar__label">Dashboard</span>
+        </a>
+      </div>
+
       <!-- Multi comptes -->
       <div class="sidebar__item sidebar__item--accordion">
         <button class="sidebar__link" data-sidebar-accordion data-tip="Multi comptes" type="button">
@@ -1146,8 +1605,8 @@
       </div>
 
       <!-- Messagerie -->
-      <div class="sidebar__item">
-        <a href="#" class="sidebar__link" data-tip="Messagerie">
+      <div class="sidebar__item" id="nav-messagerie">
+        <a href="#" class="sidebar__link" data-tip="Messagerie" data-page="messagerie">
           <span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
           <span class="sidebar__label">Messagerie</span>
         </a>
@@ -2661,6 +3120,323 @@ Cordialement,</div>
     </div>
 
     <!-- ════════════════════════════════════════════════════════════════
+         PAGE : MESSAGERIE
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-messagerie" style="display: none;">
+      <div class="msg-layout">
+
+        <!-- ── Dossiers ── -->
+        <aside class="msg-folders">
+          <div class="msg-folders__header">
+            <span class="msg-folders__title">Messagerie</span>
+          </div>
+
+          <div class="msg-folders__item msg-folders__item--active">
+            <svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3H10l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+            Boîte de réception <span class="msg-folders__count">3</span>
+          </div>
+          <div class="msg-folders__item">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            Conversations <span class="msg-folders__count">1</span>
+          </div>
+          <div class="msg-folders__item">
+            <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Propositions envoyées
+          </div>
+          <div class="msg-folders__item">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Propositions reçues
+          </div>
+          <div class="msg-folders__item">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Invitations
+          </div>
+          <div class="msg-folders__item">
+            <svg viewBox="0 0 24 24"><path d="M21 8V21H3V8"/><path d="M1 3h22v5H1z"/></svg>
+            Archive
+          </div>
+          <div class="msg-folders__item">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            Corbeille
+          </div>
+
+          <div class="msg-folders__divider"></div>
+          <div class="msg-folders__section">AO en cours</div>
+
+          <div class="msg-folders__item" style="padding-left: 22px;">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            483443 — Nord
+          </div>
+          <div class="msg-folders__item" style="padding-left: 22px;">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            483986 — Fargues
+          </div>
+
+          <div class="msg-folders__divider"></div>
+          <div class="msg-folders__section">Étiquettes</div>
+
+          <div class="msg-folders__item">
+            <span class="msg-label-dot msg-label-dot--red"></span> Urgent <span class="msg-folders__count">2</span>
+          </div>
+          <div class="msg-folders__item">
+            <span class="msg-label-dot msg-label-dot--green"></span> Nicolas
+          </div>
+          <div class="msg-folders__item">
+            <span class="msg-label-dot msg-label-dot--amber"></span> Traité par tél
+          </div>
+        </aside>
+
+        <!-- ── Liste messages ── -->
+        <div class="msg-list">
+          <div class="msg-list__header">
+            <input class="msg-list__search" type="text" placeholder="Rechercher…">
+            <div class="msg-list__actions">
+              <button title="Filtres"><svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button>
+              <button title="Trier"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 19 19 12"/></svg></button>
+            </div>
+          </div>
+          <div class="msg-list__scroll">
+
+            <!-- Message actif -->
+            <div class="msg-item msg-item--active msg-item--unread">
+              <div class="msg-item__avatar"><img src="assets/logos/180degres.svg" alt="180° degrés"></div>
+              <div class="msg-item__body">
+                <div class="msg-item__top">
+                  <span class="msg-item__sender">180° degrés</span>
+                  <span class="msg-item__date">09/03 · 15h17</span>
+                </div>
+                <div class="msg-item__subject">Ville de Martigné-Ferchaud — Étude pré-op.</div>
+                <div class="msg-item__preview">Nous vous proposons de constituer une équipe avec nous pour le projet…</div>
+                <div class="msg-item__tags">
+                  <span class="msg-item__tag msg-item__tag--status">4 mises à jour</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="msg-item">
+              <div class="msg-item__avatar"><img src="assets/logos/hays.svg" alt="HAYS Ingenierie"></div>
+              <div class="msg-item__body">
+                <div class="msg-item__top">
+                  <span class="msg-item__sender">HAYS INGENIERIE</span>
+                  <span class="msg-item__date">09/03 · 16h31</span>
+                </div>
+                <div class="msg-item__subject">Conversation</div>
+                <div class="msg-item__preview">Nous avons réglé la somme de 450 euros par virement. Bien cordialement…</div>
+              </div>
+            </div>
+
+            <div class="msg-item msg-item--unread">
+              <div class="msg-item__avatar"><img src="assets/logos/13horsite.svg" alt="13horSite"></div>
+              <div class="msg-item__body">
+                <div class="msg-item__top">
+                  <span class="msg-item__sender">13horSite</span>
+                  <span class="msg-item__date">09/03 · 16h15</span>
+                </div>
+                <div class="msg-item__subject">Conversation</div>
+                <div class="msg-item__preview">Votre abonnement Performance arrive à son terme le 27 mars. Merci de…</div>
+                <div class="msg-item__tags">
+                  <span class="msg-item__tag msg-item__tag--urgent">Urgent</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="msg-item">
+              <div class="msg-item__avatar"><img src="assets/logos/hb-architectes.svg" alt="HB Architectes"></div>
+              <div class="msg-item__body">
+                <div class="msg-item__top">
+                  <span class="msg-item__sender">HB Architectes Associés</span>
+                  <span class="msg-item__date">09/03 · 16h10</span>
+                </div>
+                <div class="msg-item__subject">Conversation</div>
+                <div class="msg-item__preview">Je vous remercie pour votre retour. Malheureusement, nous ne serons p…</div>
+              </div>
+            </div>
+
+            <div class="msg-item">
+              <div class="msg-item__avatar"><img src="assets/logos/hdm.svg" alt="HDM Ingenierie"></div>
+              <div class="msg-item__body">
+                <div class="msg-item__top">
+                  <span class="msg-item__sender">HDM INGENIERIE</span>
+                  <span class="msg-item__date">09/03 · 16h03</span>
+                </div>
+                <div class="msg-item__subject">Conversation</div>
+                <div class="msg-item__preview">Bienvenue sur M2BPO, pour accéder aux annonces, vous devez créer un filtre…</div>
+              </div>
+            </div>
+
+            <div class="msg-item">
+              <div class="msg-item__avatar"><img src="assets/logos/maurer-gilbert.svg" alt="Maurer & Gilbert"></div>
+              <div class="msg-item__body">
+                <div class="msg-item__top">
+                  <span class="msg-item__sender">MAURER & GILBERT ARCHITECTES</span>
+                  <span class="msg-item__date">09/03 · 15h20</span>
+                </div>
+                <div class="msg-item__subject">Conversation</div>
+                <div class="msg-item__preview">Bienvenue sur M2BPO, pour accéder aux annonces, vous devez créer un filtre…</div>
+              </div>
+            </div>
+
+            <div class="msg-item">
+              <div class="msg-item__avatar"><img src="assets/logos/maya.svg" alt="Maya"></div>
+              <div class="msg-item__body">
+                <div class="msg-item__top">
+                  <span class="msg-item__sender">Maya Construction Durable</span>
+                  <span class="msg-item__date">09/03 · 14h28</span>
+                </div>
+                <div class="msg-item__subject">CC Le Grésivaudan — Vérification périodiques</div>
+                <div class="msg-item__preview">Nous souhaitons vous proposer d'intégrer notre équipe dans le cadre de…</div>
+              </div>
+            </div>
+
+            <div class="msg-item">
+              <div class="msg-item__avatar"><img src="assets/logos/mbo.svg" alt="MBO Ingénierie"></div>
+              <div class="msg-item__body">
+                <div class="msg-item__top">
+                  <span class="msg-item__sender">MBO Ingénierie</span>
+                  <span class="msg-item__date">09/03 · 13h58</span>
+                </div>
+                <div class="msg-item__subject">Conversation</div>
+                <div class="msg-item__preview">Bonjour, nous revenons vers vous concernant notre dernière proposition…</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ── Détail conversation ── -->
+        <div class="msg-detail">
+          <!-- Header agence -->
+          <div class="msg-detail__agency">
+            <div class="msg-detail__agency-avatar"><img src="assets/logos/180degres.svg" alt="180° degrés" style="width:100%;height:100%;object-fit:cover;border-radius:10px;"></div>
+            <div class="msg-detail__agency-info">
+              <div class="msg-detail__agency-name">
+                180° degrés
+                <span class="msg-detail__agency-badge msg-detail__agency-badge--partner">Partenaire</span>
+              </div>
+              <div class="msg-detail__agency-meta">
+                <span style="display:inline-flex;align-items:center;gap:3px;">
+                  <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Rennes (35)
+                </span>
+                <span style="display:inline-flex;align-items:center;gap:3px;">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  contact@180degres.fr
+                </span>
+                <span style="display:inline-flex;align-items:center;gap:3px;">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                  02 99 XX XX XX
+                </span>
+              </div>
+              <div class="msg-detail__agency-skills">
+                <span class="msg-detail__agency-skills-label">Compétences :</span>
+                <span>Thermique</span> · <span>Fluides</span> · <span>Environnement</span> · <span>Acoustique</span> · <span>Énergie</span>
+              </div>
+            </div>
+            <div class="msg-detail__agency-actions">
+              <button title="Voir la fiche"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button title="Imprimer"><svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
+              <button title="Plus"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Header annonce -->
+          <div class="msg-detail__annonce">
+            <div class="msg-detail__annonce-body">
+              <div class="msg-detail__annonce-row1">
+                <span class="msg-detail__annonce-owner">Ville de Martigné-Ferchaud</span>
+                <span class="msg-detail__annonce-city">Martigné-Ferchaud (35)</span>
+                <span class="msg-detail__annonce-sep">·</span>
+                <span class="msg-detail__annonce-age">Inséré depuis 3 jours</span>
+              </div>
+              <div class="msg-detail__annonce-row2">
+                <span class="msg-detail__annonce-ref">477403</span>
+                <span class="msg-detail__annonce-title">Étude pré-opérationnelle pour l'aménagement d'espace public, pour la sécurisation et l'insertion paysagère de la véloroute interrégionale La Régalante en agglomération</span>
+              </div>
+              <div class="msg-detail__annonce-tags">
+                <span class="msg-detail__annonce-tag">Construction</span>
+                <span class="msg-detail__annonce-sep">·</span>
+                <span class="msg-detail__annonce-tag">Mission de Base</span>
+                <span class="msg-detail__annonce-sep">·</span>
+                <span class="msg-detail__annonce-tag">Procédure Adaptée Ouverte</span>
+                <span class="msg-detail__annonce-sep">·</span>
+                <span class="msg-detail__annonce-amount">Montant 926 000 €</span>
+                <span class="msg-detail__annonce-surface">Surface 871 m²</span>
+                <span class="msg-detail__annonce-sep">·</span>
+                <a class="msg-detail__annonce-link" href="#">
+                  Voir l'annonce
+                  <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+            </div>
+            <div class="msg-detail__annonce-dl-wrapper">
+              <span class="msg-detail__annonce-dl">
+                <span class="msg-detail__annonce-dl__label">Date limite</span>
+                12 décembre 2025<br>16h00
+              </span>
+            </div>
+          </div>
+
+          <div class="msg-detail__thread">
+
+            <!-- Message initial -->
+            <div class="msg-bubble">
+              <div class="msg-bubble__header">
+                <span class="msg-bubble__author">Davide Costelli, 180° degrés</span>
+                <span class="msg-bubble__time">09/03/2026 · 15h06</span>
+              </div>
+              <div class="msg-bubble__text">
+                Bonjour,<br><br>
+                Nous vous proposons de constituer une équipe avec nous pour le projet suivant :<br>
+                Merci de nous confirmer votre participation.<br><br>
+                Cordialement.
+              </div>
+            </div>
+
+            <!-- Événements de statut -->
+            <div class="msg-event">
+              <span class="msg-event__badge"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> demandé → accepté</span>
+              <span style="font-size: 11px; color: #9ca3af;">15h07</span>
+            </div>
+
+            <div class="msg-event">
+              <span class="msg-event__badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> accepté → annulé</span>
+              <span style="font-size: 11px; color: #9ca3af;">15h17</span>
+            </div>
+
+            <div class="msg-event">
+              <span class="msg-event__badge"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> annulé → envoyé</span>
+              <span style="font-size: 11px; color: #9ca3af;">15h17</span>
+            </div>
+
+            <div class="msg-event">
+              <span class="msg-event__badge"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> envoyé → accepté</span>
+              <span style="font-size: 11px; color: #9ca3af;">15h17</span>
+            </div>
+
+          </div>
+
+          <!-- Zone réponse -->
+          <div class="msg-reply">
+            <div class="msg-reply__wrapper">
+              <textarea class="msg-reply__textarea" placeholder="Écrire un message…"></textarea>
+              <div class="msg-reply__bar">
+                <div class="msg-reply__tools">
+                  <button title="Pièce jointe"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></button>
+                  <button title="Formater"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div>
+                <button class="button button--primary button--small">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  Envoyer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════
          PAGE : UTILISATEURS
          ════════════════════════════════════════════════════════════════ -->
     <div class="page" id="page-utilisateurs" style="display: none;">
@@ -2795,6 +3571,324 @@ Cordialement,</div>
       </div>
     </div>
 
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PAGE : DASHBOARD
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="page" id="page-dashboard" style="display: none;">
+    <div class="page-header">
+      <h1 class="page-header__title">Dashboard</h1>
+      <p class="page-header__subtitle">Vue d'ensemble de votre activité</p>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="dash-toolbar">
+      <div class="dash-toolbar__period">
+        <button class="dash-toolbar__period-btn" data-dash-period="7j">7 jours</button>
+        <button class="dash-toolbar__period-btn dash-toolbar__period-btn--active" data-dash-period="30j">30 jours</button>
+        <button class="dash-toolbar__period-btn" data-dash-period="90j">90 jours</button>
+        <button class="dash-toolbar__period-btn" data-dash-period="12m">12 mois</button>
+      </div>
+      <div class="dash-toolbar__spacer"></div>
+      <button class="dash-toolbar__config-btn" id="dash-config-toggle">
+        <svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        Configurer les KPI
+      </button>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="dash-kpi-grid" id="dash-kpi-grid">
+
+      <div class="dash-kpi" data-kpi="ao-cours">
+        <div class="dash-kpi__header">
+          <div class="dash-kpi__icon-box dash-kpi__icon-box--blue">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+        </div>
+        <div class="dash-kpi__value">47</div>
+        <div class="dash-kpi__label">AO en cours</div>
+        <div class="dash-kpi__trend dash-kpi__trend--up">
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+          +12% vs période préc.
+        </div>
+      </div>
+
+      <div class="dash-kpi" data-kpi="propositions">
+        <div class="dash-kpi__header">
+          <div class="dash-kpi__icon-box dash-kpi__icon-box--green">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+        </div>
+        <div class="dash-kpi__value">18</div>
+        <div class="dash-kpi__label">Propositions envoyées</div>
+        <div class="dash-kpi__trend dash-kpi__trend--up">
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+          +5 ce mois
+        </div>
+      </div>
+
+      <div class="dash-kpi" data-kpi="taux-reussite">
+        <div class="dash-kpi__header">
+          <div class="dash-kpi__icon-box dash-kpi__icon-box--amber">
+            <svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+          </div>
+          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+        </div>
+        <div class="dash-kpi__value">32%</div>
+        <div class="dash-kpi__label">Taux de réussite</div>
+        <div class="dash-kpi__trend dash-kpi__trend--flat">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Stable
+        </div>
+      </div>
+
+      <div class="dash-kpi" data-kpi="montant-moyen">
+        <div class="dash-kpi__header">
+          <div class="dash-kpi__icon-box dash-kpi__icon-box--purple">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+        </div>
+        <div class="dash-kpi__value">2.4M€</div>
+        <div class="dash-kpi__label">Montant moyen des AO</div>
+        <div class="dash-kpi__trend dash-kpi__trend--up">
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+          +340K€
+        </div>
+      </div>
+
+      <div class="dash-kpi" data-kpi="delai-reponse">
+        <div class="dash-kpi__header">
+          <div class="dash-kpi__icon-box dash-kpi__icon-box--red">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+        </div>
+        <div class="dash-kpi__value">4.2j</div>
+        <div class="dash-kpi__label">Délai moyen de réponse</div>
+        <div class="dash-kpi__trend dash-kpi__trend--down">
+          <svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/></svg>
+          -0.8j (amélioration)
+        </div>
+      </div>
+
+      <div class="dash-kpi" data-kpi="contacts-actifs">
+        <div class="dash-kpi__header">
+          <div class="dash-kpi__icon-box dash-kpi__icon-box--teal">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+        </div>
+        <div class="dash-kpi__value">156</div>
+        <div class="dash-kpi__label">Contacts actifs</div>
+        <div class="dash-kpi__trend dash-kpi__trend--up">
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+          +23 ce mois
+        </div>
+      </div>
+
+      <div class="dash-kpi" data-kpi="messages-nonlus">
+        <div class="dash-kpi__header">
+          <div class="dash-kpi__icon-box dash-kpi__icon-box--pink">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+        </div>
+        <div class="dash-kpi__value">12</div>
+        <div class="dash-kpi__label">Messages non lus</div>
+        <div class="dash-kpi__trend dash-kpi__trend--flat">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          3 urgents
+        </div>
+      </div>
+
+      <div class="dash-kpi" data-kpi="ao-gagnes">
+        <div class="dash-kpi__header">
+          <div class="dash-kpi__icon-box dash-kpi__icon-box--slate">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+        </div>
+        <div class="dash-kpi__value">6</div>
+        <div class="dash-kpi__label">AO remportés (période)</div>
+        <div class="dash-kpi__trend dash-kpi__trend--up">
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+          +2 vs période préc.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Charts row -->
+    <div class="dash-charts">
+      <div class="dash-chart-card">
+        <div class="dash-chart-card__header">
+          <div class="dash-chart-card__title">Activité AO — 12 derniers mois</div>
+          <button class="button button--ghost button--small">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+        </div>
+        <div class="dash-chart-card__body">
+          <div class="dash-chart-placeholder">
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 35%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 20%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 55%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 30%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 45%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 25%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 70%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 40%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 60%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 35%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 80%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 50%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 65%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 38%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 50%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 28%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 75%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 45%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 85%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 55%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 90%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 60%"></div>
+            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 72%"></div>
+            <div class="dash-chart-bar dash-chart-bar--light" style="height: 42%"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 8px 8px 0; font-size: 11px; color: #9ca3af;">
+            <span>Avr</span><span>Mai</span><span>Juin</span><span>Juil</span><span>Août</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Déc</span><span>Jan</span><span>Fév</span><span>Mar</span>
+          </div>
+          <div style="display: flex; gap: 16px; margin-top: 10px; font-size: 12px; color: #6b7280;">
+            <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; background: #0073e6; border-radius: 2px;"></span> AO consultés</span>
+            <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; background: #bfdbfe; border-radius: 2px;"></span> Propositions</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-chart-card">
+        <div class="dash-chart-card__header">
+          <div class="dash-chart-card__title">Répartition par lot</div>
+        </div>
+        <div class="dash-chart-card__body">
+          <div class="dash-donut-wrap">
+            <div class="dash-donut">
+              <svg viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e5e7eb" stroke-width="3"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0073e6" stroke-width="3" stroke-dasharray="35 65" stroke-dashoffset="0"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#60a5fa" stroke-width="3" stroke-dasharray="25 75" stroke-dashoffset="-35"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="-60"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#16a34a" stroke-width="3" stroke-dasharray="12 88" stroke-dashoffset="-80"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#9ca3af" stroke-width="3" stroke-dasharray="8 92" stroke-dashoffset="-92"/>
+              </svg>
+              <div class="dash-donut__center">
+                <div class="dash-donut__center-value">47</div>
+                <div class="dash-donut__center-label">AO total</div>
+              </div>
+            </div>
+            <div class="dash-donut-legend">
+              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#0073e6"></span>Gros œuvre</div>
+              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#60a5fa"></span>Second œuvre</div>
+              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#f59e0b"></span>VRD</div>
+              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#16a34a"></span>Électricité</div>
+              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#9ca3af"></span>Autres</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom row -->
+    <div class="dash-bottom">
+      <div class="dash-activity-card">
+        <div class="dash-activity-card__header">
+          <div class="dash-activity-card__title">Activité récente</div>
+          <button class="button button--ghost button--small">Tout voir</button>
+        </div>
+        <div class="dash-activity-item">
+          <div class="dash-activity-item__dot dash-activity-item__dot--green"></div>
+          <div>
+            <div class="dash-activity-item__text"><strong>Proposition acceptée</strong> — Lycée Kléber, Lot Gros Œuvre</div>
+            <div class="dash-activity-item__time">Il y a 2 heures</div>
+          </div>
+        </div>
+        <div class="dash-activity-item">
+          <div class="dash-activity-item__dot dash-activity-item__dot--blue"></div>
+          <div>
+            <div class="dash-activity-item__text"><strong>Nouvelle proposition</strong> envoyée pour Centre Aquatique Mulhouse</div>
+            <div class="dash-activity-item__time">Il y a 5 heures</div>
+          </div>
+        </div>
+        <div class="dash-activity-item">
+          <div class="dash-activity-item__dot dash-activity-item__dot--amber"></div>
+          <div>
+            <div class="dash-activity-item__text"><strong>Date limite demain</strong> — Réhabilitation EHPAD Saint-Louis</div>
+            <div class="dash-activity-item__time">Il y a 8 heures</div>
+          </div>
+        </div>
+        <div class="dash-activity-item">
+          <div class="dash-activity-item__dot dash-activity-item__dot--red"></div>
+          <div>
+            <div class="dash-activity-item__text"><strong>AO expiré</strong> — Aménagement Place de la Réunion, Mulhouse</div>
+            <div class="dash-activity-item__time">Hier, 18:30</div>
+          </div>
+        </div>
+        <div class="dash-activity-item">
+          <div class="dash-activity-item__dot dash-activity-item__dot--blue"></div>
+          <div>
+            <div class="dash-activity-item__text"><strong>Message</strong> de HB Architectes Associés sur AO Médiathèque</div>
+            <div class="dash-activity-item__time">Hier, 14:15</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-table-card">
+        <div class="dash-table-card__header">
+          <div class="dash-table-card__title">AO prioritaires</div>
+          <button class="button button--ghost button--small">Voir tous</button>
+        </div>
+        <table class="dash-mini-table">
+          <thead>
+            <tr>
+              <th>Objet</th>
+              <th>Échéance</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Réhabilitation EHPAD Saint-Louis</td>
+              <td style="white-space: nowrap; color: #dc2626; font-weight: 500;">13 mars</td>
+              <td><span class="dash-mini-table__status dash-mini-table__status--pending">En cours</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Centre Aquatique Mulhouse</td>
+              <td style="white-space: nowrap;">18 mars</td>
+              <td><span class="dash-mini-table__status dash-mini-table__status--active">Envoyé</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Extension Collège Bartholdi</td>
+              <td style="white-space: nowrap;">25 mars</td>
+              <td><span class="dash-mini-table__status dash-mini-table__status--pending">Brouillon</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Lycée Kléber — Lot Gros Œuvre</td>
+              <td style="white-space: nowrap; color: #16a34a;">Gagné</td>
+              <td><span class="dash-mini-table__status dash-mini-table__status--active">Accepté</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Parking Silo Gare Centrale</td>
+              <td style="white-space: nowrap;">02 avr</td>
+              <td><span class="dash-mini-table__status dash-mini-table__status--pending">À traiter</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   </main>
 
   <!-- ══════════════════════════════════════════════════════════════════
@@ -2872,10 +3966,73 @@ Cordialement,</div>
 
   <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
 
+  <!-- Config drawer (dashboard) -->
+  <div class="dash-config-overlay" id="dash-config-overlay"></div>
+  <div class="dash-config-drawer" id="dash-config-drawer">
+    <div class="dash-config-drawer__header">
+      <div class="dash-config-drawer__title">Configurer le dashboard</div>
+      <button class="dash-config-drawer__close" id="dash-config-close">
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="dash-config-drawer__body">
+      <div class="dash-config-drawer__section">
+        <div class="dash-config-drawer__section-title">KPI visibles</div>
+        <p style="font-size: 12px; color: #9ca3af; margin-bottom: 14px;">Activez ou désactivez les indicateurs. Glissez pour réorganiser.</p>
+
+        <div class="dash-config-item" data-config-kpi="ao-cours">
+          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+          <div class="dash-config-item__label">AO en cours</div>
+          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="ao-cours"></button>
+        </div>
+        <div class="dash-config-item" data-config-kpi="propositions">
+          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+          <div class="dash-config-item__label">Propositions envoyées</div>
+          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="propositions"></button>
+        </div>
+        <div class="dash-config-item" data-config-kpi="taux-reussite">
+          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+          <div class="dash-config-item__label">Taux de réussite</div>
+          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="taux-reussite"></button>
+        </div>
+        <div class="dash-config-item" data-config-kpi="montant-moyen">
+          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+          <div class="dash-config-item__label">Montant moyen des AO</div>
+          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="montant-moyen"></button>
+        </div>
+        <div class="dash-config-item" data-config-kpi="delai-reponse">
+          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+          <div class="dash-config-item__label">Délai moyen de réponse</div>
+          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="delai-reponse"></button>
+        </div>
+        <div class="dash-config-item" data-config-kpi="contacts-actifs">
+          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+          <div class="dash-config-item__label">Contacts actifs</div>
+          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="contacts-actifs"></button>
+        </div>
+        <div class="dash-config-item" data-config-kpi="messages-nonlus">
+          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+          <div class="dash-config-item__label">Messages non lus</div>
+          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="messages-nonlus"></button>
+        </div>
+        <div class="dash-config-item" data-config-kpi="ao-gagnes">
+          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+          <div class="dash-config-item__label">AO remportés</div>
+          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="ao-gagnes"></button>
+        </div>
+      </div>
+    </div>
+    <div class="dash-config-drawer__footer">
+      <button class="button button--secondary button--small" id="dash-config-close-btn">Fermer</button>
+      <button class="button button--primary button--small" id="dash-config-reset">Réinitialiser</button>
+    </div>
+  </div>
+
   <!-- ══════════════════════════════════════════════════════════════════
        NAVIGATION PREVIEW (barre flottante bas)
        ══════════════════════════════════════════════════════════════════ -->
   <nav class="preview-nav">
+    <button class="preview-nav__btn" data-page="dashboard">Dashboard</button>
     <button class="preview-nav__btn preview-nav__btn--active" data-page="billing">Factures</button>
     <button class="preview-nav__btn" data-page="bibliotheque">Bibliothèque</button>
     <button class="preview-nav__btn" data-page="reseau">Contacts</button>
@@ -2883,6 +4040,7 @@ Cordialement,</div>
     <button class="preview-nav__btn" data-page="utilisateurs">Utilisateurs</button>
     <button class="preview-nav__btn" data-page="coordonnees">Coordonnées</button>
     <button class="preview-nav__btn" data-page="filtres">Filtres</button>
+    <button class="preview-nav__btn" data-page="messagerie">Messagerie</button>
   </nav>
 
   <script>
@@ -2954,7 +4112,7 @@ Cordialement,</div>
       });
 
       // ── Navigation entre pages ──
-      const pages = { billing: 'Factures', bibliotheque: 'Bibliothèque', reseau: 'Contacts', preferences: 'Préférences', utilisateurs: 'Utilisateurs', coordonnees: 'Coordonnées', filtres: 'Filtres' };
+      const pages = { dashboard: 'Dashboard', billing: 'Factures', bibliotheque: 'Bibliothèque', reseau: 'Contacts', preferences: 'Préférences', utilisateurs: 'Utilisateurs', coordonnees: 'Coordonnées', filtres: 'Filtres', messagerie: 'Messagerie' };
       const breadcrumb = document.getElementById('breadcrumb-current');
 
       function showPage(pageName) {
@@ -3001,6 +4159,10 @@ Cordialement,</div>
           document.querySelector('#nav-settings > .sidebar__link').classList.add('sidebar__link--active');
         } else if (pageName === 'filtres') {
           document.querySelector('#nav-filtres .sidebar__link').classList.add('sidebar__link--active');
+        } else if (pageName === 'messagerie') {
+          document.querySelector('#nav-messagerie .sidebar__link').classList.add('sidebar__link--active');
+        } else if (pageName === 'dashboard') {
+          document.querySelector('#nav-dashboard .sidebar__link').classList.add('sidebar__link--active');
         }
       }
 
@@ -3015,6 +4177,59 @@ Cordialement,</div>
           e.preventDefault();
           showPage(link.dataset.page);
           collapse();
+        });
+      });
+
+      // ── Dashboard config drawer ──
+      const dashConfigToggle = document.getElementById('dash-config-toggle');
+      const dashConfigOverlay = document.getElementById('dash-config-overlay');
+      const dashConfigDrawer = document.getElementById('dash-config-drawer');
+      const dashConfigClose = document.getElementById('dash-config-close');
+      const dashConfigCloseBtn = document.getElementById('dash-config-close-btn');
+      const dashConfigReset = document.getElementById('dash-config-reset');
+
+      function openDashConfig() {
+        dashConfigOverlay.classList.add('dash-config-overlay--active');
+        dashConfigDrawer.classList.add('dash-config-drawer--open');
+      }
+      function closeDashConfig() {
+        dashConfigOverlay.classList.remove('dash-config-overlay--active');
+        dashConfigDrawer.classList.remove('dash-config-drawer--open');
+      }
+      if (dashConfigToggle) {
+        dashConfigToggle.addEventListener('click', openDashConfig);
+        dashConfigOverlay.addEventListener('click', closeDashConfig);
+        dashConfigClose.addEventListener('click', closeDashConfig);
+        dashConfigCloseBtn.addEventListener('click', closeDashConfig);
+      }
+
+      // KPI toggle visibility
+      document.querySelectorAll('[data-toggle-kpi]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const kpiId = btn.dataset.toggleKpi;
+          const kpiCard = document.querySelector(`.dash-kpi[data-kpi="${kpiId}"]`);
+          btn.classList.toggle('dash-config-item__toggle--on');
+          if (kpiCard) kpiCard.classList.toggle('dash-kpi--hidden');
+        });
+      });
+
+      // Dashboard reset
+      if (dashConfigReset) {
+        dashConfigReset.addEventListener('click', () => {
+          document.querySelectorAll('[data-toggle-kpi]').forEach(btn => {
+            btn.classList.add('dash-config-item__toggle--on');
+          });
+          document.querySelectorAll('.dash-kpi').forEach(card => {
+            card.classList.remove('dash-kpi--hidden');
+          });
+        });
+      }
+
+      // Dashboard period selector
+      document.querySelectorAll('[data-dash-period]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('[data-dash-period]').forEach(b => b.classList.remove('dash-toolbar__period-btn--active'));
+          btn.classList.add('dash-toolbar__period-btn--active');
         });
       });
 
