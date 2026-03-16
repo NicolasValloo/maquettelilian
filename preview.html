@@ -805,225 +805,160 @@
     .search-panel__input::placeholder { color: #9ca3af; }
 
     /* ══════════════════════════════════════════════════════════════════
-       DASHBOARD
+       DASHBOARD v2
        ══════════════════════════════════════════════════════════════════ */
-    #page-dashboard { max-width: none; width: 100%; padding: 20px 28px 32px; }
-    #page-dashboard .page-header { margin-bottom: 16px; }
-    #page-dashboard .page-header__title { font-size: 1.25rem; }
+    #page-dashboard { max-width: none; width: 100%; padding: 16px 24px 28px; }
+    #page-dashboard .page-header { margin-bottom: 12px; }
+    #page-dashboard .page-header__title { font-size: 18px; font-weight: 700; }
     #page-dashboard .page-header__subtitle { font-size: 13px; margin-top: 2px; }
-    .dash-toolbar {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
-    }
-    .dash-toolbar__period {
-      display: flex; gap: 0; background: #f3f4f6; padding: 3px; border-radius: 8px;
-    }
-    .dash-toolbar__period-btn {
-      padding: 6px 14px; border: none; background: transparent; font-family: inherit;
-      font-size: 12px; font-weight: 500; color: #6b7280; border-radius: 6px;
-      cursor: pointer; transition: all 0.15s;
-    }
-    .dash-toolbar__period-btn--active { background: #fff; color: #1f2937; box-shadow: 0 1px 3px rgba(0,0,0,0.08); font-weight: 600; }
-    .dash-toolbar__spacer { flex: 1; }
-    .dash-toolbar__config-btn {
-      display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
-      border: 1px solid #e5e7eb; border-radius: 8px; background: #fff;
-      font-family: inherit; font-size: 13px; font-weight: 500; color: #374151;
-      cursor: pointer; transition: all 0.15s;
-    }
-    .dash-toolbar__config-btn:hover { background: #f9fafb; border-color: #d1d5db; }
-    .dash-toolbar__config-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
 
-    /* KPI Grid */
-    .dash-kpi-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px;
-    }
-    .dash-kpi {
-      background: #fff; border-radius: 12px; padding: 16px 18px;
+    /* Dashboard card base */
+    .dash-card {
+      background: #fff; border-radius: 10px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
-      position: relative; transition: box-shadow 0.2s;
+      padding: 14px 16px;
     }
-    .dash-kpi:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04); }
-    .dash-kpi__header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
-    .dash-kpi__icon-box {
-      width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
-    }
-    .dash-kpi__icon-box svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .dash-kpi__icon-box--blue { background: #e8f0f8; color: #0073e6; }
-    .dash-kpi__icon-box--green { background: #ecfdf5; color: #16a34a; }
-    .dash-kpi__icon-box--amber { background: #fffbeb; color: #d97706; }
-    .dash-kpi__icon-box--red { background: #fef2f2; color: #dc2626; }
-    .dash-kpi__icon-box--purple { background: #f3e8ff; color: #7c3aed; }
-    .dash-kpi__icon-box--teal { background: #f0fdfa; color: #0d9488; }
-    .dash-kpi__icon-box--slate { background: #f1f5f9; color: #475569; }
-    .dash-kpi__icon-box--pink { background: #fdf2f8; color: #db2777; }
-    .dash-kpi__drag {
-      width: 20px; height: 20px; color: #d1d5db; cursor: grab; opacity: 0;
-      transition: opacity 0.15s; display: grid; place-items: center;
-    }
-    .dash-kpi:hover .dash-kpi__drag { opacity: 1; }
-    .dash-kpi__drag svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .dash-kpi__value {
-      font-size: 26px; font-weight: 700; color: #111827;
-      font-family: 'JetBrains Mono', monospace; letter-spacing: -0.02em; margin-bottom: 2px;
-    }
-    .dash-kpi__label { font-size: 13px; color: #6b7280; font-weight: 500; }
-    .dash-kpi__trend {
-      display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 600;
-      margin-top: 8px; padding: 2px 8px; border-radius: 6px;
-    }
-    .dash-kpi__trend svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; }
-    .dash-kpi__trend--up { color: #16a34a; background: #ecfdf5; }
-    .dash-kpi__trend--down { color: #dc2626; background: #fef2f2; }
-    .dash-kpi__trend--flat { color: #6b7280; background: #f3f4f6; }
-    .dash-kpi__sparkline { margin-top: 12px; height: 32px; }
-    .dash-kpi__sparkline svg { width: 100%; height: 100%; }
-    .dash-kpi--hidden { display: none; }
-
-    /* Charts row */
-    .dash-charts { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 18px; }
-    .dash-chart-card {
-      background: #fff; border-radius: 12px; padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
-    }
-    .dash-chart-card__header {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
-    }
-    .dash-chart-card__title { font-size: 14px; font-weight: 600; color: #1f2937; }
-    .dash-chart-card__body { position: relative; }
-    .dash-chart-placeholder {
-      height: 220px; background: linear-gradient(180deg, #f9fafb 0%, #fff 100%);
-      border-radius: 8px; display: flex; align-items: flex-end; padding: 0 8px 8px;
-      gap: 6px; overflow: hidden;
-    }
-    .dash-chart-bar {
-      flex: 1; border-radius: 4px 4px 0 0; transition: height 0.4s ease;
-      min-width: 0;
-    }
-    .dash-chart-bar--primary { background: #0073e6; }
-    .dash-chart-bar--light { background: #bfdbfe; }
-
-    /* Donut chart */
-    .dash-donut-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-    .dash-donut { width: 160px; height: 160px; position: relative; }
-    .dash-donut svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-    .dash-donut__center {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      text-align: center;
-    }
-    .dash-donut__center-value {
-      font-size: 24px; font-weight: 700; color: #111827;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .dash-donut__center-label { font-size: 11px; color: #9ca3af; }
-    .dash-donut-legend { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-    .dash-donut-legend__item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #374151; }
-    .dash-donut-legend__dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-
-    /* Activity + table row */
-    .dash-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .dash-activity-card {
-      background: #fff; border-radius: 12px; padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
-    }
-    .dash-activity-card__header {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
-    }
-    .dash-activity-card__title { font-size: 14px; font-weight: 600; color: #1f2937; }
-    .dash-activity-item {
-      display: flex; align-items: flex-start; gap: 12px; padding: 10px 0;
-      border-bottom: 1px solid #f3f4f6;
-    }
-    .dash-activity-item:last-child { border-bottom: none; }
-    .dash-activity-item__dot {
-      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
-    }
-    .dash-activity-item__dot--blue { background: #0073e6; }
-    .dash-activity-item__dot--green { background: #16a34a; }
-    .dash-activity-item__dot--amber { background: #f59e0b; }
-    .dash-activity-item__dot--red { background: #dc2626; }
-    .dash-activity-item__text { font-size: 13px; color: #374151; line-height: 1.5; }
-    .dash-activity-item__text strong { font-weight: 600; color: #111827; }
-    .dash-activity-item__time { font-size: 11px; color: #9ca3af; margin-top: 2px; }
-
-    /* Top AO table */
-    .dash-table-card {
-      background: #fff; border-radius: 12px; padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
-    }
-    .dash-table-card__header {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
-    }
-    .dash-table-card__title { font-size: 14px; font-weight: 600; color: #1f2937; }
-    .dash-mini-table { width: 100%; }
-    .dash-mini-table th {
-      text-align: left; font-size: 11px; font-weight: 600; color: #9ca3af;
-      text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 10px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    .dash-mini-table td {
-      font-size: 13px; color: #374151; padding: 10px; border-bottom: 1px solid #f3f4f6;
-    }
-    .dash-mini-table tr:last-child td { border-bottom: none; }
-    .dash-mini-table__status {
-      display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500;
-      padding: 3px 8px; border-radius: 6px;
-    }
-    .dash-mini-table__status--active { background: #ecfdf5; color: #16a34a; }
-    .dash-mini-table__status--pending { background: #fffbeb; color: #d97706; }
-    .dash-mini-table__status--closed { background: #f3f4f6; color: #6b7280; }
-
-    /* Config drawer */
-    .dash-config-overlay {
-      position: fixed; inset: 0; background: rgba(10,14,28,0.35); z-index: 300;
-      opacity: 0; pointer-events: none; transition: opacity 0.25s;
-    }
-    .dash-config-overlay--active { opacity: 1; pointer-events: auto; }
-    .dash-config-drawer {
-      position: fixed; top: 0; right: -420px; width: 420px; height: 100vh;
-      background: #fff; z-index: 301; transition: right 0.3s cubic-bezier(0.4,0,0.2,1);
-      display: flex; flex-direction: column; box-shadow: -4px 0 20px rgba(0,0,0,0.1);
-    }
-    .dash-config-drawer--open { right: 0; }
-    .dash-config-drawer__header {
-      padding: 20px 24px; border-bottom: 1px solid #e5e7eb;
+    .dash-card-header {
       display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #f0f1f3;
     }
-    .dash-config-drawer__title { font-size: 16px; font-weight: 700; color: #111827; }
-    .dash-config-drawer__close {
-      width: 32px; height: 32px; border: none; background: none; cursor: pointer;
-      border-radius: 8px; color: #6b7280; display: grid; place-items: center; transition: all 0.15s;
+    .dash-card-header__title { font-size: 13px; font-weight: 600; color: #111827; }
+    .dash-card-header__action {
+      background: transparent; border: none; color: #0073e6; font-size: 12px;
+      font-weight: 500; cursor: pointer; padding: 6px 12px; border-radius: 6px;
+      transition: background 0.15s; font-family: inherit;
     }
-    .dash-config-drawer__close:hover { background: #f3f4f6; color: #111827; }
-    .dash-config-drawer__close svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .dash-config-drawer__body { flex: 1; overflow-y: auto; padding: 20px 24px; }
-    .dash-config-drawer__section { margin-bottom: 24px; }
-    .dash-config-drawer__section-title {
-      font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase;
-      letter-spacing: 0.06em; margin-bottom: 12px;
+    .dash-card-header__action:hover { background: #f3f4f6; }
+
+    /* 3-column grid */
+    .dashboard-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;
     }
-    .dash-config-item {
-      display: flex; align-items: center; gap: 12px; padding: 10px 0;
-      border-bottom: 1px solid #f3f4f6; cursor: grab;
+    @media (max-width: 1200px) { .dashboard-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    /* Feature banner */
+    .feature-banner {
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+      border: 1px solid #bae6fd; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
     }
-    .dash-config-item:last-child { border-bottom: none; }
-    .dash-config-item__drag { color: #d1d5db; display: grid; place-items: center; }
-    .dash-config-item__drag svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .dash-config-item__label { flex: 1; font-size: 13px; color: #374151; font-weight: 500; }
-    .dash-config-item__toggle {
-      position: relative; width: 36px; height: 20px; border-radius: 10px;
-      background: #e5e7eb; border: none; cursor: pointer; transition: background 0.2s;
+    .feature-banner__title { font-size: 13px; font-weight: 600; color: #0c4a6e; margin-bottom: 10px; }
+    .feature-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+    @media (max-width: 1024px) { .feature-tiles { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 768px) { .feature-tiles { grid-template-columns: repeat(2, 1fr); } }
+    .feature-tile {
+      background: #fff; border-radius: 8px; padding: 10px 12px; text-align: center;
+      border: 1px solid #bae6fd; transition: box-shadow 0.15s;
     }
-    .dash-config-item__toggle::after {
-      content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
-      border-radius: 50%; background: #fff; transition: transform 0.2s;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    .feature-tile:hover { box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+    .feature-tile__icon {
+      width: 28px; height: 28px; background: #e0f2fe; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center; color: #0073e6;
+      margin: 0 auto 6px;
     }
-    .dash-config-item__toggle--on { background: #0073e6; }
-    .dash-config-item__toggle--on::after { transform: translateX(16px); }
-    .dash-config-drawer__footer {
-      padding: 16px 24px; border-top: 1px solid #e5e7eb;
-      display: flex; justify-content: flex-end; gap: 8px;
+    .feature-tile__icon svg { width: 14px; height: 14px; }
+    .feature-tile__name { font-size: 12px; font-weight: 600; color: #0c4a6e; margin-bottom: 3px; }
+    .feature-tile__desc { font-size: 10px; color: #0c4a6e; opacity: 0.7; margin-bottom: 6px; line-height: 1.3; }
+    .feature-tile__link { color: #0073e6; font-size: 10px; font-weight: 600; text-decoration: none; cursor: pointer; }
+    .feature-tile__link:hover { text-decoration: underline; }
+
+    /* Urgency card */
+    .urgency-card { border-left: 4px solid #dc2626; }
+
+    /* Dashboard tables */
+    .dash-table { width: 100%; border-collapse: collapse; }
+    .dash-table thead { border-bottom: 1px solid #f0f1f3; }
+    .dash-table th {
+      text-align: left; font-size: 10px; font-weight: 600; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 0;
     }
+    .dash-table td {
+      padding: 7px 0; border-bottom: 1px solid #f9fafb; font-size: 12px; color: #1f2937;
+    }
+    .dash-table tbody tr:hover { background: #fafbfc; }
+
+    /* Status badges */
+    .badge {
+      display: inline-flex; align-items: center; font-size: 11px; font-weight: 600;
+      padding: 3px 8px; border-radius: 6px; white-space: nowrap;
+    }
+    .badge--amber { background: #fef3c7; color: #92400e; }
+    .badge--red { background: #fee2e2; color: #991b1b; }
+    .badge--green { background: #dcfce7; color: #166534; }
+    .badge--slate { background: #f2f2f2; color: #475569; }
+    .badge--blue { background: #dbeafe; color: #1e40af; }
+
+    /* Activity feed */
+    .activity-feed { display: flex; flex-direction: column; gap: 6px; }
+    .activity-item { display: flex; gap: 8px; align-items: flex-start; }
+    .activity-item__dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+    }
+    .activity-item__dot--blue { background: #0073e6; }
+    .activity-item__dot--green { background: #16a34a; }
+    .activity-item__dot--amber { background: #f59e0b; }
+    .activity-item__dot--red { background: #dc2626; }
+    .activity-item__content { flex: 1; }
+    .activity-item__text { font-size: 12px; color: #374151; margin-bottom: 1px; line-height: 1.4; }
+    .activity-item__time { font-size: 10px; color: #9ca3af; }
+
+    /* Message list */
+    .message-list { display: flex; flex-direction: column; gap: 4px; }
+    .message-item {
+      display: flex; gap: 10px; padding: 8px 10px; border-radius: 6px;
+      background: #fafbfc; transition: background 0.15s;
+    }
+    .message-item:hover { background: #f3f4f6; }
+    .message-item__avatar {
+      width: 28px; height: 28px; border-radius: 6px; display: flex;
+      align-items: center; justify-content: center; font-size: 10px;
+      font-weight: 600; color: #fff; flex-shrink: 0;
+    }
+    .message-item__avatar--1 { background: #0073e6; }
+    .message-item__avatar--2 { background: #7c3aed; }
+    .message-item__avatar--3 { background: #06b6d4; }
+    .message-item__avatar--4 { background: #f59e0b; }
+    .message-item__content { flex: 1; min-width: 0; }
+    .message-item__sender { font-size: 12px; font-weight: 600; color: #1f2937; margin-bottom: 1px; }
+    .message-item__preview {
+      font-size: 11px; color: #6b7280; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;
+    }
+    .message-item__time { font-size: 10px; color: #9ca3af; }
+
+    /* Note list */
+    .note-list { display: flex; flex-direction: column; gap: 4px; }
+    .note-item {
+      padding: 8px 10px; border-radius: 6px; background: #fafbfc; transition: background 0.15s;
+    }
+    .note-item:hover { background: #f3f4f6; }
+    .note-item__header { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
+    .note-item__avatar {
+      width: 22px; height: 22px; border-radius: 5px; background: #e0e7ff; color: #4f46e5;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 600; flex-shrink: 0;
+    }
+    .note-item__author { font-size: 12px; font-weight: 600; color: #1f2937; }
+    .note-item__text { font-size: 11px; color: #6b7280; margin-bottom: 4px; line-height: 1.4; }
+    .note-item__meta { display: flex; gap: 10px; font-size: 10px; color: #9ca3af; }
+
+    /* KPI counters (archives) */
+    .kpi-counters { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+    @media (max-width: 768px) { .kpi-counters { grid-template-columns: repeat(2, 1fr); } }
+    .kpi-counter {
+      background: #fafbfc; border: 1px solid #f0f1f3; border-radius: 8px;
+      padding: 12px; text-align: center;
+    }
+    .kpi-counter__icon {
+      width: 30px; height: 30px; border-radius: 6px; display: flex;
+      align-items: center; justify-content: center; margin: 0 auto 6px; font-size: 14px;
+    }
+    .kpi-counter__icon--blue { background: #dbeafe; color: #0073e6; }
+    .kpi-counter__icon--amber { background: #fef3c7; color: #f59e0b; }
+    .kpi-counter__icon--green { background: #dcfce7; color: #16a34a; }
+    .kpi-counter__icon--slate { background: #f2f2f2; color: #64748b; }
+    .kpi-counter__number { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+    .kpi-counter__label { font-size: 11px; color: #6b7280; }
 
     /* ══════════════════════════════════════════════════════════════════
        MESSAGERIE
@@ -3578,314 +3513,185 @@ Cordialement,</div>
   <div class="page" id="page-dashboard" style="display: none;">
     <div class="page-header">
       <h1 class="page-header__title">Dashboard</h1>
-      <p class="page-header__subtitle">Vue d'ensemble de votre activité</p>
+      <p class="page-header__subtitle">Bienvenue, Nicolas — Agence Duval Architectes</p>
     </div>
 
-    <!-- Toolbar -->
-    <div class="dash-toolbar">
-      <div class="dash-toolbar__period">
-        <button class="dash-toolbar__period-btn" data-dash-period="7j">7 jours</button>
-        <button class="dash-toolbar__period-btn dash-toolbar__period-btn--active" data-dash-period="30j">30 jours</button>
-        <button class="dash-toolbar__period-btn" data-dash-period="90j">90 jours</button>
-        <button class="dash-toolbar__period-btn" data-dash-period="12m">12 mois</button>
-      </div>
-      <div class="dash-toolbar__spacer"></div>
-      <button class="dash-toolbar__config-btn" id="dash-config-toggle">
-        <svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-        Configurer les KPI
-      </button>
-    </div>
-
-    <!-- KPI Cards -->
-    <div class="dash-kpi-grid" id="dash-kpi-grid">
-
-      <div class="dash-kpi" data-kpi="ao-cours">
-        <div class="dash-kpi__header">
-          <div class="dash-kpi__icon-box dash-kpi__icon-box--blue">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          </div>
-          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+    <!-- Fonctionnalités à découvrir -->
+    <div class="feature-banner">
+      <h2 class="feature-banner__title">Fonctionnalités à découvrir</h2>
+      <div class="feature-tiles">
+        <div class="feature-tile">
+          <div class="feature-tile__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="feature-tile__name">Équipe</div>
+          <div class="feature-tile__desc">Créez et gérez vos équipes de cotraitance</div>
+          <a href="#" class="feature-tile__link">Découvrir →</a>
         </div>
-        <div class="dash-kpi__value">47</div>
-        <div class="dash-kpi__label">AO en cours</div>
-        <div class="dash-kpi__trend dash-kpi__trend--up">
-          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
-          +12% vs période préc.
+        <div class="feature-tile">
+          <div class="feature-tile__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 13v-2"/><path d="M12 17v-2"/></svg></div>
+          <div class="feature-tile__name">DC</div>
+          <div class="feature-tile__desc">Gérez vos Dossiers de Candidature</div>
+          <a href="#" class="feature-tile__link">Découvrir →</a>
         </div>
-      </div>
-
-      <div class="dash-kpi" data-kpi="propositions">
-        <div class="dash-kpi__header">
-          <div class="dash-kpi__icon-box dash-kpi__icon-box--green">
-            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
+        <div class="feature-tile">
+          <div class="feature-tile__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 23H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10l7 7v10a2 2 0 0 1-2 2z"/><polyline points="17 17 12 12 7 17"/><line x1="12" y1="12" x2="12" y2="21"/></svg></div>
+          <div class="feature-tile__name">Transmission</div>
+          <div class="feature-tile__desc">Envoyez vos documents directement</div>
+          <a href="#" class="feature-tile__link">Découvrir →</a>
         </div>
-        <div class="dash-kpi__value">18</div>
-        <div class="dash-kpi__label">Propositions envoyées</div>
-        <div class="dash-kpi__trend dash-kpi__trend--up">
-          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
-          +5 ce mois
+        <div class="feature-tile">
+          <div class="feature-tile__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="7" y1="7" x2="7" y2="17"/><line x1="12" y1="7" x2="12" y2="17"/><line x1="17" y1="7" x2="17" y2="17"/></svg></div>
+          <div class="feature-tile__name">Archives</div>
+          <div class="feature-tile__desc">Archivez et retrouvez vos anciens dossiers</div>
+          <a href="#" class="feature-tile__link">Découvrir →</a>
         </div>
-      </div>
-
-      <div class="dash-kpi" data-kpi="taux-reussite">
-        <div class="dash-kpi__header">
-          <div class="dash-kpi__icon-box dash-kpi__icon-box--amber">
-            <svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-          </div>
-          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-        </div>
-        <div class="dash-kpi__value">32%</div>
-        <div class="dash-kpi__label">Taux de réussite</div>
-        <div class="dash-kpi__trend dash-kpi__trend--flat">
-          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Stable
-        </div>
-      </div>
-
-      <div class="dash-kpi" data-kpi="montant-moyen">
-        <div class="dash-kpi__header">
-          <div class="dash-kpi__icon-box dash-kpi__icon-box--purple">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-          </div>
-          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-        </div>
-        <div class="dash-kpi__value">2.4M€</div>
-        <div class="dash-kpi__label">Montant moyen des AO</div>
-        <div class="dash-kpi__trend dash-kpi__trend--up">
-          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
-          +340K€
-        </div>
-      </div>
-
-      <div class="dash-kpi" data-kpi="delai-reponse">
-        <div class="dash-kpi__header">
-          <div class="dash-kpi__icon-box dash-kpi__icon-box--red">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-        </div>
-        <div class="dash-kpi__value">4.2j</div>
-        <div class="dash-kpi__label">Délai moyen de réponse</div>
-        <div class="dash-kpi__trend dash-kpi__trend--down">
-          <svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/></svg>
-          -0.8j (amélioration)
-        </div>
-      </div>
-
-      <div class="dash-kpi" data-kpi="contacts-actifs">
-        <div class="dash-kpi__header">
-          <div class="dash-kpi__icon-box dash-kpi__icon-box--teal">
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-          </div>
-          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-        </div>
-        <div class="dash-kpi__value">156</div>
-        <div class="dash-kpi__label">Contacts actifs</div>
-        <div class="dash-kpi__trend dash-kpi__trend--up">
-          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
-          +23 ce mois
-        </div>
-      </div>
-
-      <div class="dash-kpi" data-kpi="messages-nonlus">
-        <div class="dash-kpi__header">
-          <div class="dash-kpi__icon-box dash-kpi__icon-box--pink">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-        </div>
-        <div class="dash-kpi__value">12</div>
-        <div class="dash-kpi__label">Messages non lus</div>
-        <div class="dash-kpi__trend dash-kpi__trend--flat">
-          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          3 urgents
-        </div>
-      </div>
-
-      <div class="dash-kpi" data-kpi="ao-gagnes">
-        <div class="dash-kpi__header">
-          <div class="dash-kpi__icon-box dash-kpi__icon-box--slate">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <div class="dash-kpi__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-        </div>
-        <div class="dash-kpi__value">6</div>
-        <div class="dash-kpi__label">AO remportés (période)</div>
-        <div class="dash-kpi__trend dash-kpi__trend--up">
-          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
-          +2 vs période préc.
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Charts row -->
-    <div class="dash-charts">
-      <div class="dash-chart-card">
-        <div class="dash-chart-card__header">
-          <div class="dash-chart-card__title">Activité AO — 12 derniers mois</div>
-          <button class="button button--ghost button--small">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Export
-          </button>
-        </div>
-        <div class="dash-chart-card__body">
-          <div class="dash-chart-placeholder">
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 35%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 20%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 55%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 30%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 45%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 25%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 70%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 40%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 60%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 35%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 80%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 50%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 65%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 38%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 50%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 28%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 75%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 45%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 85%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 55%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 90%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 60%"></div>
-            <div class="dash-chart-bar dash-chart-bar--primary" style="height: 72%"></div>
-            <div class="dash-chart-bar dash-chart-bar--light" style="height: 42%"></div>
-          </div>
-          <div style="display: flex; justify-content: space-between; padding: 8px 8px 0; font-size: 11px; color: #9ca3af;">
-            <span>Avr</span><span>Mai</span><span>Juin</span><span>Juil</span><span>Août</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Déc</span><span>Jan</span><span>Fév</span><span>Mar</span>
-          </div>
-          <div style="display: flex; gap: 16px; margin-top: 10px; font-size: 12px; color: #6b7280;">
-            <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; background: #0073e6; border-radius: 2px;"></span> AO consultés</span>
-            <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; background: #bfdbfe; border-radius: 2px;"></span> Propositions</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="dash-chart-card">
-        <div class="dash-chart-card__header">
-          <div class="dash-chart-card__title">Répartition par lot</div>
-        </div>
-        <div class="dash-chart-card__body">
-          <div class="dash-donut-wrap">
-            <div class="dash-donut">
-              <svg viewBox="0 0 36 36">
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e5e7eb" stroke-width="3"/>
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0073e6" stroke-width="3" stroke-dasharray="35 65" stroke-dashoffset="0"/>
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#60a5fa" stroke-width="3" stroke-dasharray="25 75" stroke-dashoffset="-35"/>
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="-60"/>
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#16a34a" stroke-width="3" stroke-dasharray="12 88" stroke-dashoffset="-80"/>
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#9ca3af" stroke-width="3" stroke-dasharray="8 92" stroke-dashoffset="-92"/>
-              </svg>
-              <div class="dash-donut__center">
-                <div class="dash-donut__center-value">47</div>
-                <div class="dash-donut__center-label">AO total</div>
-              </div>
-            </div>
-            <div class="dash-donut-legend">
-              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#0073e6"></span>Gros œuvre</div>
-              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#60a5fa"></span>Second œuvre</div>
-              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#f59e0b"></span>VRD</div>
-              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#16a34a"></span>Électricité</div>
-              <div class="dash-donut-legend__item"><span class="dash-donut-legend__dot" style="background:#9ca3af"></span>Autres</div>
-            </div>
-          </div>
+        <div class="feature-tile">
+          <div class="feature-tile__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 2 21 22 21 14 12.46 22 3"/></svg></div>
+          <div class="feature-tile__name">Filtres</div>
+          <div class="feature-tile__desc">Personnalisez votre veille avec des filtres</div>
+          <a href="#" class="feature-tile__link">Découvrir →</a>
         </div>
       </div>
     </div>
 
-    <!-- Bottom row -->
-    <div class="dash-bottom">
-      <div class="dash-activity-card">
-        <div class="dash-activity-card__header">
-          <div class="dash-activity-card__title">Activité récente</div>
-          <button class="button button--ghost button--small">Tout voir</button>
-        </div>
-        <div class="dash-activity-item">
-          <div class="dash-activity-item__dot dash-activity-item__dot--green"></div>
-          <div>
-            <div class="dash-activity-item__text"><strong>Proposition acceptée</strong> — Lycée Kléber, Lot Gros Œuvre</div>
-            <div class="dash-activity-item__time">Il y a 2 heures</div>
-          </div>
-        </div>
-        <div class="dash-activity-item">
-          <div class="dash-activity-item__dot dash-activity-item__dot--blue"></div>
-          <div>
-            <div class="dash-activity-item__text"><strong>Nouvelle proposition</strong> envoyée pour Centre Aquatique Mulhouse</div>
-            <div class="dash-activity-item__time">Il y a 5 heures</div>
-          </div>
-        </div>
-        <div class="dash-activity-item">
-          <div class="dash-activity-item__dot dash-activity-item__dot--amber"></div>
-          <div>
-            <div class="dash-activity-item__text"><strong>Date limite demain</strong> — Réhabilitation EHPAD Saint-Louis</div>
-            <div class="dash-activity-item__time">Il y a 8 heures</div>
-          </div>
-        </div>
-        <div class="dash-activity-item">
-          <div class="dash-activity-item__dot dash-activity-item__dot--red"></div>
-          <div>
-            <div class="dash-activity-item__text"><strong>AO expiré</strong> — Aménagement Place de la Réunion, Mulhouse</div>
-            <div class="dash-activity-item__time">Hier, 18:30</div>
-          </div>
-        </div>
-        <div class="dash-activity-item">
-          <div class="dash-activity-item__dot dash-activity-item__dot--blue"></div>
-          <div>
-            <div class="dash-activity-item__text"><strong>Message</strong> de HB Architectes Associés sur AO Médiathèque</div>
-            <div class="dash-activity-item__time">Hier, 14:15</div>
-          </div>
-        </div>
-      </div>
+    <!-- All cards in a single 3-column grid -->
+    <div class="dashboard-grid">
 
-      <div class="dash-table-card">
-        <div class="dash-table-card__header">
-          <div class="dash-table-card__title">AO prioritaires</div>
-          <button class="button button--ghost button--small">Voir tous</button>
+      <!-- 1. Annonces à échéance proche -->
+      <div class="dash-card urgency-card">
+        <div class="dash-card-header">
+          <h2 class="dash-card-header__title">Annonces à échéance proche (&lt; 7 jours)</h2>
+          <button class="dash-card-header__action">Tout voir</button>
         </div>
-        <table class="dash-mini-table">
-          <thead>
-            <tr>
-              <th>Objet</th>
-              <th>Échéance</th>
-              <th>Statut</th>
-            </tr>
-          </thead>
+        <table class="dash-table">
+          <thead><tr><th>Annonce</th><th>Échéance</th><th>Statut</th><th></th></tr></thead>
           <tbody>
-            <tr>
-              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Réhabilitation EHPAD Saint-Louis</td>
-              <td style="white-space: nowrap; color: #dc2626; font-weight: 500;">13 mars</td>
-              <td><span class="dash-mini-table__status dash-mini-table__status--pending">En cours</span></td>
-            </tr>
-            <tr>
-              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Centre Aquatique Mulhouse</td>
-              <td style="white-space: nowrap;">18 mars</td>
-              <td><span class="dash-mini-table__status dash-mini-table__status--active">Envoyé</span></td>
-            </tr>
-            <tr>
-              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Extension Collège Bartholdi</td>
-              <td style="white-space: nowrap;">25 mars</td>
-              <td><span class="dash-mini-table__status dash-mini-table__status--pending">Brouillon</span></td>
-            </tr>
-            <tr>
-              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Lycée Kléber — Lot Gros Œuvre</td>
-              <td style="white-space: nowrap; color: #16a34a;">Gagné</td>
-              <td><span class="dash-mini-table__status dash-mini-table__status--active">Accepté</span></td>
-            </tr>
-            <tr>
-              <td style="font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Parking Silo Gare Centrale</td>
-              <td style="white-space: nowrap;">02 avr</td>
-              <td><span class="dash-mini-table__status dash-mini-table__status--pending">À traiter</span></td>
-            </tr>
+            <tr><td>Centre Aquatique Mulhouse</td><td>17 mars</td><td><span class="badge badge--amber">Cotraitant non validé</span></td><td><button class="button button--secondary" style="font-size:12px;padding:6px 12px;">Relancer</button></td></tr>
+            <tr><td>EHPAD Saint-Louis</td><td>21 mars</td><td><span class="badge badge--red">Dossier non rendu</span></td><td><button class="button button--secondary" style="font-size:12px;padding:6px 12px;">Relancer</button></td></tr>
+            <tr><td>Extension Collège Bartholdi</td><td>22 mars</td><td><span class="badge badge--amber">Cotraitant non validé</span></td><td><button class="button button--secondary" style="font-size:12px;padding:6px 12px;">Relancer</button></td></tr>
+            <tr><td>Médiathèque Rennes</td><td>19 mars</td><td><span class="badge badge--green">Dossier reçu</span></td><td><button class="button button--secondary" style="font-size:12px;padding:6px 12px;">Consulter</button></td></tr>
+            <tr><td>Réhab. Groupe Scolaire Voltaire</td><td>24 mars</td><td><span class="badge badge--green">En cours</span></td><td><button class="button button--secondary" style="font-size:12px;padding:6px 12px;">Consulter</button></td></tr>
           </tbody>
         </table>
       </div>
+
+      <!-- 2. Dernières activités -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h2 class="dash-card-header__title">Dernières activités</h2>
+          <button class="dash-card-header__action">Tout voir</button>
+        </div>
+        <div class="activity-feed">
+          <div class="activity-item"><div class="activity-item__dot activity-item__dot--blue"></div><div class="activity-item__content"><div class="activity-item__text">Nouvelle annonce — <strong>Réhab. Groupe Scolaire Voltaire</strong></div><div class="activity-item__time">Il y a 2h</div></div></div>
+          <div class="activity-item"><div class="activity-item__dot activity-item__dot--green"></div><div class="activity-item__content"><div class="activity-item__text">Proposition envoyée — <strong>Centre Aquatique Mulhouse</strong></div><div class="activity-item__time">Hier, 14:30</div></div></div>
+          <div class="activity-item"><div class="activity-item__dot activity-item__dot--blue"></div><div class="activity-item__content"><div class="activity-item__text">Cotraitant validé par <strong>Atelier Sosson</strong> — Médiathèque Rennes</div><div class="activity-item__time">Hier, 11:15</div></div></div>
+          <div class="activity-item"><div class="activity-item__dot activity-item__dot--red"></div><div class="activity-item__content"><div class="activity-item__text">Date limite dépassée — <strong>Extension Collège Bartholdi</strong></div><div class="activity-item__time">13 mars</div></div></div>
+          <div class="activity-item"><div class="activity-item__dot activity-item__dot--amber"></div><div class="activity-item__content"><div class="activity-item__text">Nouveau message de <strong>HB Architectes Associés</strong></div><div class="activity-item__time">12 mars</div></div></div>
+          <div class="activity-item"><div class="activity-item__dot activity-item__dot--green"></div><div class="activity-item__content"><div class="activity-item__text">Dossier reçu de <strong>Bureau Véritas</strong> — EHPAD Saint-Louis</div><div class="activity-item__time">11 mars</div></div></div>
+        </div>
+      </div>
+
+      <!-- 3. Derniers messages reçus -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h2 class="dash-card-header__title">Derniers messages reçus</h2>
+          <button class="dash-card-header__action">Voir tout</button>
+        </div>
+        <div class="message-list">
+          <div class="message-item"><div class="message-item__avatar message-item__avatar--1">SB</div><div class="message-item__content"><div class="message-item__sender">Sophie Bernard</div><div class="message-item__preview">Bonjour, j'ai bien reçu le DCE pour le projet de la médi...</div><div class="message-item__time">Il y a 1h</div></div></div>
+          <div class="message-item"><div class="message-item__avatar message-item__avatar--2">HB</div><div class="message-item__content"><div class="message-item__sender">HB Architectes</div><div class="message-item__preview">Pourriez-vous nous transmettre la version corrigée du...</div><div class="message-item__time">Il y a 3h</div></div></div>
+          <div class="message-item"><div class="message-item__avatar message-item__avatar--3">LG</div><div class="message-item__content"><div class="message-item__sender">Laurent Garnier</div><div class="message-item__preview">Suite à notre échange, voici les pièces complémen...</div><div class="message-item__time">Hier</div></div></div>
+          <div class="message-item"><div class="message-item__avatar message-item__avatar--4">AA</div><div class="message-item__content"><div class="message-item__sender">Agence ALTA</div><div class="message-item__preview">Nous confirmons notre participation en tant que co...</div><div class="message-item__time">Hier</div></div></div>
+        </div>
+      </div>
+
+      <!-- 4. Dernières notes -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h2 class="dash-card-header__title">Dernières notes</h2>
+          <button class="dash-card-header__action">Tout voir</button>
+        </div>
+        <div class="note-list">
+          <div class="note-item"><div class="note-item__header"><div class="note-item__avatar">IM</div><div class="note-item__author">Isabelle Martin</div></div><div class="note-item__text">Vérifier la conformité du mémoire technique avant envoi</div><div class="note-item__meta"><span>sur Médiathèque Rennes</span><span>Il y a 4h</span></div></div>
+          <div class="note-item"><div class="note-item__header"><div class="note-item__avatar" style="background:#fce7f3;color:#be185d;">JD</div><div class="note-item__author">Jean Dupont</div></div><div class="note-item__text">Le MOA a modifié le planning, nouvelle date de remise le 25/03</div><div class="note-item__meta"><span>sur EHPAD Saint-Louis</span><span>Hier</span></div></div>
+          <div class="note-item"><div class="note-item__header"><div class="note-item__avatar">IM</div><div class="note-item__author">Isabelle Martin</div></div><div class="note-item__text">Contact pris avec le BET fluides, devis attendu vendredi</div><div class="note-item__meta"><span>sur Centre Aquatique</span><span>13 mars</span></div></div>
+        </div>
+      </div>
+
+      <!-- 5. Derniers dossiers reçus -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h2 class="dash-card-header__title">Derniers dossiers reçus</h2>
+          <button class="dash-card-header__action">Tout voir</button>
+        </div>
+        <table class="dash-table">
+          <thead><tr><th>Document</th><th>Envoyé par</th><th>Annonce</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr><td>Mémoire technique.pdf</td><td>Atelier Sosson</td><td>Médiathèque Rennes</td><td>14 mars</td></tr>
+            <tr><td>Devis BET Fluides.docx</td><td>Bureau Véritas</td><td>Centre Aquatique</td><td>13 mars</td></tr>
+            <tr><td>Références similaires.pdf</td><td>AIRTCONTROLE</td><td>Parking Silo Gare</td><td>12 mars</td></tr>
+            <tr><td>Assurance RC.pdf</td><td>Cabinet Bourcier</td><td>Centre Aquatique</td><td>11 mars</td></tr>
+            <tr><td>Planning prévisionnel.xlsx</td><td>Agence Duval</td><td>EHPAD Saint-Louis</td><td>10 mars</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 6. Derniers refus -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h2 class="dash-card-header__title">Derniers refus aux propositions d'équipe</h2>
+          <button class="dash-card-header__action">Historique</button>
+        </div>
+        <table class="dash-table">
+          <thead><tr><th>Cotraitant</th><th>Annonce</th><th>Motif</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr><td>Cabinet Durand</td><td>Réhab. EHPAD Saint-Louis</td><td>Charge de travail</td><td>14 mars</td></tr>
+            <tr><td>AGNA Acoustique</td><td>Extension Collège Bartholdi</td><td>Aucun motif</td><td>12 mars</td></tr>
+            <tr><td>Atelier Moreau</td><td>Parking Silo Gare Centrale</td><td>Hors zone géographique</td><td>10 mars</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 7. Suivi des archives -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h2 class="dash-card-header__title">Suivi des archives</h2>
+          <button class="dash-card-header__action">Tout voir</button>
+        </div>
+        <div class="kpi-counters" style="gap: 8px; margin-bottom: 10px;">
+          <div class="kpi-counter"><div class="kpi-counter__icon kpi-counter__icon--blue">⏳</div><div class="kpi-counter__number">12</div><div class="kpi-counter__label">En attente</div></div>
+          <div class="kpi-counter"><div class="kpi-counter__icon kpi-counter__icon--amber">⭐</div><div class="kpi-counter__number">8</div><div class="kpi-counter__label">Sélectionnées</div></div>
+          <div class="kpi-counter"><div class="kpi-counter__icon kpi-counter__icon--green">✓</div><div class="kpi-counter__number">5</div><div class="kpi-counter__label">Lauréates</div></div>
+          <div class="kpi-counter"><div class="kpi-counter__icon kpi-counter__icon--slate">✕</div><div class="kpi-counter__number">14</div><div class="kpi-counter__label">Non retenues</div></div>
+        </div>
+        <table class="dash-table">
+          <thead><tr><th>Annonce</th><th>Statut</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr><td>Réhab. Groupe Scolaire Voltaire</td><td><span class="badge badge--green">Lauréate</span></td><td>8 mars</td></tr>
+            <tr><td>Centre Aquatique Mulhouse</td><td><span class="badge badge--amber">Sélectionnée</span></td><td>5 mars</td></tr>
+            <tr><td>Médiathèque Rennes</td><td><span class="badge badge--blue">En attente</span></td><td>2 mars</td></tr>
+            <tr><td>EHPAD Saint-Louis</td><td><span class="badge badge--green">Lauréate</span></td><td>28 fév</td></tr>
+            <tr><td>Extension Collège Bartholdi</td><td><span class="badge badge--slate">Non retenue</span></td><td>25 fév</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 8. Dossiers manquants -->
+      <div class="dash-card urgency-card">
+        <div class="dash-card-header">
+          <h2 class="dash-card-header__title">Dossiers manquants</h2>
+          <button class="dash-card-header__action">Action requise</button>
+        </div>
+        <table class="dash-table">
+          <thead><tr><th>Annonce</th><th>Document</th><th>Responsable</th><th>Échéance</th></tr></thead>
+          <tbody>
+            <tr style="background:#fef2f2;"><td><strong>EHPAD Saint-Louis</strong></td><td><strong>Mémoire technique</strong></td><td><strong>Agence Duval</strong></td><td><strong style="color:#991b1b;">17 mars</strong></td></tr>
+            <tr><td>Centre Aquatique</td><td>Attestation d'assurance</td><td>Cabinet Bourcier</td><td>19 mars</td></tr>
+            <tr><td>Médiathèque Rennes</td><td>Note méthodologique</td><td>Atelier Sosson</td><td>21 mars</td></tr>
+            <tr><td>Parking Silo Gare</td><td>Références similaires</td><td>AIRTCONTROLE</td><td>22 mars</td></tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 
@@ -3966,67 +3772,6 @@ Cordialement,</div>
 
   <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
 
-  <!-- Config drawer (dashboard) -->
-  <div class="dash-config-overlay" id="dash-config-overlay"></div>
-  <div class="dash-config-drawer" id="dash-config-drawer">
-    <div class="dash-config-drawer__header">
-      <div class="dash-config-drawer__title">Configurer le dashboard</div>
-      <button class="dash-config-drawer__close" id="dash-config-close">
-        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="dash-config-drawer__body">
-      <div class="dash-config-drawer__section">
-        <div class="dash-config-drawer__section-title">KPI visibles</div>
-        <p style="font-size: 12px; color: #9ca3af; margin-bottom: 14px;">Activez ou désactivez les indicateurs. Glissez pour réorganiser.</p>
-
-        <div class="dash-config-item" data-config-kpi="ao-cours">
-          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-          <div class="dash-config-item__label">AO en cours</div>
-          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="ao-cours"></button>
-        </div>
-        <div class="dash-config-item" data-config-kpi="propositions">
-          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-          <div class="dash-config-item__label">Propositions envoyées</div>
-          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="propositions"></button>
-        </div>
-        <div class="dash-config-item" data-config-kpi="taux-reussite">
-          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-          <div class="dash-config-item__label">Taux de réussite</div>
-          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="taux-reussite"></button>
-        </div>
-        <div class="dash-config-item" data-config-kpi="montant-moyen">
-          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-          <div class="dash-config-item__label">Montant moyen des AO</div>
-          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="montant-moyen"></button>
-        </div>
-        <div class="dash-config-item" data-config-kpi="delai-reponse">
-          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-          <div class="dash-config-item__label">Délai moyen de réponse</div>
-          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="delai-reponse"></button>
-        </div>
-        <div class="dash-config-item" data-config-kpi="contacts-actifs">
-          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-          <div class="dash-config-item__label">Contacts actifs</div>
-          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="contacts-actifs"></button>
-        </div>
-        <div class="dash-config-item" data-config-kpi="messages-nonlus">
-          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-          <div class="dash-config-item__label">Messages non lus</div>
-          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="messages-nonlus"></button>
-        </div>
-        <div class="dash-config-item" data-config-kpi="ao-gagnes">
-          <div class="dash-config-item__drag"><svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg></div>
-          <div class="dash-config-item__label">AO remportés</div>
-          <button class="dash-config-item__toggle dash-config-item__toggle--on" data-toggle-kpi="ao-gagnes"></button>
-        </div>
-      </div>
-    </div>
-    <div class="dash-config-drawer__footer">
-      <button class="button button--secondary button--small" id="dash-config-close-btn">Fermer</button>
-      <button class="button button--primary button--small" id="dash-config-reset">Réinitialiser</button>
-    </div>
-  </div>
 
   <!-- ══════════════════════════════════════════════════════════════════
        NAVIGATION PREVIEW (barre flottante bas)
@@ -4180,58 +3925,6 @@ Cordialement,</div>
         });
       });
 
-      // ── Dashboard config drawer ──
-      const dashConfigToggle = document.getElementById('dash-config-toggle');
-      const dashConfigOverlay = document.getElementById('dash-config-overlay');
-      const dashConfigDrawer = document.getElementById('dash-config-drawer');
-      const dashConfigClose = document.getElementById('dash-config-close');
-      const dashConfigCloseBtn = document.getElementById('dash-config-close-btn');
-      const dashConfigReset = document.getElementById('dash-config-reset');
-
-      function openDashConfig() {
-        dashConfigOverlay.classList.add('dash-config-overlay--active');
-        dashConfigDrawer.classList.add('dash-config-drawer--open');
-      }
-      function closeDashConfig() {
-        dashConfigOverlay.classList.remove('dash-config-overlay--active');
-        dashConfigDrawer.classList.remove('dash-config-drawer--open');
-      }
-      if (dashConfigToggle) {
-        dashConfigToggle.addEventListener('click', openDashConfig);
-        dashConfigOverlay.addEventListener('click', closeDashConfig);
-        dashConfigClose.addEventListener('click', closeDashConfig);
-        dashConfigCloseBtn.addEventListener('click', closeDashConfig);
-      }
-
-      // KPI toggle visibility
-      document.querySelectorAll('[data-toggle-kpi]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const kpiId = btn.dataset.toggleKpi;
-          const kpiCard = document.querySelector(`.dash-kpi[data-kpi="${kpiId}"]`);
-          btn.classList.toggle('dash-config-item__toggle--on');
-          if (kpiCard) kpiCard.classList.toggle('dash-kpi--hidden');
-        });
-      });
-
-      // Dashboard reset
-      if (dashConfigReset) {
-        dashConfigReset.addEventListener('click', () => {
-          document.querySelectorAll('[data-toggle-kpi]').forEach(btn => {
-            btn.classList.add('dash-config-item__toggle--on');
-          });
-          document.querySelectorAll('.dash-kpi').forEach(card => {
-            card.classList.remove('dash-kpi--hidden');
-          });
-        });
-      }
-
-      // Dashboard period selector
-      document.querySelectorAll('[data-dash-period]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('[data-dash-period]').forEach(b => b.classList.remove('dash-toolbar__period-btn--active'));
-          btn.classList.add('dash-toolbar__period-btn--active');
-        });
-      });
 
       // ── Drawers (panneaux latéraux d'édition) ──
       const drawerOverlay = document.getElementById('drawer-overlay');
